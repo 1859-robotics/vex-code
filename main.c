@@ -17,13 +17,22 @@
 #include "Vex_Competition_Includes.c"
 #include "./lib/SmartMotorLib.c"
 
+// forward declaration
+typedef struct Drive;
+typedef struct Lift;
+typedef struct Manipulator;
+typedef struct Robot;
+
+Robot robot;
+
 
 // external file includes
 #include "./prototype/joystick_defines.c"
+#include "./prototype/drive.c"
 #include "./prototype/lift.c"
 #include "./prototype/manipulator.c"
-#include "./prototype/drive.c"
 #include "./prototype/robot.c"
+#include "./prototype/operatorControl.c"
 
 
 
@@ -33,8 +42,11 @@ void pre_auton() {
   SmartMotorsInit();
   SmartMotorRun();
 
+  driveInit(&robot.drive);
+  liftInit(&robot.lift);
+  maniplulatorInit(&robot.manipulator);
 
-  robotInit(robot);
+
   bStopTasksBetweenModes = true;
 }
 
@@ -46,6 +58,9 @@ task autonomous() {
 
 
 task usercontrol() {
+  startTask(taskOPCdrive);
+  startTask(taskOPCmanipulate);
+  startTask(taskOPClift);
 
   while (true) {
 

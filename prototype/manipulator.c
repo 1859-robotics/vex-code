@@ -16,5 +16,15 @@ void maniplulatorInit(Manipulator *manipulator) {
   SmartMotorLinkMotors(*manipulator->lMotor, *manipulator->rMotor);
 }
 
+void OPManipulate(Manipulator *manipulator) {
+
+    SetMotor(*manipulator->lMotor,
+              MANIPULATOR_UP ? 127 : MANIPULATOR_DOWN ? -127 : 0);
+
+    SetMotor(*manipulator->rMotor,
+              MANIPULATOR_UP ? 127 : MANIPULATOR_DOWN ? -127 : 0);
+
+}
+
 
 #endif

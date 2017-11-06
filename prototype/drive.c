@@ -24,7 +24,13 @@ void driveInit(Drive *drive) {
 
 
 
+void OPDrive(Drive *drive) {
+  SetMotor(*drive->RFmotor, TANK_CONTORL_LEFT);
+  SetMotor(*drive->RBmotor, TANK_CONTORL_LEFT);
 
+  SetMotor(*drive->LFmotor, TANK_CONTORL_LEFT);
+  SetMotor(*drive->LBmotor, TANK_CONTORL_LEFT);
+}
 
 
 #endif
