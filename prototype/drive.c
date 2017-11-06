@@ -1,43 +1,28 @@
-#ifndef _DRIVE_
-#define _DRIVE_
+#ifndef _PROTOTYPE_DRIVE_
+#define _PROTOTYPE_DRIVE_
 
 typedef struct {
-  tMotor driveFL;
-  tMotor driveFR;
-  tMotor driveBL;
-  tMotor driveBR;
+  tMotor *RFmotor;
+  tMotor *RBmotor;
 
-  bool operatorTrain;
+  tMotor *LFmotor;
+  tMotor *LBmotor;
+
 } Drive;
 
-Drive drive;
+void driveInit(Drive *drive) {
 
+  *drive->RFmotor = RF_DRIVE;
+  *drive->RBmotor = RB_DRIVE;
 
-void driveInit(Drive &drive) {
+  *drive->LFmotor = LF_DRIVE;
+  *drive->LBmotor = LB_DRIVE;
 
-
-  drive.driveFL = FL_DRIVE;
-  drive.driveFR = BL_DRIVE;
-  drive.driveBL = FR_DRIVE;
-  drive.driveBR = BR_DRIVE;
-
-  SmartMotorLinkMotors(drive.driveFL, drive.driveFR);
-  SmartMotorLinkMotors(drive.driveBL, drive.driveBR);
-
-  drive.operatorTrain = true;
-
+  SmartMotorLinkMotors(*drive->RFmotor, *drive->RBmotor);
+  SmartMotorLinkMotors(*drive->LFmotor, *drive->LBmotor);
 }
 
-task driveTrain() {
-  while(drive.operatorTrain) {
-    SetMotor(drive.driveFL, TANK_CONTORL_LEFT);
-    SetMotor(drive.driveFR, TANK_CONTORL_RIGHT);
 
-
-    wait1Msec(20);
-  }
-  stopTask(driveTrain);
-}
 
 
 
