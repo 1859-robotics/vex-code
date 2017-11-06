@@ -13,6 +13,10 @@ typedef struct {
 
 } Lift;
 
+
+// requires: pointer to lift variable
+// modifies: gives lift appropriate default values
+// affects:  the pointed variable
 void liftInit(Lift *lift) {
   *lift->coreMotorL = L_CORE_LIFT;
   *lift->coreMotorR = R_CORE_LIFT;
@@ -25,6 +29,9 @@ void liftInit(Lift *lift) {
 
 }
 
+// requires: pointer to lift variable
+// modifies: null
+// affects:  lets operator control the lift
 void OPLift(Lift *lift) {
 
   SetMotor(*lift->coreMotorL,

@@ -42,6 +42,7 @@ void pre_auton() {
   SmartMotorsInit();
   SmartMotorRun();
 
+  // initilize internal variables
   driveInit(&robot.drive);
   liftInit(&robot.lift);
   maniplulatorInit(&robot.manipulator);
@@ -66,6 +67,6 @@ task usercontrol() {
 
 
 
-    wait1Msec(20);
+    wait1Msec(WAIT_TIME);
   }
 }

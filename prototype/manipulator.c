@@ -8,7 +8,9 @@ typedef struct {
 
 } Manipulator;
 
-
+// requires: pointer to manipulator variable
+// modifies: gives manipulator appropriate default values
+// affects:  the pointed variable
 void maniplulatorInit(Manipulator *manipulator) {
   *manipulator->lMotor = L_MANIPULATOR;
   *manipulator->rMotor = R_MANIPULATOR;
@@ -16,6 +18,9 @@ void maniplulatorInit(Manipulator *manipulator) {
   SmartMotorLinkMotors(*manipulator->lMotor, *manipulator->rMotor);
 }
 
+// requires: pointer to manipulator variable
+// modifies: null
+// affects:  lets operator control the manipulator
 void OPManipulate(Manipulator *manipulator) {
 
     SetMotor(*manipulator->lMotor,

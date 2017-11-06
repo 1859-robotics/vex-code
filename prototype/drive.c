@@ -10,6 +10,9 @@ typedef struct {
 
 } Drive;
 
+// requires: pointer to drive variable
+// modifies: gives drive appropriate default values
+// affects:  the pointed variable
 void driveInit(Drive *drive) {
 
   *drive->RFmotor = RF_DRIVE;
@@ -23,7 +26,9 @@ void driveInit(Drive *drive) {
 }
 
 
-
+// requires: pointer to drive variable
+// modifies: null
+// affects:  lets operator control the drive train
 void OPDrive(Drive *drive) {
   SetMotor(*drive->RFmotor, TANK_CONTORL_LEFT);
   SetMotor(*drive->RBmotor, TANK_CONTORL_LEFT);
