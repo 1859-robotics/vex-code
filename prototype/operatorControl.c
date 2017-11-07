@@ -7,7 +7,7 @@
 
 task taskOPCdrive() {
   while(true) {
-    OPDrive(robot.drive);
+    OPDrive();
 
     wait1Msec(WAIT_TIME);
   }
@@ -15,7 +15,7 @@ task taskOPCdrive() {
 
 task taskOPCmanipulate() {
   while(true) {
-    OPManipulate(robot.manipulator);
+    OPManipulate();
 
     wait1Msec(WAIT_TIME);
   }
@@ -23,7 +23,7 @@ task taskOPCmanipulate() {
 
 task taskOPClift() {
   while(true) {
-    OPLift(robot.lift);
+    OPLift();
 
     wait1Msec(WAIT_TIME);
   }

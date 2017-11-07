@@ -1,32 +1,24 @@
 #ifndef _PROTOTYPE_MANIPULATOR_
 #define _PROTOTYPE_MANIPULATOR_
 
-typedef struct {
-
-  tMotor *lMotor;
-  tMotor *rMotor;
-
-} Manipulator;
 
 // requires: pointer to manipulator variable
 // modifies: gives manipulator appropriate default values
 // affects:  the pointed variable
-void maniplulatorInit(Manipulator *manipulator) {
-  *manipulator->lMotor = L_MANIPULATOR;
-  *manipulator->rMotor = R_MANIPULATOR;
+void maniplulatorInit() {
 
-  SmartMotorLinkMotors(*manipulator->lMotor, *manipulator->rMotor);
+  SmartMotorLinkMotors(L_MANIPULATOR, R_MANIPULATOR);
 }
 
 // requires: pointer to manipulator variable
 // modifies: null
 // affects:  lets operator control the manipulator
-void OPManipulate(Manipulator *manipulator) {
+void OPManipulate() {
 
-    SetMotor(*manipulator->lMotor,
+    SetMotor(L_MANIPULATOR,
               MANIPULATOR_UP ? 127 : MANIPULATOR_DOWN ? -127 : 0);
 
-    SetMotor(*manipulator->rMotor,
+    SetMotor(R_MANIPULATOR,
               MANIPULATOR_UP ? 127 : MANIPULATOR_DOWN ? -127 : 0);
 
 }

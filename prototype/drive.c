@@ -2,40 +2,72 @@
 #define _PROTOTYPE_DRIVE_
 
 typedef struct {
-  tMotor *RFmotor;
-  tMotor *RBmotor;
-
-  tMotor *LFmotor;
-  tMotor *LBmotor;
-
+  bool canMove;
+  int goToNum;
 } Drive;
 
-// requires: pointer to drive variable
-// modifies: gives drive appropriate default values
-// affects:  the pointed variable
-void driveInit(Drive *drive) {
+Drive drive;
 
-  *drive->RFmotor = RF_DRIVE;
-  *drive->RBmotor = RB_DRIVE;
+// requires: null
+// modifies: links smart motors
+// affects:  smart motor readout
+void driveInit() {
 
-  *drive->LFmotor = LF_DRIVE;
-  *drive->LBmotor = LB_DRIVE;
+  SmartMotorLinkMotors(LF_DRIVE, LB_DRIVE);
+  SmartMotorLinkMotors(RF_DRIVE, RB_DRIVE);
 
-  SmartMotorLinkMotors(*drive->RFmotor, *drive->RBmotor);
-  SmartMotorLinkMotors(*drive->LFmotor, *drive->LBmotor);
+  drive.canMove = true;
+  drive.goToNum = 0;
 }
 
+void leftControlDrive(int spd) {
+  SetMotor(LF_DRIVE, spd);
+  SetMotor(LB_DRIVE, spd);
+}
 
-// requires: pointer to drive variable
+void rightControlDrive(int spd) {
+  SetMotor(RF_DRIVE, spd);
+  SetMotor(RB_DRIVE, spd);
+}
+
+void totalControlDrive(int spd) {
+  leftControlDrive(spd);
+  rightControlDrive(spd);
+}
+
+// requires: null
 // modifies: null
 // affects:  lets operator control the drive train
-void OPDrive(Drive *drive) {
-  SetMotor(*drive->RFmotor, TANK_CONTORL_LEFT);
-  SetMotor(*drive->RBmotor, TANK_CONTORL_LEFT);
+void OPDrive() {
 
-  SetMotor(*drive->LFmotor, TANK_CONTORL_LEFT);
-  SetMotor(*drive->LBmotor, TANK_CONTORL_LEFT);
+  leftControlDrive(TANK_CONTORL_LEFT);
+  rightControlDrive(TANK_CONTORL_RIGHT);
+
 }
 
+task moveForward_() {
+  EncoderSetValue(LF_DRIVE, 0);
+
+  while(drive.goToNum > EncoderGetValue(LF_DRIVE) && drive.goToNum > EncoderGetValue(RF_DRIVE)) {
+    totalControlDrive(127 * sgn(drive.goToNum));
+  }
+
+  stopTask(moveForward_);
+  drive.canMove = true;
+  drive.goToNum = 0;
+  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(RF_DRIVE, 0);
+
+}
+
+void moveForward(int amt) {
+  if(!drive.canMove) return;
+
+  drive.canMove = false;
+  drive.goToNum = amt;
+
+  startTask(moveForward_);
+
+}
 
 #endif
