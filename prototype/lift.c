@@ -1,11 +1,25 @@
 #ifndef _PROTOTYPE_LIFT_
 #define _PROTOTYPE_LIFT_
 
+#define FLIP_LIFT_AMT 700
+
+typedef struct {
+
+  bool canMove;
+  int dir;
+
+} Flipper;
+
+Flipper flipper;
+
 
 // requires: pointer to lift variable
 // modifies: gives lift appropriate default values
 // affects:  the pointed variable
 void liftInit() {
+
+  flipper.dir = 0;
+  flipper.canMove = true;
 
   SmartMotorLinkMotors(L_CORE_LIFT, R_CORE_LIFT);
 
@@ -31,5 +45,37 @@ void OPLift() {
             LIFT_CLAW_UP ? 127 : LIFT_CLAW_DOWN ? -127 : 0);
 
 }
+
+task flip_() {
+
+  SetMotor(FLIP_LIFT, 127 * flipper.dir);
+
+  while(FLIP_LIFT_AMT > fabs(EncoderGetValue(FLIP_LIFT))) {}
+
+  SetMotor(FLIP_LIFT, 0);
+
+
+  flipper.canMove = true;
+  flipper.dir = 0;
+
+
+  EncoderSetValue(FLIP_LIFT, 0);
+
+  stopTask(flip_);
+}
+
+void flip(int dir) {
+  
+  while(!flipper.canMove){};
+
+  flipper.canMove = false;
+  flipper.dir = dir;
+
+  startTask(flip_);
+
+  while(!flipper.canMove){};
+}
+
+
 
 #endif
