@@ -20,54 +20,99 @@ void driveInit() {
   drive.goToNum = 0;
 }
 
-void leftControlDrive(int spd) {
-  SetMotor(LF_DRIVE, spd);
-  SetMotor(LB_DRIVE, spd);
-}
-
-void rightControlDrive(int spd) {
-  SetMotor(RF_DRIVE, spd);
-  SetMotor(RB_DRIVE, spd);
-}
-
-void totalControlDrive(int spd) {
-  leftControlDrive(spd);
-  rightControlDrive(spd);
-}
-
 // requires: null
 // modifies: null
 // affects:  lets operator control the drive train
 void OPDrive() {
 
-  leftControlDrive(TANK_CONTORL_LEFT);
-  rightControlDrive(TANK_CONTORL_RIGHT);
+  SetMotor(LF_DRIVE, TANK_CONTORL_LEFT);
+  SetMotor(LB_DRIVE, TANK_CONTORL_LEFT);
+
+  SetMotor(RF_DRIVE, TANK_CONTORL_RIGHT);
+  SetMotor(RB_DRIVE, TANK_CONTORL_RIGHT);
+
 
 }
 
 task moveForward_() {
   EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(RF_DRIVE, 0);
 
-  while(drive.goToNum > EncoderGetValue(LF_DRIVE) && drive.goToNum > EncoderGetValue(RF_DRIVE)) {
-    totalControlDrive(127 * sgn(drive.goToNum));
-  }
 
-  stopTask(moveForward_);
+  SetMotor(LF_DRIVE, 127 * (sgn(drive.goToNum)));
+  SetMotor(LB_DRIVE, 127 * (sgn(drive.goToNum)));
+  SetMotor(RF_DRIVE, 127 * (sgn(drive.goToNum)));
+  SetMotor(RB_DRIVE, 127 * (sgn(drive.goToNum)));
+
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
+        fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
+
+
+  SetMotor(LF_DRIVE, 0);
+  SetMotor(LB_DRIVE, 0);
+  SetMotor(RF_DRIVE, 0);
+  SetMotor(RB_DRIVE, 0);
+
   drive.canMove = true;
   drive.goToNum = 0;
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
+
+  stopTask(moveForward_);
+
+
 }
 
+task turn_() {
+  
+
+  SetMotor(LF_DRIVE, 127 * -(sgn(drive.goToNum)));
+  SetMotor(LB_DRIVE, 127 * -(sgn(drive.goToNum)));
+  SetMotor(RF_DRIVE, 127 * (sgn(drive.goToNum)));
+  SetMotor(RB_DRIVE, 127 * (sgn(drive.goToNum)));
+
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
+        fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
+
+
+  SetMotor(LF_DRIVE, 0);
+  SetMotor(LB_DRIVE, 0);
+  SetMotor(RF_DRIVE, 0);
+  SetMotor(RB_DRIVE, 0);
+
+  drive.canMove = true;
+  drive.goToNum = 0;
+  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(RF_DRIVE, 0);
+
+
+  stopTask(moveForward_);
+
+
+}
+
+
 void moveForward(int amt) {
-  if(!drive.canMove) return;
+  while(!drive.canMove){};
 
   drive.canMove = false;
   drive.goToNum = amt;
 
   startTask(moveForward_);
 
+  while(!drive.canMove){};
+}
+
+void turn(int amt) {
+  while(!drive.canMove){};
+
+  drive.canMove = false;
+  drive.goToNum = amt;
+
+  startTask(turn_);
+
+  while(!drive.canMove){};
 }
 
 #endif

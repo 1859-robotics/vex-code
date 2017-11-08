@@ -7,7 +7,7 @@
 long nMotorEncoderOffsets[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 long EncoderGetValue(tMotor index) {
-  if(index < 0 || index >= kNumbOfTotalMotors) return NULL;
+  if(index < 0 || index >= kNumbOfTotalMotors) return 0;
 
   return (nMotorEncoder[index] - nMotorEncoderOffsets[index]);
 
