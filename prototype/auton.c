@@ -17,15 +17,18 @@ void auton22pt() {
 
   resetEncoders();
 
-  core(300, false)
+  core(300, false);
   manipulate(1, false);
-  moveForward(1500, false);
+  moveForward(1500, true);
 
-  manipulate(-1, false);
-  moveForward(-1500, false);
+  manipulate(-1, true);
+  moveForward(-1600, true);
 
-  turn(-260, false);
+  turn(175, true);
+  moveForward(170, true);
+  turn(175, true);
 
+  moveForward(500, true);
 
 
 }

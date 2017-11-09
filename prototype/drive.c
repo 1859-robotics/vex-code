@@ -101,7 +101,7 @@ void moveForward(int amt, bool waitForEnd) {
 
   startTask(moveForward_);
 
-  while(!drive.canMove || waitForEnd){};
+  while(waitForEnd && !drive.canMove){};
 }
 
 void turn(int amt, bool waitForEnd) {
@@ -112,7 +112,7 @@ void turn(int amt, bool waitForEnd) {
 
   startTask(turn_);
 
-  while(!drive.canMove || waitForEnd){};
+  while(waitForEnd && !drive.canMove){};
 }
 
 #endif

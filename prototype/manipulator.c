@@ -64,7 +64,7 @@ void manipulate(int dir, bool waitForEnd) {
 
   startTask(manipulate_);
 
-  while(!manipulator.canMove || waitForEnd){};
+  while(waitForEnd && !manipulator.canMove){};
 }
 
 

@@ -53,7 +53,8 @@ void pre_auton() {
 
 task autonomous() {
 	SmartMotorRun();
-    wait1Msec(3000)
+
+
   auton22pt();
 
 }
