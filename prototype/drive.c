@@ -65,7 +65,7 @@ task moveForward_() {
 }
 
 task turn_() {
-  
+
 
   SetMotor(LF_DRIVE, 127 * -(sgn(drive.goToNum)));
   SetMotor(LB_DRIVE, 127 * -(sgn(drive.goToNum)));
@@ -93,7 +93,7 @@ task turn_() {
 }
 
 
-void moveForward(int amt) {
+void moveForward(int amt, bool waitForEnd) {
   while(!drive.canMove){};
 
   drive.canMove = false;
@@ -101,10 +101,10 @@ void moveForward(int amt) {
 
   startTask(moveForward_);
 
-  while(!drive.canMove){};
+  while(!drive.canMove || waitForEnd){};
 }
 
-void turn(int amt) {
+void turn(int amt, bool waitForEnd) {
   while(!drive.canMove){};
 
   drive.canMove = false;
@@ -112,7 +112,7 @@ void turn(int amt) {
 
   startTask(turn_);
 
-  while(!drive.canMove){};
+  while(!drive.canMove || waitForEnd){};
 }
 
 #endif

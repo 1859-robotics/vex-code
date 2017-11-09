@@ -8,24 +8,26 @@ void resetEncoders() {
   EncoderSetValue(R_MANIPULATOR, 0);
 
   EncoderSetValue(FLIP_LIFT, 0);
+  EncoderSetValue(L_CORE_LIFT, 0);
+  EncoderSetValue(LIFT_CLAW, 0);
+
 }
 
 void auton22pt() {
 
   resetEncoders();
-  //
-  // manipulate(1);
-  // moveForward(1500);
-  //
-  // manipulate(-1);
-  // moveForward(-1500);
-  //
-  // turn(-300);
 
-  flip(-1);
+  core(300, false)
+  manipulate(1, false);
+  moveForward(1500, false);
+
+  manipulate(-1, false);
+  moveForward(-1500, false);
+
+  turn(-260, false);
 
 
-  flip(1);
+
 }
 
 
