@@ -3,7 +3,9 @@
 
 typedef struct {
   bool canMove;
+
   int goToNum;
+  int spd;
 } Drive;
 
 Drive drive;
@@ -18,7 +20,16 @@ void driveInit() {
 
   drive.canMove = true;
   drive.goToNum = 0;
+  drive.spd = 0;
+
 }
+
+void driveL(int spd) {
+  SetMotor(LF_DRIVE, spd);
+  SetMotor(LB_DRIVE, spd);
+}
+
+
 
 // requires: null
 // modifies: null
@@ -31,7 +42,6 @@ void OPDrive() {
   SetMotor(RF_DRIVE, TANK_CONTORL_RIGHT);
   SetMotor(RB_DRIVE, TANK_CONTORL_RIGHT);
 
-
 }
 
 task moveForward_() {
@@ -39,24 +49,28 @@ task moveForward_() {
   EncoderSetValue(RF_DRIVE, 0);
 
 
-  SetMotor(LF_DRIVE, 127 * (sgn(drive.goToNum)));
-  SetMotor(LB_DRIVE, 127 * (sgn(drive.goToNum)));
-  SetMotor(RF_DRIVE, 127 * (sgn(drive.goToNum)));
-  SetMotor(RB_DRIVE, 127 * (sgn(drive.goToNum)));
+  SetMotor(LF_DRIVE, drive.spd, true);
+  SetMotor(LB_DRIVE, drive.spd, true);
+  SetMotor(RF_DRIVE, drive.spd, true);
+  SetMotor(RB_DRIVE, drive.spd, true);
 
   while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
         fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
 
 
-  SetMotor(LF_DRIVE, 0);
-  SetMotor(LB_DRIVE, 0);
-  SetMotor(RF_DRIVE, 0);
-  SetMotor(RB_DRIVE, 0);
+  SetMotor(LF_DRIVE, 0, true);
+  SetMotor(LB_DRIVE, 0, true);
+  SetMotor(RF_DRIVE, 0, true);
+  SetMotor(RB_DRIVE, 0, true);
+
+
+  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(RF_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
+  drive.spd = 0;
+
 
 
   stopTask(moveForward_);
@@ -67,48 +81,52 @@ task moveForward_() {
 task turn_() {
 
 
-  SetMotor(LF_DRIVE, 127 * -(sgn(drive.goToNum)));
-  SetMotor(LB_DRIVE, 127 * -(sgn(drive.goToNum)));
-  SetMotor(RF_DRIVE, 127 * (sgn(drive.goToNum)));
-  SetMotor(RB_DRIVE, 127 * (sgn(drive.goToNum)));
+  SetMotor(LF_DRIVE,  drive.spd * (sgn(drive.spd)), true);
+  SetMotor(LB_DRIVE,  drive.spd * (sgn(drive.spd)), true);
+  SetMotor(RF_DRIVE, -drive.spd * (sgn(drive.spd)), true);
+  SetMotor(RB_DRIVE, -drive.spd * (sgn(drive.spd)), true);
 
   while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
         fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
 
 
-  SetMotor(LF_DRIVE, 0);
-  SetMotor(LB_DRIVE, 0);
-  SetMotor(RF_DRIVE, 0);
-  SetMotor(RB_DRIVE, 0);
+  SetMotor(LF_DRIVE, 0, true);
+  SetMotor(LB_DRIVE, 0, true);
+  SetMotor(RF_DRIVE, 0, true);
+  SetMotor(RB_DRIVE, 0, true);
 
-  drive.canMove = true;
-  drive.goToNum = 0;
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
+  drive.canMove = true;
+  drive.goToNum = 0;
 
-  stopTask(moveForward_);
+
+
+  stopTask(turn_);
 
 
 }
 
 
-void moveForward(int amt, bool waitForEnd) {
+void moveForward(int amt, int spd, bool waitForEnd) {
   while(!drive.canMove){};
 
   drive.canMove = false;
   drive.goToNum = amt;
+  drive.spd = spd;
 
   startTask(moveForward_);
 
   while(waitForEnd && !drive.canMove){};
 }
 
-void turn(int amt, bool waitForEnd) {
+void turn(int amt, int spd, bool waitForEnd) {
   while(!drive.canMove){};
 
   drive.canMove = false;
   drive.goToNum = amt;
+  drive.spd = spd;
 
   startTask(turn_);
 
