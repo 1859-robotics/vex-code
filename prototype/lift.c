@@ -6,9 +6,14 @@
 typedef struct {
 
   bool canMove;
+
   int flipDir;
   int coreAmt;
   int clawAmt;
+
+  int flipSpd;
+  int coreSpd;
+  int clawSpd;
 
 } Lift;
 
@@ -50,28 +55,28 @@ void OPLift() {
 
 task flip_() {
 
-  SetMotor(FLIP_LIFT, 127 * lift.flipDir);
+  SetMotor(FLIP_LIFT, 127 * lift.flipSpd);
 
   while(FLIP_LIFT_AMT > fabs(EncoderGetValue(FLIP_LIFT))) {}
 
   SetMotor(FLIP_LIFT, 0);
 
+  EncoderSetValue(FLIP_LIFT, 0);
 
   lift.canMove = true;
-  lift.flipDir = 0;
+  lift.flipSpd = 0;
 
 
-  EncoderSetValue(FLIP_LIFT, 0);
 
   stopTask(flip_);
 }
 
-void flip(int flipDir, bool waitForEnd) {
+void flip(int flipSpd, bool waitForEnd) {
 
   while(!lift.canMove){}
 
   lift.canMove = false;
-  lift.flipDir = flipDir;
+  lift.flipSpd = flipSpd;
 
   startTask(flip_);
 
@@ -134,7 +139,7 @@ void core(int amt, bool waitForEnd) {
 
   startTask(core_);
 
-  while(waitForEnd && !lift.canMove){writeDebugStream("while")};
+  while(waitForEnd && !lift.canMove){writeDebugStream("while");};
 
 
 }

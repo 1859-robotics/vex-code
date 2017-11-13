@@ -1,6 +1,9 @@
 #ifndef _PROTOTYPE_AUTON_
 #define _PROTOTYPE_AUTON_
 
+// requires: null
+// modifies: null
+// affects:  all encoders are set to 0 for accurate readout
 void resetEncoders() {
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
@@ -13,23 +16,120 @@ void resetEncoders() {
 
 }
 
-void auton22pt() {
+void auton22ptRight() {
 
   resetEncoders();
 
+
   core(300, false);
   manipulate(1, false);
-  moveForward(1500, true);
+  moveForward(1500, 127, true);
 
   manipulate(-1, true);
-  moveForward(-1600, true);
+  flip(-1, true);
+  claw(-120, true);
+  flip(1, true);
+  claw(80, false);
 
-  turn(175, true);
-  moveForward(170, true);
-  turn(175, true);
+  moveForward(1600, -127, true);
 
-  moveForward(500, true);
+  turn(-600, -80, true);
 
+  moveForward(700, 127, true);
+  manipulate(1, true);
+
+  moveForward(500, -127, false);
+  manipulate(-1, false);
+
+  moveForward(300, -127, true);
+
+}
+
+void auton7ptRight() {
+
+  resetEncoders();
+
+
+  core(300, false);
+  manipulate(1, false);
+  moveForward(1500, 127, true);
+
+  manipulate(-1, true);
+  flip(-1, true);
+  claw(-120, true);
+  flip(1, true);
+  claw(80, false);
+
+  moveForward(1300, -127, true);
+
+  turn(300, 80, true);
+
+
+  manipulate(1, true);
+
+  moveForward(300, -127, false);
+
+  manipulate(-1, false);
+
+}
+
+void auton22ptLeft() {
+
+  resetEncoders();
+
+
+  core(300, false);
+  manipulate(1, false);
+  moveForward(1500, 127, true);
+
+  manipulate(-1, true);
+  flip(-1, true);
+  claw(-120, true);
+  flip(1, true);
+  claw(80, false);
+
+  moveForward(1600, -127, true);
+
+  turn(300, 80, true);
+
+  moveForward(550, 127, true);
+  manipulate(1, true);
+
+  moveForward(500, -127, true);
+  manipulate(-1, false);
+
+
+
+
+  moveForward(300, -127, true);
+
+}
+
+void auton7ptLeft() {
+
+  resetEncoders();
+
+
+  core(300, false);
+  manipulate(1, false);
+  moveForward(1500, 127, true);
+
+  manipulate(-1, true);
+  flip(-1, true);
+  claw(-120, true);
+  flip(1, true);
+  claw(80, false);
+
+  moveForward(1300, -127, true);
+
+  turn(-300, 80, true);
+
+
+  manipulate(1, true);
+
+  moveForward(300, -127, false);
+
+  manipulate(-1, false);
 
 }
 
