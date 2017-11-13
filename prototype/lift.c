@@ -139,7 +139,7 @@ void core(int amt, bool waitForEnd) {
 
   startTask(core_);
 
-  while(waitForEnd && !lift.canMove){writeDebugStream("while")};
+  while(waitForEnd && !lift.canMove){writeDebugStream("while");};
 
 
 }

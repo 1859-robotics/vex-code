@@ -11,7 +11,7 @@ typedef struct {
 Drive drive;
 
 // requires: null
-// modifies: links smart motors
+// modifies: links smart motors and sets default values for drive
 // affects:  smart motor readout
 void driveInit() {
 
@@ -81,10 +81,17 @@ task moveForward_() {
 task turn_() {
 
 
+<<<<<<< HEAD
   SetMotor(LF_DRIVE,  drive.spd * (sgn(drive.spd)), true);
   SetMotor(LB_DRIVE,  drive.spd * (sgn(drive.spd)), true);
   SetMotor(RF_DRIVE, -drive.spd * (sgn(drive.spd)), true);
   SetMotor(RB_DRIVE, -drive.spd * (sgn(drive.spd)), true);
+=======
+  SetMotor(LF_DRIVE,  fabs(drive.spd) * (sgn(drive.spd)), true);
+  SetMotor(LB_DRIVE,  fabs(drive.spd) * (sgn(drive.spd)), true);
+  SetMotor(RF_DRIVE, -fabs(drive.spd) * (sgn(drive.spd)), true);
+  SetMotor(RB_DRIVE, -fabs(drive.spd) * (sgn(drive.spd)), true);
+>>>>>>> 77f97e0e79df710c6410a604421466d42ee45e22
 
   while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
         fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}

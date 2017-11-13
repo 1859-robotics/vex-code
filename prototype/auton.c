@@ -1,6 +1,9 @@
 #ifndef _PROTOTYPE_AUTON_
 #define _PROTOTYPE_AUTON_
 
+// requires: null
+// modifies: null
+// affects:  all encoders are set to 0 for accurate readout
 void resetEncoders() {
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
@@ -30,8 +33,7 @@ void auton22ptRight() {
 
   moveForward(1600, -127, true);
 
-  //wait1Msec(500)
-  turn(500, -50, true);
+  turn(-600, -80, true);
 
   moveForward(700, 127, true);
   manipulate(1, true);
