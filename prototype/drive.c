@@ -25,43 +25,38 @@ void driveInit() {
 }
 
 void driveL(int spd) {
-  SetMotor(LF_DRIVE, spd);
-  SetMotor(LB_DRIVE, spd);
+  SetMotor(LF_DRIVE, spd, true);
+  SetMotor(LB_DRIVE, spd, true);
 }
 
+void driveR(int spd) {
+  SetMotor(RF_DRIVE, spd, true);
+  SetMotor(RB_DRIVE, spd, true);
+}
 
+void DriveF(int spd) {
+  driveL(spd);
+  driveR(spd);
+}
 
 // requires: null
 // modifies: null
 // affects:  lets operator control the drive train
 void OPDrive() {
-
-  SetMotor(LF_DRIVE, TANK_CONTORL_LEFT);
-  SetMotor(LB_DRIVE, TANK_CONTORL_LEFT);
-
-  SetMotor(RF_DRIVE, TANK_CONTORL_RIGHT);
-  SetMotor(RB_DRIVE, TANK_CONTORL_RIGHT);
-
+  driveL(TANK_CONTORL_LEFT);
+  driveR(TANK_CONTORL_RIGHT);
 }
 
 task moveForward_() {
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
-
-  SetMotor(LF_DRIVE, drive.spd, true);
-  SetMotor(LB_DRIVE, drive.spd, true);
-  SetMotor(RF_DRIVE, drive.spd, true);
-  SetMotor(RB_DRIVE, drive.spd, true);
+  DriveF(drive.spd);
 
   while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
         fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
 
-
-  SetMotor(LF_DRIVE, 0, true);
-  SetMotor(LB_DRIVE, 0, true);
-  SetMotor(RF_DRIVE, 0, true);
-  SetMotor(RB_DRIVE, 0, true);
+  DriveF(0);
 
 
   EncoderSetValue(LF_DRIVE, 0);
@@ -71,7 +66,7 @@ task moveForward_() {
   drive.goToNum = 0;
   drive.spd = 0;
 
-
+  writeDebugStream("end fow\n");
 
   stopTask(moveForward_);
 
@@ -81,38 +76,23 @@ task moveForward_() {
 task turn_() {
 
 
-<<<<<<< HEAD
-  SetMotor(LF_DRIVE,  drive.spd * (sgn(drive.spd)), true);
-  SetMotor(LB_DRIVE,  drive.spd * (sgn(drive.spd)), true);
-  SetMotor(RF_DRIVE, -drive.spd * (sgn(drive.spd)), true);
-  SetMotor(RB_DRIVE, -drive.spd * (sgn(drive.spd)), true);
-=======
-  SetMotor(LF_DRIVE,  fabs(drive.spd) * (sgn(drive.spd)), true);
-  SetMotor(LB_DRIVE,  fabs(drive.spd) * (sgn(drive.spd)), true);
-  SetMotor(RF_DRIVE, -fabs(drive.spd) * (sgn(drive.spd)), true);
-  SetMotor(RB_DRIVE, -fabs(drive.spd) * (sgn(drive.spd)), true);
->>>>>>> 77f97e0e79df710c6410a604421466d42ee45e22
 
-  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
-        fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
+  driveL( fabs(drive.spd) * (sgn(drive.spd)));
+  driveR(-fabs(drive.spd) * (sgn(drive.spd)));
 
 
-  SetMotor(LF_DRIVE, 0, true);
-  SetMotor(LB_DRIVE, 0, true);
-  SetMotor(RF_DRIVE, 0, true);
-  SetMotor(RB_DRIVE, 0, true);
+  while(fabs(SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
+
+  driveF(0);
 
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
+  writeDebugStream("end turn\n");
   drive.canMove = true;
   drive.goToNum = 0;
 
-
-
   stopTask(turn_);
-
-
 }
 
 
