@@ -76,12 +76,13 @@ task moveForward_() {
 task turn_() {
 
 
+  float prevGyro = SensorValue[GYRO_PORT];
 
   driveL( fabs(drive.spd) * (sgn(drive.spd)));
   driveR(-fabs(drive.spd) * (sgn(drive.spd)));
 
 
-  while(fabs(SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
+  while(fabs(prevGyro - SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
 
   driveF(0);
 

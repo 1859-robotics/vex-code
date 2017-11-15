@@ -16,31 +16,46 @@ void resetEncoders() {
 
 }
 
-void auasdaston22ptRight() { // not actual auton
+void auton22ptRight() { // not actual auton
 
   resetEncoders();
 
   core(300, false);
   manipulate(1, false);
-  moveForward(1500, 127, true);
+  moveForward(1300, 127, true);
 
   manipulate(-1, true);
   flip(-1, true);
   claw(-120, true);
   flip(1, true);
-  claw(120, false);
+  claw(80, false);
+
+  moveForward(1400, -127, true);
+
+  turn(90, -40, true);
+  moveForward(250, 40, true);
+  turn(90, -40, true);
+
+  moveForward(500, 127, true);
+
+  manipulate(1, true);
+
+  moveForward(600, -127, false);
+
+  manipulate(-1, true);
+
 
 }
 
 
-void auton22ptRight() {
+void auton22aptRight() {
 
   resetEncoders();
 
 
   core(300, false);
   manipulate(1, false);
-  moveForward(1500, 127, true);
+  moveForward(1600, 127, true);
 
   manipulate(-1, true);
   flip(-1, true);
@@ -50,7 +65,7 @@ void auton22ptRight() {
 
   moveForward(1600, -127, true);
 
-  turn(135, 40, true);
+  turn(145, 40, true);
 
   moveForward(800, 127, true);
   manipulate(1, true);

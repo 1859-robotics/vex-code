@@ -54,6 +54,7 @@ void OPLift() {
 }
 
 task flip_() {
+  EncoderSetValue(FLIP_LIFT, 0);
 
   SetMotor(FLIP_LIFT, 127 * lift.flipSpd);
 

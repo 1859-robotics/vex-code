@@ -6,6 +6,8 @@
 
 long nMotorEncoderOffsets[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+long gyroOffsets = 0;
+
 long EncoderGetValue(tMotor index) {
   if(index < 0 || index >= kNumbOfTotalMotors) return 0;
 
@@ -18,7 +20,16 @@ void EncoderSetValue(tMotor index, float value) {
 
   nMotorEncoderOffsets[index] = nMotorEncoder[index] - value;
 }
-
-
+//
+// long EncoderGetValue(tMotor index) {
+//
+//   return (SensorValue[GYRO_PORT] - gyroOffsets);
+//
+// }
+//
+// void gyroSet(float value) {
+//   gyroOffsets = SensorValue[GYRO_PORT] - value;
+//
+// }
 
 #endif
