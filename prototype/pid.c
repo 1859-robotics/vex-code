@@ -1,33 +1,69 @@
 #ifndef _PROTOTYPE_PID_
 #define _PROTOTYPE_PID_
 
-#define MAX_SPEED 127
-
-
-
+#define MAX_MOTOR_SPEED 127
+#define MIN_MOTOR_SPEED (-127)
 
 
 typedef struct {
-  int target;
-  int current;
+    
+    int     request;
+    int     current;
+    
+    int     error;
+    int     prevError;
+    
+    int     P;
+    int     I;
+    int     D;
+    
+    int     kP;
+    int     kI;
+    int     kD;
+    
+    tMotor  motor;
+    tSensor sensor;
+    
+} PIDcontrol;
 
-  int error;
-  int prevError;
 
-  int p;
-  int i;
-  int d;
+void pidInit(PIDcontrol *pid, int request, int current, tMotor m, tSensor s, int KP = 0, int KI = 0, int KD = 0) {
+    
+    *pid.request = request;
+    *pid.current = current;
+    *pid.error = current - request;
+    *pid.prevError = *pid.error;
+    
+    
+    *pid.kP = KP;
+    *pid.Ki = KI;
+    *pid.Kd = KD;
+    
+    *pid.motor = m;
+    *pid.sensor = s;
+    
+}
 
+void SetRequest(PIDcontrol *pid, int request) {
+    *pid.request = request;
+}
 
-
-
-} pidController;
-
-
-void pidInit() {
-
+int pid(PIDcontrol *pid) {
+    
+    
+    
+    
+    return 0;
 }
 
 
+/*
 
+24 - english
+28 - math
+30 - reading
+24 - science
+27 - composite 
+
+*/
 #endif
