@@ -24,16 +24,28 @@ void driveInit() {
 
 }
 
+
+// requires: null
+// modifies: null
+// affects:  short hand function for controlling the left side of the drive
 void driveL(int spd) {
   SetMotor(LF_DRIVE, spd, true);
   SetMotor(LB_DRIVE, spd, true);
 }
 
+
+// requires: null
+// modifies: null
+// affects:  short hand function for controlling the right side of the drive
 void driveR(int spd) {
   SetMotor(RF_DRIVE, spd, true);
   SetMotor(RB_DRIVE, spd, true);
 }
 
+
+// requires: null
+// modifies: null
+// affects:  short hand function for controlling the entire drive
 void DriveF(int spd) {
   driveL(spd);
   driveR(spd);
@@ -47,37 +59,40 @@ void OPDrive() {
   driveR(TANK_CONTORL_RIGHT);
 }
 
+// requires: task
+// modifies: 0's drive encoders
+// affects:  moves forward by amount specified in drive
 task moveForward_() {
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
-
   DriveF(drive.spd);
 
+  // while the encoder values are not the requseted value
   while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
         fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
 
-  DriveF(0);
+  DriveF(0); // equivilant to stoping all drive motors
 
-
+  // reset encoders
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
+  // reset drive values
   drive.canMove = true;
   drive.goToNum = 0;
   drive.spd = 0;
-
-  writeDebugStream("end fow\n");
-
+  
   stopTask(moveForward_);
-
-
 }
 
+
+// requires: task
+// modifies: null
+// affects:  allows the robot to turn by the amount specified in drive
 task turn_() {
 
-
+  // store previos gyro for locally zeroing value
   float prevGyro = SensorValue[GYRO_PORT];
 
+  
   driveL( fabs(drive.spd) * (sgn(drive.spd)));
   driveR(-fabs(drive.spd) * (sgn(drive.spd)));
 
@@ -96,7 +111,9 @@ task turn_() {
   stopTask(turn_);
 }
 
-
+// requires <amount to move> <speed to move> <if the function should wait for the task to finish>
+// modifies: drive variable 
+// affects:  calls turn task
 void moveForward(int amt, int spd, bool waitForEnd) {
   while(!drive.canMove){};
 
