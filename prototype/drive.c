@@ -84,7 +84,7 @@ task turn_() {
 
   while(fabs(prevGyro - SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
 
-  driveF(0);
+  DriveF(0);
 
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);

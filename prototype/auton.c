@@ -16,34 +16,59 @@ void resetEncoders() {
 
 }
 
-void auton22ptRight() { // not actual auton
+void auton22ptRight() { // not actual auton skills
 
   resetEncoders();
 
   core(300, false);
   manipulate(1, false);
-  moveForward(1300, 127, true);
+  moveForward(600, 80, false);
 
-  manipulate(-1, true);
+  turn(10, -40, true);
+  moveForward(600, 80, true);
+
+  manipulate(-1, true); // pickup base
   flip(-1, true);
   claw(-120, true);
   flip(1, true);
-  claw(80, false);
+  claw(80, false); // end of put cone on base
 
-  moveForward(1400, -127, true);
+  moveForward(1200, -80, true);
 
-  turn(90, -40, true);
-  moveForward(250, 40, true);
-  turn(90, -40, true);
+  turn(70, -40, true);
+  moveForward(500, 40, true);
+  turn(80, -40, true);
 
-  moveForward(500, 127, true);
-
+  moveForward(650, 80, true);
   manipulate(1, true);
-
-  moveForward(600, -127, false);
-
+  moveForward(600, -80, true);
   manipulate(-1, true);
 
+  turn(80, -40, true);
+
+  flip(-1, true);
+
+  moveForward(100, -40, true);
+  moveForward(1000, -80, true);
+
+  wait1Msec(100);
+  gyroZero();
+
+  moveForward(250, 80, true);
+
+  flip(1, true);
+  manipulate(1, true);
+
+  turn(50, -40, true);
+
+  moveForward(450, 80, true);
+  manipulate(-1, true);
+
+  turn(200, -40, true);
+  moveForward(1150, 80, true);
+
+  manipulate(1, true);
+  moveForward(300, -80, true);
 
 }
 
@@ -55,7 +80,7 @@ void auton22aptRight() {
 
   core(300, false);
   manipulate(1, false);
-  moveForward(1600, 127, true);
+  moveForward(1600, 80, true);
 
   manipulate(-1, true);
   flip(-1, true);
@@ -63,17 +88,17 @@ void auton22aptRight() {
   flip(1, true);
   claw(80, false);
 
-  moveForward(1600, -127, true);
+  moveForward(1600, -80, true);
 
   turn(145, 40, true);
 
-  moveForward(800, 127, true);
+  moveForward(800, 80, true);
   manipulate(1, true);
 
-  moveForward(500, -127, false);
+  moveForward(500, -80, false);
   manipulate(-1, false);
 
-  moveForward(300, -127, true);
+  moveForward(300, -80, true);
 
 }
 
@@ -84,7 +109,7 @@ void auton7ptRight() {
 
   core(300, false);
   manipulate(1, false);
-  moveForward(1500, 127, true);
+  moveForward(1500, 80, true);
 
   manipulate(-1, true);
   flip(-1, true);
@@ -92,14 +117,14 @@ void auton7ptRight() {
   flip(1, true);
   claw(80, false);
 
-  moveForward(1300, -127, true);
+  moveForward(1300, -80, true);
 
   turn(300, 80, true);
 
 
   manipulate(1, true);
 
-  moveForward(300, -127, false);
+  moveForward(300, -80, false);
 
   manipulate(-1, false);
 
@@ -112,7 +137,7 @@ void auton22ptLeft() {
 
   core(300, false);
   manipulate(1, false);
-  moveForward(1500, 127, true);
+  moveForward(1500, 80, true);
 
   manipulate(-1, true);
   flip(-1, true);
@@ -120,20 +145,20 @@ void auton22ptLeft() {
   flip(1, true);
   claw(80, false);
 
-  moveForward(1600, -127, true);
+  moveForward(1600, -80, true);
 
   turn(300, 80, true);
 
-  moveForward(550, 127, true);
+  moveForward(550, 80, true);
   manipulate(1, true);
 
-  moveForward(500, -127, true);
+  moveForward(500, -80, true);
   manipulate(-1, false);
 
 
 
 
-  moveForward(300, -127, true);
+  moveForward(300, -80, true);
 
 }
 
@@ -144,7 +169,7 @@ void auton7ptLeft() {
 
   core(300, false);
   manipulate(1, false);
-  moveForward(1500, 127, true);
+  moveForward(1500, 80, true);
 
   manipulate(-1, true);
   flip(-1, true);
@@ -152,21 +177,21 @@ void auton7ptLeft() {
   flip(1, true);
   claw(80, false);
 
-  moveForward(1300, -127, true);
+  moveForward(1300, -80, true);
 
   turn(-300, 80, true);
 
 
   manipulate(1, true);
 
-  moveForward(300, -127, false);
+  moveForward(300, -80, false);
 
   manipulate(-1, false);
 
 }
 
 void skills() {
-  turn(90, 40,  false)
+  turn(90, 40,  false);
 }
 
 
