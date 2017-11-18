@@ -47,7 +47,7 @@ void OPDrive() {
   driveR(TANK_CONTORL_RIGHT);
 }
 
-task moveForward_() {
+task moveCenter_() {
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
@@ -66,15 +66,100 @@ task moveForward_() {
   drive.goToNum = 0;
   drive.spd = 0;
 
-  writeDebugStream("end fow\n");
 
-  stopTask(moveForward_);
+  stopTask(moveCenter_);
 
 
 }
 
-task turn_() {
+task moveLeftEncoder_() {
+  EncoderSetValue(LF_DRIVE, 0);
 
+  driveL(drive.spd);
+
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE))) {}
+
+  driveL(0);
+
+
+  EncoderSetValue(LF_DRIVE, 0);
+
+  drive.canMove = true;
+  drive.goToNum = 0;
+  drive.spd = 0;
+
+  writeDebugStream("end left\n");
+  stopTask(moveLeftEncoder_);
+}
+
+task moveRightEncoder_() {
+  EncoderSetValue(RF_DRIVE, 0);
+
+  driveR(drive.spd);
+
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
+
+  driveR(0);
+
+
+  EncoderSetValue(RF_DRIVE, 0);
+
+  drive.canMove = true;
+  drive.goToNum = 0;
+  drive.spd = 0;
+
+  writeDebugStream("end right\n");
+  stopTask(moveRightEncoder_);
+
+
+}
+
+task moveLeftGyro_() {
+  EncoderSetValue(LF_DRIVE, 0);
+
+  float prevGyro = SensorValue[GYRO_PORT];
+
+  driveL(drive.spd);
+
+  while(fabs(prevGyro - SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
+
+  driveL(0);
+
+
+  EncoderSetValue(LF_DRIVE, 0);
+
+  drive.canMove = true;
+  drive.goToNum = 0;
+  drive.spd = 0;
+
+  stopTask(moveLeftGyro_);
+}
+
+task moveRightGyro_() {
+  EncoderSetValue(RF_DRIVE, 0);
+
+  float prevGyro = SensorValue[GYRO_PORT];
+
+  driveR(drive.spd);
+
+  while(fabs(prevGyro - SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
+
+  driveR(0);
+
+
+  EncoderSetValue(RF_DRIVE, 0);
+
+  drive.canMove = true;
+  drive.goToNum = 0;
+  drive.spd = 0;
+
+  stopTask(moveRightGyro_);
+
+
+}
+
+
+task turn_() {
 
   float prevGyro = SensorValue[GYRO_PORT];
 
@@ -89,7 +174,6 @@ task turn_() {
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
-  writeDebugStream("end turn\n");
   drive.canMove = true;
   drive.goToNum = 0;
 
@@ -97,14 +181,62 @@ task turn_() {
 }
 
 
-void moveForward(int amt, int spd, bool waitForEnd) {
+void moveCenter(int amt, int spd, bool waitForEnd) {
   while(!drive.canMove){};
 
   drive.canMove = false;
   drive.goToNum = amt;
   drive.spd = spd;
 
-  startTask(moveForward_);
+  startTask(moveCenter_);
+
+  while(waitForEnd && !drive.canMove){};
+}
+
+void moveLeftEncoder(int amt, int spd, bool waitForEnd) {
+  while(!drive.canMove){};
+
+  drive.canMove = false;
+  drive.goToNum = amt;
+  drive.spd = spd;
+
+  startTask(moveLeftEncoder_);
+
+  while(waitForEnd && !drive.canMove){};
+}
+
+void moveRightEncoder(int amt, int spd, bool waitForEnd) {
+  while(!drive.canMove){};
+
+  drive.canMove = false;
+  drive.goToNum = amt;
+  drive.spd = spd;
+
+  startTask(moveRightEncoder_);
+
+  while(waitForEnd && !drive.canMove){};
+}
+
+void moveRightGyro(int amt, int spd, bool waitForEnd) {
+  while(!drive.canMove){};
+
+  drive.canMove = false;
+  drive.goToNum = amt;
+  drive.spd = spd;
+
+  startTask(moveRightGyro_);
+
+  while(waitForEnd && !drive.canMove){};
+}
+
+void moveLeftGyro(int amt, int spd, bool waitForEnd) {
+  while(!drive.canMove){};
+
+  drive.canMove = false;
+  drive.goToNum = amt;
+  drive.spd = spd;
+
+  startTask(moveLeftGyro_);
 
   while(waitForEnd && !drive.canMove){};
 }

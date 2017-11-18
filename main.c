@@ -79,14 +79,15 @@ void pre_auton() {
 
 
  bStopTasksBetweenModes = true;
- }
 
-  // selectAuton();
 
+  selectAuton();
+}
 
 task autonomous() {
 	SmartMotorRun();
   runAuton();
+
 
 
 }
