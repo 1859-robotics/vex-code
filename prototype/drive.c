@@ -24,16 +24,28 @@ void driveInit() {
 
 }
 
+
+// requires: null
+// modifies: null
+// affects:  short hand function for controlling the left side of the drive
 void driveL(int spd) {
   SetMotor(LF_DRIVE, spd, true);
   SetMotor(LB_DRIVE, spd, true);
 }
 
+
+// requires: null
+// modifies: null
+// affects:  short hand function for controlling the right side of the drive
 void driveR(int spd) {
   SetMotor(RF_DRIVE, spd, true);
   SetMotor(RB_DRIVE, spd, true);
 }
 
+
+// requires: null
+// modifies: null
+// affects:  short hand function for controlling the entire drive
 void DriveF(int spd) {
   driveL(spd);
   driveR(spd);
@@ -53,15 +65,17 @@ task moveCenter_() {
 
   DriveF(drive.spd);
 
+  // while the encoder values are not the requseted value
   while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
         fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
 
-  DriveF(0);
+  DriveF(0); // equivilant to stoping all drive motors
 
-
+  // reset encoders
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
+  // reset drive values
   drive.canMove = true;
   drive.goToNum = 0;
   drive.spd = 0;
@@ -161,7 +175,9 @@ task moveRightGyro_() {
 
 task turn_() {
 
+  // store previos gyro for locally zeroing value
   float prevGyro = SensorValue[GYRO_PORT];
+
 
   driveL( fabs(drive.spd) * (sgn(drive.spd)));
   driveR(-fabs(drive.spd) * (sgn(drive.spd)));
