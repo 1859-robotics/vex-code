@@ -56,7 +56,7 @@ void gyroInit(Gyro gyro, int iPortNum) {
 }
 
 float gyroGetRate(Gyro gyro) {
-	float fGyroRead = SensorValue (gyro.m_iPortNum);
+	float fGyroRead = SensorValue(gyro.m_iPortNum);
 
 	//Difference from zero-rate value or the average calibration read
 	float fGyroDiff = fGyroRead - gyro.m_config.m_fAvg;
@@ -70,8 +70,8 @@ float gyroGetRate(Gyro gyro) {
 	return 0;
 }
 
-
-
-
+void gyroGetDeg(Gyro gyro) {
+	return SensorValue(gyro.m_iPortNum) / 360;
+}
 
 #endif
