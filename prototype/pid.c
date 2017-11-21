@@ -1,69 +1,55 @@
 #ifndef _PROTOTYPE_PID_
 #define _PROTOTYPE_PID_
 
-#define MAX_MOTOR_SPEED 127
-#define MIN_MOTOR_SPEED (-127)
+typedef struct{
 
+    float m_fKP;
+	float m_fKI;
+	float m_fKD;
+	
+    float m_fEpsilonInner;
+	float m_fEpsilonOuter;
+	
+    float m_fSigma;
+	
+    float m_fLastValue;
+	unsigned long m_uliLastTime;
+    float m_fLastSetPoint;
 
-typedef struct {
-    
-    int     request;
-    int     current;
-    
-    int     error;
-    int     prevError;
-    
-    int     P;
-    int     I;
-    int     D;
-    
-    int     kP;
-    int     kI;
-    int     kD;
-    
-    tMotor  motor;
-    tSensor sensor;
-    
-} PIDcontrol;
+} PID;
 
-
-void pidInit(PIDcontrol *pid, int request, int current, tMotor m, tSensor s, int KP = 0, int KI = 0, int KD = 0) {
-    
-    *pid.request = request;
-    *pid.current = current;
-    *pid.error = current - request;
-    *pid.prevError = *pid.error;
-    
-    
-    *pid.kP = KP;
-    *pid.Ki = KI;
-    *pid.Kd = KD;
-    
-    *pid.motor = m;
-    *pid.sensor = s;
-    
+void pidInit (PID pid, float fKP, float fKI, float fKD, float fEpsilonInner, float fEpsilonOuter) {
+	pid.m_fKP = fKP;
+	pid.m_fKI = fKI;
+	pid.m_fKD = fKD;
+	pid.m_fEpsilonInner = fEpsilonInner;
+	pid.m_fEpsilonOuter = fEpsilonOuter;
+	pid.m_fSigma = 0;
+	pid.m_fLastValue = 0;
+	pid.m_uliLastTime = nPgmTime;
 }
-
-void SetRequest(PIDcontrol *pid, int request) {
-    *pid.request = request;
-}
-
-int pid(PIDcontrol *pid) {
-    
-    
-    
-    
-    return 0;
-}
-
-
-/*
-
-24 - english
-28 - math
-30 - reading
-24 - science
-27 - composite 
-
-*/
 #endif
+
+float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
+	float fDeltaTime = (float)(nPgmTime - pid.m_uliLastTime) / 1000.0;
+	pid.m_uliLastTime = nPgmTime;
+
+	float fDeltaPV = 0;
+	if(fDeltaTime > 0)
+		fDeltaPV = (fProcessVariable - pid.m_fLastValue) / fDeltaTime;
+	pid.m_fLastValue = fProcessVariable;
+
+	float fError = fSetPoint - fProcessVariable;
+
+	if(fabs(fError) > pid.m_fEpsilonInner && fabs(fError) < pid.m_fEpsilonOuter)
+		pid.m_fSigma += fError * fDeltaTime;
+
+	if (fabs (fError) > pid.m_fEpsilonOuter)
+		pid.m_fSigma = 0;
+
+	float fOutput = fError * pid.m_fKP + 
+                    pid.m_fSigma * pid.m_fKI - 
+                    fDeltaPV * pid.m_fKD;
+
+	return abs(fOutput) > 127 ? 127 * fOutput/abs(fOutput) : fOutput;
+}
