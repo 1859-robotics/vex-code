@@ -174,15 +174,6 @@
 #define SMLIB_Ke_393            (7.2*(1-SMLIB_I_FREE_393/SMLIB_I_STALL_393)/SMLIB_RPM_FREE_393)
 #define SMLIB_I_SAFE393         0.90
 
-// parameters for vex 269 motor
-#define SMLIB_I_FREE_269        0.18
-#define SMLIB_I_STALL_269       2.88
-#define SMLIB_RPM_FREE_269      120
-#define SMLIB_R_269             (7.2/SMLIB_I_STALL_269)
-#define SMLIB_L_269             0.000650
-#define SMLIB_Ke_269            (7.2*(1-SMLIB_I_FREE_269/SMLIB_I_STALL_269)/SMLIB_RPM_FREE_269)
-#define SMLIB_I_SAFE269         0.75
-
 // parameters for cortex and Power expander
 // spec says 4A but we have set a little lower here
 // may increase in a subsequent release.
@@ -190,7 +181,6 @@
 #define SMLIB_I_SAFEPE          3.0
 
 // encoder counts per revolution depending on motor
-#define SMLIB_TPR_269           240.448
 #define SMLIB_TPR_393R          261.333
 #define SMLIB_TPR_393S          392
 #define SMLIB_TPR_393T          627.2
@@ -228,18 +218,8 @@
 #define SMLIB_C1_393            ( (SMLIB_TEMP_TRIP - SMLIB_TEMP_REF) / (SMLIB_I_HOLD_393 * SMLIB_I_HOLD_393) )
 #define SMLIB_C2_393            (1.0 / (SMLIB_TAU_393 * 1000.0))
 
-// PTC HR16-075 used in 269
-#define SMLIB_I_HOLD_269        0.75
-#define SMLIB_T_TRIP_269        2.0
-#define SMLIB_K_TAU_269         0.5
-#define SMLIB_TAU_269           (SMLIB_K_TAU_269 * SMLIB_T_TRIP_269 * 5.0 * 5.0)
-#define SMLIB_C1_269            ( (SMLIB_TEMP_TRIP - SMLIB_TEMP_REF) / (SMLIB_I_HOLD_269 * SMLIB_I_HOLD_269) )
-#define SMLIB_C2_269            (1.0 / (SMLIB_TAU_269 * 1000.0))
 
-// No way to test 3 wire - Vamfun had them more or less the same as the 269
-// PTC MINISMDC-075F used in three wire
-#define SMLIB_C1_3WIRE          SMLIB_C1_269
-#define SMLIB_C2_3WIRE          SMLIB_C2_269
+
 
 
 // for forward reference
@@ -985,30 +965,6 @@ SmartMotorsInit()
                 m->t_const_1 = SMLIB_C1_393;
                 m->t_const_2 = SMLIB_C2_393;
                 break;
-
-            // 269 and 3wire set the same
-#ifndef kRobotCHasPid
-            case    tmotorVex269:
-#else
-            case    tmotorVex269_HBridge:
-            case    tmotorVex269_MC29:
-#endif
-            case    tmotorServoContinuousRotation:
-                m->i_free   = SMLIB_I_FREE_269;
-                m->i_stall  = SMLIB_I_STALL_269;
-                m->r_motor  = SMLIB_R_269;
-                m->l_motor  = SMLIB_L_269;
-                m->ke_motor = SMLIB_Ke_269;
-                m->rpm_free = SMLIB_RPM_FREE_269;
-
-                m->ticks_per_rev = SMLIB_TPR_269;
-
-                m->safe_current = SMLIB_I_SAFE269;
-
-                m->t_const_1 = SMLIB_C1_269;
-                m->t_const_2 = SMLIB_C2_269;
-                break;
-
             default:
                 // force OFF
                 // Servos, flashlights etc. not considered.
