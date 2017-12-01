@@ -3,18 +3,18 @@
 
 typedef struct{
 
-    float m_fKP;
+  float m_fKP;
 	float m_fKI;
 	float m_fKD;
-	
-    float m_fEpsilonInner;
+
+  float m_fEpsilonInner;
 	float m_fEpsilonOuter;
-	
-    float m_fSigma;
-	
-    float m_fLastValue;
+
+  float m_fSigma;
+
+  float m_fLastValue;
 	unsigned long m_uliLastTime;
-    float m_fLastSetPoint;
+  float m_fLastSetPoint;
 
 } PID;
 
@@ -28,7 +28,6 @@ void pidInit (PID pid, float fKP, float fKI, float fKD, float fEpsilonInner, flo
 	pid.m_fLastValue = 0;
 	pid.m_uliLastTime = nPgmTime;
 }
-#endif
 
 float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
 	float fDeltaTime = (float)(nPgmTime - pid.m_uliLastTime) / 1000.0;
@@ -37,19 +36,22 @@ float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
 	float fDeltaPV = 0;
 	if(fDeltaTime > 0)
 		fDeltaPV = (fProcessVariable - pid.m_fLastValue) / fDeltaTime;
-	pid.m_fLastValue = fProcessVariable;
 
+  pid.m_fLastValue = fProcessVariable;
 	float fError = fSetPoint - fProcessVariable;
 
 	if(fabs(fError) > pid.m_fEpsilonInner && fabs(fError) < pid.m_fEpsilonOuter)
 		pid.m_fSigma += fError * fDeltaTime;
 
-	if (fabs (fError) > pid.m_fEpsilonOuter)
+	if (fabs(fError) > pid.m_fEpsilonOuter)
 		pid.m_fSigma = 0;
 
-	float fOutput = fError * pid.m_fKP + 
-                    pid.m_fSigma * pid.m_fKI - 
-                    fDeltaPV * pid.m_fKD;
+	float fOutput = fError * pid.m_fKP +
+                  pid.m_fSigma * pid.m_fKI -
+                  fDeltaPV * pid.m_fKD;
 
-	return abs(fOutput) > 127 ? 127 * fOutput/abs(fOutput) : fOutput;
+	return abs(fOutput) > 127 ? 127 * sgn(fOutput) : fOutput;
 }
+
+
+#endif

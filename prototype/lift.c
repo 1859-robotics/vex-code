@@ -1,13 +1,12 @@
 #ifndef _PROTOTYPE_LIFT_
 #define _PROTOTYPE_LIFT_
 
-#define FLIP_LIFT_AMT 450
 
 typedef struct {
 
   bool canMove;
 
-  int flipDir;
+  int flipAmt;
   int coreAmt;
   int clawAmt;
 
@@ -25,27 +24,26 @@ Lift lift;
 // affects:  the pointed variable
 void liftInit() {
 
-  lift.flipDir = 0;
   lift.canMove = true;
 
-  SmartMotorLinkMotors(L_CORE_LIFT, R_CORE_LIFT);
+  SmartMotorLinkMotors(B_CORE_LIFT, T_CORE_LIFT);
 
 }
 
-// requires: pointer to lift variable
+// requires: null
 // modifies: null
 // affects:  lets operator control the lift
 void OPLift() {
 
-  SetMotor(L_CORE_LIFT,
+  SetMotor(B_CORE_LIFT,
             CORE_LIFT_UP ? 127 : CORE_LIFT_DOWN ? -127 : 0);
 
-  SetMotor(R_CORE_LIFT,
+  SetMotor(T_CORE_LIFT,
             CORE_LIFT_UP ? 127 : CORE_LIFT_DOWN ? -127 : 0);
 
 
   SetMotor(FLIP_LIFT,
-            FLIP_LIFT_UP ? 127 : FLIP_LIFT_DOWN ? -127 : 0);
+            FLIP_LIFT_UP ? 80 : FLIP_LIFT_DOWN ? -80 : 0);
 
 
   SetMotor(LIFT_CLAW,
@@ -58,7 +56,7 @@ task flip_() {
 
   SetMotor(FLIP_LIFT, 127 * lift.flipSpd);
 
-  while(FLIP_LIFT_AMT > fabs(EncoderGetValue(FLIP_LIFT))) {}
+  while(lift.flipAmt > fabs(EncoderGetValue(FLIP_LIFT))) {}
 
   SetMotor(FLIP_LIFT, 0);
 
@@ -72,7 +70,7 @@ task flip_() {
   stopTask(flip_);
 }
 
-void flip(int flipSpd, bool waitForEnd) {
+void flip(int flipSpd,  bool waitForEnd) {
 
   while(!lift.canMove){}
 
@@ -114,20 +112,20 @@ void claw(int amt, bool waitForEnd) {
 }
 
 task core_() {
-  SetMotor(L_CORE_LIFT, 127 * (sgn(lift.coreAmt)));
-  SetMotor(R_CORE_LIFT, 127 * (sgn(lift.coreAmt)));
+  SetMotor(B_CORE_LIFT, 127 * (sgn(lift.coreAmt)));
+  SetMotor(T_CORE_LIFT, 127 * (sgn(lift.coreAmt)));
 
-  while(fabs(lift.coreAmt) > fabs(EncoderGetValue(L_CORE_LIFT))) {}
+  while(fabs(lift.coreAmt) > fabs(EncoderGetValue(B_CORE_LIFT))) {}
 
-  SetMotor(L_CORE_LIFT, 0);
-  SetMotor(R_CORE_LIFT, 0);
+  SetMotor(B_CORE_LIFT, 0);
+  SetMotor(T_CORE_LIFT, 0);
 
 
   lift.canMove = true;
   lift.coreAmt = 0;
 
 
-  EncoderSetValue(L_CORE_LIFT, 0);
+  EncoderSetValue(B_CORE_LIFT, 0);
 
   stopTask(core_);
 }

@@ -8,10 +8,10 @@ void resetEncoders() {
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
 
-  EncoderSetValue(R_MANIPULATOR, 0);
+  EncoderSetValue(MANIPULATOR, 0);
 
   EncoderSetValue(FLIP_LIFT, 0);
-  EncoderSetValue(L_CORE_LIFT, 0);
+  EncoderSetValue(B_CORE_LIFT, 0);
   EncoderSetValue(LIFT_CLAW, 0);
 
 }
