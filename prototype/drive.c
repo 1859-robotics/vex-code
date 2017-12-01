@@ -59,17 +59,15 @@ void OPDrive() {
   driveR(TANK_CONTORL_RIGHT);
 }
 
-<<<<<<< HEAD
 task moveCenter_() {
   EncoderSetValue(LF_DRIVE, 0);
   EncoderSetValue(RF_DRIVE, 0);
+}
 
-=======
 // requires: task
 // modifies: 0's drive encoders
 // affects:  moves forward by amount specified in drive
 task moveForward_() {
->>>>>>> 303fa2d5b97817a8f70cc65b93e6970eba612e3d
   DriveF(drive.spd);
 
   // while the encoder values are not the requseted value
