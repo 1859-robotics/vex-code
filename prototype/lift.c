@@ -56,7 +56,7 @@ task flip_() {
 
   SetMotor(FLIP_LIFT, 127 * lift.flipSpd);
 
-  while(fabs(lift.flipAmt) > fabs(EncoderGetValue(lift.flipAmt))) {}
+  while(fabs(lift.flipAmt) > fabs(EncoderGetValue(FLIP_LIFT))) {}
 
   SetMotor(FLIP_LIFT, 0);
 
