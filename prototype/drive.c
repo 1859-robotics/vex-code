@@ -15,8 +15,10 @@ Drive drive;
 // affects:  smart motor readout
 void driveInit() {
 
-  SmartMotorLinkMotors(LF_DRIVE, LB_DRIVE);
-  SmartMotorLinkMotors(RF_DRIVE, RB_DRIVE);
+  SmartMotorLinkMotors(LB_DRIVE, LF_DRIVE);
+  SmartMotorLinkMotors(RB_DRIVE, RF_DRIVE);
+
+  SmartMotorsAddPowerExtender(LF_DRIVE, RF_DRIVE, LB_DRIVE)
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -59,26 +61,24 @@ void OPDrive() {
   driveR(TANK_CONTORL_RIGHT);
 }
 
-task moveCenter_() {
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
-}
-
 // requires: task
 // modifies: 0's drive encoders
 // affects:  moves forward by amount specified in drive
-task moveForward_() {
+task moveCenter_() {
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
+
   DriveF(drive.spd);
 
   // while the encoder values are not the requseted value
-  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
-        fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LB_DRIVE)) ||
+        fabs(drive.goToNum) > fabs(EncoderGetValue(RB_DRIVE))) {}
 
   DriveF(0); // equivilant to stoping all drive motors
 
   // reset encoders
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   // reset drive values
   drive.canMove = true;
@@ -88,20 +88,21 @@ task moveForward_() {
 
   stopTask(moveCenter_);
 
-
 }
 
+
+
 task moveLeftEncoder_() {
-  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
 
   driveL(drive.spd);
 
-  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE))) {}
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LB_DRIVE))) {}
 
   driveL(0);
 
 
-  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -112,16 +113,16 @@ task moveLeftEncoder_() {
 }
 
 task moveRightEncoder_() {
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   driveR(drive.spd);
 
-  while(fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(RB_DRIVE))) {}
 
   driveR(0);
 
 
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -134,7 +135,7 @@ task moveRightEncoder_() {
 }
 
 task moveLeftGyro_() {
-  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
 
   float prevGyro = SensorValue[GYRO_PORT];
 
@@ -145,7 +146,7 @@ task moveLeftGyro_() {
   driveL(0);
 
 
-  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -155,7 +156,7 @@ task moveLeftGyro_() {
 }
 
 task moveRightGyro_() {
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   float prevGyro = SensorValue[GYRO_PORT];
 
@@ -166,7 +167,7 @@ task moveRightGyro_() {
   driveR(0);
 
 
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -179,21 +180,21 @@ task moveRightGyro_() {
 
 
 task turn_() {
-
+  writeDebugStream("hi from turns");
   // store previos gyro for locally zeroing value
   float prevGyro = SensorValue[GYRO_PORT];
 
 
-  driveL( fabs(drive.spd) * (sgn(drive.spd)));
-  driveR(-fabs(drive.spd) * (sgn(drive.spd)));
+  driveL(-fabs(drive.spd) * (sgn(drive.spd)));
+  driveR( fabs(drive.spd) * (sgn(drive.spd)));
 
 
-  while(fabs(prevGyro - SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
+  while(fabs(prevGyro - SensorValue[GYRO_PORT]) / 10 < fabs(drive.goToNum)) {}
 
   DriveF(0);
 
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;

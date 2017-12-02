@@ -1,7 +1,7 @@
 #ifndef _PROTOTYPE_MANIPULATOR_
 #define _PROTOTYPE_MANIPULATOR_
 
-#define MANIPULATOR_DIST 400
+#define MANIPULATOR_DIST 1000
 
 
 
@@ -14,7 +14,7 @@ typedef struct {
 
 Manipulator manipulator;
 
-// requires: pointer to manipulator variable
+// requires: null
 // modifies: gives manipulator appropriate default values
 // affects:  the pointed variable
 void maniplulatorInit() {
