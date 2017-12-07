@@ -36,9 +36,11 @@
 
 
 #include "./prototype/util.c"
+#include "./prototype/joystick_defines.c"
 
 // external file includes
-#include "./prototype/joystick_defines.c"
+#include "./prototype/gyro.c"
+#include "./prototype/pid.c"
 #include "./prototype/drive.c"
 #include "./prototype/lift.c"
 #include "./prototype/manipulator.c"
@@ -75,7 +77,7 @@ void pre_auton() {
   waitForPress();
   waitForRelease();
 
-  gyroZero();
+  gyroCalibrate(drive.gyro);
 
 
  bStopTasksBetweenModes = true;

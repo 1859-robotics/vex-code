@@ -18,7 +18,9 @@ typedef struct{
 
 } PID;
 
-void pidInit (PID pid, float fKP, float fKI, float fKD, float fEpsilonInner, float fEpsilonOuter) {
+
+void pidInit (PID pid, float fKP, float fKI, float fKD,
+              float fEpsilonInner, float fEpsilonOuter) {
 	pid.m_fKP = fKP;
 	pid.m_fKI = fKI;
 	pid.m_fKD = fKD;
@@ -28,7 +30,8 @@ void pidInit (PID pid, float fKP, float fKI, float fKD, float fEpsilonInner, flo
 	pid.m_fLastValue = 0;
 	pid.m_uliLastTime = nPgmTime;
 }
-#endif
+
+
 
 float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
 	float fDeltaTime = (float)(nPgmTime - pid.m_uliLastTime) / 1000.0;
@@ -55,3 +58,5 @@ float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
 
 	return abs(fOutput) > 127 ? 127 * fOutput/abs(fOutput) : fOutput;
 }
+
+#endif

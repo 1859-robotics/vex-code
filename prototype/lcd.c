@@ -95,12 +95,12 @@ void selectAuton() {
 
     if(nLCDButtons == LEFT_BUTTON) {
       waitForRelease();
-      lcd.active = lcd.active == 0 ? AUTON_NUMBER - 1 : lcd.active -= 1;
+      lcd.active = lcd.active == 0 ? AUTON_NUMBER - 1 : lcd.active - 1;
       // wraps around if the active is 0
 
     } else if(nLCDButtons == RIGHT_BUTTON) {
       waitForRelease();
-      lcd.active = lcd.active == AUTON_NUMBER - 1 ? 0 : lcd.active += 1;
+      lcd.active = lcd.active == AUTON_NUMBER - 1 ? 0 : lcd.active + 1;
       // wraps to prevent bad index of array
     }
   }

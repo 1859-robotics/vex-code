@@ -51,7 +51,7 @@ void skills() {
   moveCenter(100, -40, true);
   moveCenter(800, -80, true); //bot hits the wall
   moveLeftEncoder(200, -80, true);
-  gyroZero();
+  gyroCalibrate(drive.gyro);
 
   moveCenter(250, 80, true);
 

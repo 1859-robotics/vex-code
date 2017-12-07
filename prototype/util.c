@@ -20,13 +20,5 @@ void EncoderSetValue(tMotor index, float value) {
   nMotorEncoderOffsets[index] = nMotorEncoder[index] - value;
 }
 
-void gyroZero() {
-  SensorType[GYRO_PORT] = sensorNone;
-  wait1Msec(1000);
-
-  SensorType[GYRO_PORT] = sensorGyro;
-  wait1Msec(2000);
-}
-
 
 #endif

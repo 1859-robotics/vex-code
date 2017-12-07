@@ -6,6 +6,10 @@ typedef struct {
 
   int goToNum;
   int spd;
+
+  PID gyroPID;
+  Gyro gyro;
+
 } Drive;
 
 Drive drive;
@@ -21,6 +25,8 @@ void driveInit() {
   drive.canMove = true;
   drive.goToNum = 0;
   drive.spd = 0;
+
+  gyroInit(drive.gyro, GYRO_PORT);
 
 }
 
@@ -174,26 +180,45 @@ task moveRightGyro_() {
 
 
 task turn_() {
+  if(abs(drive.goToNum) < 40)
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
 
-  // store previos gyro for locally zeroing value
-  float prevGyro = SensorValue[GYRO_PORT];
+  bool atGyro = false;
+	long targetTime = nPgmTime;
+	long timer = nPgmTime;
+	float gyroAngle = 0;
 
+	while(!atGyro){
+		//Calculate the delta time from the last iteration of the loop
+		float fDeltaTime = (float)(nPgmTime - timer)/1000.0;
+		//Reset loop timer
+		timer = nPgmTime;
 
-  driveL( fabs(drive.spd) * (sgn(drive.spd)));
-  driveR(-fabs(drive.spd) * (sgn(drive.spd)));
+		gyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
 
+		//Calculate the output of the PID controller and output to drive motors
+		float driveOut = pidCalculate(drive.gyroPID, drive.goToNum, gyroAngle);
+		driveL(-driveOut);
+		driveR(driveOut);
 
-  while(fabs(prevGyro - SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
+		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
+		if(abs(drive.goToNum - gyroAngle) > 3)
+			targetTime = nPgmTime;
+		if(nPgmTime - targetTime > 350){
+			atGyro = true;
+			driveL(0);
+			driveR(0);
+		}
+	}
 
-  DriveF(0);
-
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
+	//Reinitialize the PID constants to their original values in case they were changed
+	pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
 
   drive.canMove = true;
   drive.goToNum = 0;
 
   stopTask(turn_);
+
 }
 
 
