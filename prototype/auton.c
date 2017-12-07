@@ -5,18 +5,17 @@
 // modifies: null
 // affects:  all encoders are set to 0 for accurate readout
 void resetEncoders() {
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
-  EncoderSetValue(R_MANIPULATOR, 0);
+  EncoderSetValue(MANIPULATOR, 0);
 
   EncoderSetValue(FLIP_LIFT, 0);
-  EncoderSetValue(L_CORE_LIFT, 0);
+  EncoderSetValue(B_CORE_LIFT, 0);
   EncoderSetValue(LIFT_CLAW, 0);
 
 }
 
-void skills() {
 
   resetEncoders();
 
@@ -118,95 +117,79 @@ void auton7ptRight() {
 
   resetEncoders();
 
-  core(300, false);
+  core(200, true);
   manipulate(1, false);
+  // moveLeftGyro(50, 40, true);
 
-  moveLeftGyro(35, 40, true);
-
-  moveCenter(1500, 80, true);
-
-
-  manipulate(-1, true);
-  flip(-1, true);
-  claw(-120, true);
-  flip(1, true);
-  claw(80, false);
+  moveCenter(50, 80, true)
+  turn(45, -40, true);
+  moveCenter(1400, 127, true);
 
 
-  moveCenter(1700, -80, true);
+  manipulate(-1, true); // pick up mobile base
+  core(-100, true);
+  claw(-80, true); // put cone on base
 
-  turn(170, 40, true);
+  // core(100, true);
+  // flip(300, 1, true);
+  // core(-100, true);
+  // claw(80, true);
+  // core(100, true);
+  // flip(300, -1, true);
+  // core(-100, true);
+  // claw(-80, false); // put cone on base
+
+  moveCenter(900, -80, true);
+
+  turn(250, 80, true);
+
+  core(200, true);
 
   manipulate(1, true);
-  moveCenter(410, -60, true); //pull out of scoring zone
-  manipulate(-1, true);
-}
 
-void auton22ptLeft() {
+  moveCenter(250, -80, false);
 
-  resetEncoders();
-
-  writeDebugStream("hi");
-
-  core(300, false);
-  manipulate(1, false);
-  writeDebugStream("hi");
-
-  moveLeftGyro(35, -40, true);
-  writeDebugStream("hi");
-
-  moveCenter(1500, 80, true);
-
-
-  manipulate(-1, true);
-  flip(-1, true);
-  claw(-120, true);
-  flip(1, true);
-  claw(80, false);
-
-
-  moveCenter(1650, -80, true);
-
-  turn(135, 40, true);
-
-  moveCenter(300, 40, true);
-
-  turn(90, 40, true);
-
-  moveCenter(700, 80, true);
-  manipulate(1, true);
-  moveCenter(410, -60, true); //pull out of scoring zone
-  manipulate(-1, true);
-
+  manipulate(-1, false);
 
 }
 
 void auton7ptLeft() {
 
-  resetEncoders();
+    resetEncoders();
+
+    core(200, true);
+    manipulate(1, false);
+    // moveLeftGyro(50, 40, true);
+
+    moveCenter(50, 80, true)
+    turn(45, 40, true);
+    moveCenter(1400, 127, true);
 
 
-  core(300, false);
-  manipulate(1, false);
-  moveCenter(1500, 80, true);
+    manipulate(-1, true); // pick up mobile base
+    core(-100, true);
+    claw(-80, true); // put cone on base
 
-  manipulate(-1, true);
-  flip(-1, true);
-  claw(-120, true);
-  flip(1, true);
-  claw(80, false);
+    // core(100, true);
+    // flip(300, 1, true);
+    // core(-100, true);
+    // claw(80, true);
+    // core(100, true);
+    // flip(300, -1, true);
+    // core(-100, true);
+    // claw(-80, false); // put cone on base
 
-  moveCenter(1300, -80, true);
+    moveCenter(900, -80, true);
 
-  turn(-300, 80, true);
+    turn(180, -80, true);
 
+    core(200, true);
 
-  manipulate(1, true);
+    manipulate(1, true);
 
-  moveCenter(300, -80, false);
+    moveCenter(250, -80, false);
 
-  manipulate(-1, false);
-
+    manipulate(-1, false);
 }
 
 

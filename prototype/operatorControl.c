@@ -3,7 +3,8 @@
 
 #define WAIT_TIME 20
 
-// each one of these allows the user to control a particular part of the bot
+// each of these allows the user to control a particular part of the bot
+// seperated into tasks for preformance and asynchrony
 
 task taskOPCdrive() {
   while(true) {
