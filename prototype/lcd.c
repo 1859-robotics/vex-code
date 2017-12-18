@@ -8,13 +8,11 @@
 #define RIGHT_BUTTON 4
 
 // the number of auton programs the lcd should run through
-#define AUTON_NUMBER 5
+#define AUTON_NUMBER 2
 
 
 // the names of the auton programs
-const string LCD_STRINGS[AUTON_NUMBER] = { "RIGHT 22", "LEFT 22",
-                                           "RIGHT 7",  "LEFT 7", "SKILLS"
-                                         };
+const string LCD_STRINGS[AUTON_NUMBER] = { "RIGHT 7",  "LEFT 7"};
 
 
 
@@ -94,12 +92,12 @@ void selectAuton() {
 
     if(nLCDButtons == LEFT_BUTTON) {
       waitForRelease();
-      lcd.active = lcd.active == 0 ? AUTON_NUMBER - 1 : lcd.active -= 1;
+      lcd.active = lcd.active == 0 ? AUTON_NUMBER - 1 : lcd.active - 1;
       // wraps around if the active is 0
 
     } else if(nLCDButtons == RIGHT_BUTTON) {
       waitForRelease();
-      lcd.active = lcd.active == AUTON_NUMBER - 1 ? 0 : lcd.active += 1;
+      lcd.active = lcd.active == AUTON_NUMBER - 1 ? 0 : lcd.active + 1;
       // wraps to prevent bad index of array
     }
   }

@@ -47,7 +47,7 @@ void gyroCalibrate(Gyro gyro) {
   gyro.m_config.m_fStdDev = fStdDev;
 
 
-  gyro.m_config.m_fVoltsPerDPS = (0.0011/1.71625741) * (fRawAverage * 5 / 4095);
+  gyro.m_config.m_fVoltsPerDPS = (0.0011 / 1.71625741) * (fRawAverage * 5 / 4095);
 }
 
 void gyroInit(Gyro gyro, int iPortNum) {

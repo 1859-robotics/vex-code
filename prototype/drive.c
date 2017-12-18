@@ -24,9 +24,13 @@ void driveInit() {
   SmartMotorLinkMotors(LF_DRIVE, LB_DRIVE);
   SmartMotorLinkMotors(RF_DRIVE, RB_DRIVE);
   gyroInit(drive.gyro, GYRO_PORT);
+  SmartMotorsAddPowerExtender(LF_DRIVE, RF_DRIVE, LB_DRIVE, RB_DRIVE)
+
   drive.canMove = true;
   drive.goToNum = 0;
   drive.spd = 0;
+
+  gyroInit(drive.gyro, GYRO_PORT);
 
 }
 
@@ -65,21 +69,24 @@ void OPDrive() {
   driveR(TANK_CONTORL_RIGHT);
 }
 
+// requires: task
+// modifies: 0's drive encoders
+// affects:  moves forward by amount specified in drive
 task moveCenter_() {
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   DriveF(drive.spd);
 
   // while the encoder values are not the requseted value
-  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE)) ||
-        fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LB_DRIVE)) ||
+        fabs(drive.goToNum) > fabs(EncoderGetValue(RB_DRIVE))) {}
 
   DriveF(0); // equivilant to stoping all drive motors
 
   // reset encoders
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   // reset drive values
   drive.canMove = true;
@@ -89,20 +96,21 @@ task moveCenter_() {
 
   stopTask(moveCenter_);
 
-
 }
 
+
+
 task moveLeftEncoder_() {
-  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
 
   driveL(drive.spd);
 
-  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LF_DRIVE))) {}
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LB_DRIVE))) {}
 
   driveL(0);
 
 
-  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -113,16 +121,16 @@ task moveLeftEncoder_() {
 }
 
 task moveRightEncoder_() {
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   driveR(drive.spd);
 
-  while(fabs(drive.goToNum) > fabs(EncoderGetValue(RF_DRIVE))) {}
+  while(fabs(drive.goToNum) > fabs(EncoderGetValue(RB_DRIVE))) {}
 
   driveR(0);
 
 
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -135,7 +143,7 @@ task moveRightEncoder_() {
 }
 
 task moveLeftGyro_() {
-  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
 
   float prevGyro = SensorValue[GYRO_PORT];
 
@@ -146,7 +154,7 @@ task moveLeftGyro_() {
   driveL(0);
 
 
-  EncoderSetValue(LF_DRIVE, 0);
+  EncoderSetValue(LB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -156,7 +164,7 @@ task moveLeftGyro_() {
 }
 
 task moveRightGyro_() {
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   float prevGyro = SensorValue[GYRO_PORT];
 
@@ -167,7 +175,7 @@ task moveRightGyro_() {
   driveR(0);
 
 
-  EncoderSetValue(RF_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -180,26 +188,45 @@ task moveRightGyro_() {
 
 
 task turn_() {
+  if(abs(drive.goToNum) < 40)
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
 
-  // store previos gyro for locally zeroing value
-  float prevGyro = SensorValue[GYRO_PORT];
+  bool atGyro = false;
+	long targetTime = nPgmTime;
+	long timer = nPgmTime;
+	float gyroAngle = 0;
 
+	while(!atGyro){
+		//Calculate the delta time from the last iteration of the loop
+		float fDeltaTime = (float)(nPgmTime - timer)/1000.0;
+		//Reset loop timer
+		timer = nPgmTime;
 
-  driveL( fabs(drive.spd) * (sgn(drive.spd)));
-  driveR(-fabs(drive.spd) * (sgn(drive.spd)));
+		gyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
 
+		//Calculate the output of the PID controller and output to drive motors
+		float driveOut = pidCalculate(drive.gyroPID, drive.goToNum, gyroAngle);
+		driveL(-driveOut);
+		driveR(driveOut);
 
-  while(fabs(prevGyro - SensorValue[GYRO_PORT]) / 10 < drive.goToNum) {}
+		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
+		if(abs(drive.goToNum - gyroAngle) > 3)
+			targetTime = nPgmTime;
+		if(nPgmTime - targetTime > 350){
+			atGyro = true;
+			driveL(0);
+			driveR(0);
+		}
+	}
 
-  DriveF(0);
-
-  EncoderSetValue(LF_DRIVE, 0);
-  EncoderSetValue(RF_DRIVE, 0);
+	//Reinitialize the PID constants to their original values in case they were changed
+	pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
 
   drive.canMove = true;
   drive.goToNum = 0;
 
   stopTask(turn_);
+
 }
 
 

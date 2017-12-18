@@ -19,7 +19,7 @@ typedef struct {
 Lift lift;
 
 
-// requires: pointer to lift variable
+// requires: null
 // modifies: gives lift appropriate default values
 // affects:  the pointed variable
 void liftInit() {
@@ -56,7 +56,7 @@ task flip_() {
 
   SetMotor(FLIP_LIFT, 127 * lift.flipSpd);
 
-  while(lift.flipAmt > fabs(EncoderGetValue(FLIP_LIFT))) {}
+  while(fabs(lift.flipAmt) > fabs(EncoderGetValue(FLIP_LIFT))) {}
 
   SetMotor(FLIP_LIFT, 0);
 
@@ -70,12 +70,13 @@ task flip_() {
   stopTask(flip_);
 }
 
-void flip(int flipSpd,  bool waitForEnd) {
+void flip(int flipAmt, int flipSpd, bool waitForEnd) {
 
   while(!lift.canMove){}
 
   lift.canMove = false;
   lift.flipSpd = flipSpd;
+  lift.flipAmt = flipAmt;
 
   startTask(flip_);
 
@@ -112,6 +113,8 @@ void claw(int amt, bool waitForEnd) {
 }
 
 task core_() {
+  EncoderSetValue(B_CORE_LIFT, 0);
+
   SetMotor(B_CORE_LIFT, 127 * (sgn(lift.coreAmt)));
   SetMotor(T_CORE_LIFT, 127 * (sgn(lift.coreAmt)));
 
@@ -138,7 +141,7 @@ void core(int amt, bool waitForEnd) {
 
   startTask(core_);
 
-  while(waitForEnd && !lift.canMove){writeDebugStream("while");};
+  while(waitForEnd && !lift.canMove){};
 
 
 }
