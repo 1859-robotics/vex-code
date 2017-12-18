@@ -64,7 +64,9 @@ float gyroGetRate(Gyro gyro) {
 	//Difference fro zero-rate value, in volts
 	float fGyroVoltage = fGyroDiff * 5 / 4095;
 
+
 	if(fabs(fGyroDiff) > GYRO_STD_DEVS * gyro.m_config.m_fStdDev) {
+    writeDebugStream("%f%s%f%s%f%s%f\n", fGyroRead, "|", fGyroDiff, "|", fGyroVoltage, "|", fGyroVoltage / gyro.m_config.m_fVoltsPerDPS);
 		return fGyroVoltage / gyro.m_config.m_fVoltsPerDPS;
   }
 	return 0;

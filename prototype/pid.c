@@ -1,6 +1,12 @@
 #ifndef _PROTOTYPE_PID_
 #define _PROTOTYPE_PID_
 
+#define MAX_SPEED 127
+#define MIN_SPEED 40
+
+
+
+
 typedef struct{
 
   float m_fKP;
@@ -50,7 +56,8 @@ float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
                   pid.m_fSigma * pid.m_fKI -
                   fDeltaPV * pid.m_fKD;
 
-	return abs(fOutput) > 127 ? 127 * sgn(fOutput) : fOutput;
+	return abs(fOutput) > MAX_SPEED ? MAX_SPEED * sgn(fOutput) :
+         abs(fOutput) < MIN_SPEED ? MIN_SPEED * sgn(fOutput) : fOutput;
 }
 
 

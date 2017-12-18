@@ -84,7 +84,6 @@ void lcdInit() {
 
 
 void selectAuton() {
-
   while(nLCDButtons != CENTER_BUTTON) {
     // continue until the user selects the auton
 
@@ -124,16 +123,16 @@ void runAuton() {
     auton22ptRight();
   } else if(panes[lcd.active].data == 1) {
     displayLCDCenteredString(0, "left 22");
-    auton22ptLeft();
+    // auton22ptLeft();
   } else if(panes[lcd.active].data == 2) {
     displayLCDCenteredString(0, "right 7");
-    auton7ptRight();
+    // auton7ptRight();
   } else if(panes[lcd.active].data == 3) {
     displayLCDCenteredString(0, "left 7");
-    auton7ptLeft();
+    // auton7ptLeft();
   } else if(panes[lcd.active].data == 4) {
     displayLCDCenteredString(0, "skills");
-    skills();
+    // skills();
   } else {
     displayLCDCenteredString(0, "somehting's screwy");
 

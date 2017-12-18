@@ -1,11 +1,17 @@
 #ifndef _PROTOTYPE_DRIVE_
 #define _PROTOTYPE_DRIVE_
 
+#define PID_TOLERANCE 3
+
+
 typedef struct {
   bool canMove;
 
   int goToNum;
   int spd;
+  int gyroAngle;
+  Gyro gyro;
+  PID gyroPID;
 } Drive;
 
 Drive drive;
@@ -17,7 +23,7 @@ void driveInit() {
 
   SmartMotorLinkMotors(LF_DRIVE, LB_DRIVE);
   SmartMotorLinkMotors(RF_DRIVE, RB_DRIVE);
-
+  gyroInit(drive.gyro, GYRO_PORT);
   drive.canMove = true;
   drive.goToNum = 0;
   drive.spd = 0;
@@ -209,7 +215,7 @@ void moveCenter(int amt, int spd, bool waitForEnd) {
   while(waitForEnd && !drive.canMove){};
 }
 
-void moveLeftEncoder(int amt, int spd, bool waitForEnd) {
+void swerveLeftEncoder(int amt, int spd, bool waitForEnd) {
   while(!drive.canMove){};
 
   drive.canMove = false;
@@ -221,7 +227,7 @@ void moveLeftEncoder(int amt, int spd, bool waitForEnd) {
   while(waitForEnd && !drive.canMove){};
 }
 
-void moveRightEncoder(int amt, int spd, bool waitForEnd) {
+void swerveRightEncoder(int amt, int spd, bool waitForEnd) {
   while(!drive.canMove){};
 
   drive.canMove = false;
@@ -233,40 +239,160 @@ void moveRightEncoder(int amt, int spd, bool waitForEnd) {
   while(waitForEnd && !drive.canMove){};
 }
 
-void moveRightGyro(int amt, int spd, bool waitForEnd) {
-  while(!drive.canMove){};
 
-  drive.canMove = false;
-  drive.goToNum = amt;
-  drive.spd = spd;
 
-  startTask(moveRightGyro_);
+task taskDriveGyroHold () {
+	long lastTime = nPgmTime;
 
-  while(waitForEnd && !drive.canMove){};
+	while (true) {
+		float dT = (nPgmTime - lastTime) / 1000.0;
+		lastTime = nPgmTime;
+		drive.gyroAngle += gyroGetRate(drive.gyro) * dT;
+
+		int out = pidCalculate(drive.gyroPID, drive.goToNum, drive.gyroAngle);
+
+		driveL (-out);
+		driveR (out);
+	}
 }
 
-void moveLeftGyro(int amt, int spd, bool waitForEnd) {
-  while(!drive.canMove){};
+void driveGyroHold (float setPoint) {
+	drive.goToNum = setPoint;
 
-  drive.canMove = false;
-  drive.goToNum = amt;
-  drive.spd = spd;
+  driveL(0);
+  driveR(0);
 
-  startTask(moveLeftGyro_);
+	drive.gyroAngle = 0;
 
-  while(waitForEnd && !drive.canMove){};
+	startTask (taskDriveGyroHold);
 }
 
-void turn(int amt, int spd, bool waitForEnd) {
-  while(!drive.canMove){};
 
-  drive.canMove = false;
-  drive.goToNum = amt;
-  drive.spd = spd;
 
-  startTask(turn_);
+void swerveRightGyro(float fTarget) {
+  if(abs(fTarget) < 50)
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
+  else
+    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
 
-  while(waitForEnd && !drive.canMove){};
+	bool bAtGyro = false;
+	long liAtTargetTime = nPgmTime;
+	long liTimer = nPgmTime;
+	float fGyroAngle = 0;
+  float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
+
+	while(!bAtGyro) {
+		//Calculate the delta time from the last iteration of the loop
+		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
+		//Reset loop timer
+		liTimer = nPgmTime;
+
+		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
+    fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
+
+		//Calculate the output of the PID controller and output to drive motors
+		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
+		driveR(driveOut);
+
+		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
+		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
+			liAtTargetTime = nPgmTime;
+		if(nPgmTime - liAtTargetTime > 350) {
+			bAtGyro = true;
+			driveR(0);
+		}
+  }
 }
+
+
+void swerveLeftGyro(float fTarget) {
+  if(abs(fTarget) < 40)
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
+  else
+    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
+
+	bool bAtGyro = false;
+	long liAtTargetTime = nPgmTime;
+	long liTimer = nPgmTime;
+	float fGyroAngle = 0;
+  float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
+	while(!bAtGyro) {
+		//Calculate the delta time from the last iteration of the loop
+		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
+		//Reset loop timer
+		liTimer = nPgmTime;
+
+		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
+    fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
+
+		//Calculate the output of the PID controller and output to drive motors
+		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
+		driveL(driveOut);
+
+		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
+		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
+			liAtTargetTime = nPgmTime;
+		if(nPgmTime - liAtTargetTime > 350){
+			bAtGyro = true;
+			driveL(0);
+		}
+  }
+}
+
+
+void turn(float fTarget) {
+	if(abs(fTarget) < 40)
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
+  else
+    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
+
+	bool bAtGyro = false;
+	long liAtTargetTime = nPgmTime;
+	long liTimer = nPgmTime;
+	float fGyroAngle = 0;
+  float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
+	while(!bAtGyro) {
+		//Calculate the delta time from the last iteration of the loop
+		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
+		//Reset loop timer
+		liTimer = nPgmTime;
+
+		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
+    fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
+
+		//Calculate the output of the PID controller and output to drive motors
+		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
+		driveL(-driveOut);
+		driveR(driveOut);
+
+		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
+		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
+			liAtTargetTime = nPgmTime;
+		if(nPgmTime - liAtTargetTime > 350){
+			bAtGyro = true;
+			driveL(0);
+			driveR(0);
+		}
+	}
+
+	//Reinitialize the PID constants to their original values in case they were changed
+	pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
+}
+
+
+
+// void turn (float setPoint, float range) {
+// 	long atTime = nPgmTime;
+//
+// 	driveGyroHold (setPoint);
+//
+// 	while (true) {
+// 		if (fabs (setPoint - drive.gyroAngle) > range)
+// 			atTime = nPgmTime;
+// 		else if (nPgmTime - atTime > 200)
+// 			break;
+// 	}
+// 	stopTask (taskDriveGyroHold);
+// }
 
 #endif

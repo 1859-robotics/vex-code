@@ -1,7 +1,7 @@
 #ifndef _PROTOTYPE_UTIL_
 #define _PROTOTYPE_UTIL_
 
-#define sgn(in) in == 0 ? 0 : (in > 0 ? 1 : -1)
+#define sgn(in) (in == 0 ? 0 : (in > 0 ? 1 : -1))
 
 
 long nMotorEncoderOffsets[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

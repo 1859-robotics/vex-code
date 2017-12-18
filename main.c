@@ -34,14 +34,16 @@
 
 // external file includes
 #include "./prototype/joystick_defines.c"
+#include "./prototype/pid.c"
+#include "./prototype/gyro.c"
 #include "./prototype/drive.c"
 #include "./prototype/lift.c"
 #include "./prototype/manipulator.c"
 
-
 #include "./prototype/auton.c"
 #include "./prototype/lcd.c"
 #include "./prototype/operatorControl.c"
+
 
 
 
@@ -52,6 +54,7 @@ void pre_auton() {
   SmartMotorsInit();
 
   lcdInit();
+  gyroZero();
 
   driveInit();
   liftInit();
@@ -59,18 +62,11 @@ void pre_auton() {
 
   selectAuton();
 
-
-
-
   clearLCD();
 
   displayLCDCenteredString(0, "position bot");
   displayLCDCenteredString(1, "still");
 
-  waitForPress();
-  waitForRelease();
-
-  gyroZero();
 
 
  bStopTasksBetweenModes = true;

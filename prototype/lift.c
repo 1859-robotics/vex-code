@@ -36,18 +36,18 @@ void liftInit() {
 void OPLift() {
 
   SetMotor(B_CORE_LIFT,
-            CORE_LIFT_UP ? 127 : CORE_LIFT_DOWN ? -127 : 0);
+           CORE_LIFT_UP ? 127 : CORE_LIFT_DOWN ? -127 : 0);
 
   SetMotor(T_CORE_LIFT,
-            CORE_LIFT_UP ? 127 : CORE_LIFT_DOWN ? -127 : 0);
+           CORE_LIFT_UP ? 127 : CORE_LIFT_DOWN ? -127 : 0);
 
 
   SetMotor(FLIP_LIFT,
-            FLIP_LIFT_UP ? 80 : FLIP_LIFT_DOWN ? -80 : 0);
+           FLIP_LIFT_UP ? 127 : FLIP_LIFT_DOWN ? -127 : 0);
 
 
   SetMotor(LIFT_CLAW,
-            LIFT_CLAW_UP ? 127 : LIFT_CLAW_DOWN ? -127 : 0);
+           LIFT_CLAW_UP ? 60 : LIFT_CLAW_DOWN ? -60 : 0);
 
 }
 
@@ -84,7 +84,7 @@ void flip(int flipSpd,  bool waitForEnd) {
 
 
 task claw_() {
-  SetMotor(LIFT_CLAW, 127 * (sgn(lift.clawAmt)));
+  SetMotor(LIFT_CLAW, 60 * (sgn(lift.clawAmt)));
 
   while(fabs(lift.clawAmt) > fabs(EncoderGetValue(LIFT_CLAW))) {}
 
