@@ -65,6 +65,7 @@ float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
                   pid.m_fSigma * pid.m_fKI -
                   fDeltaPV * pid.m_fKD;
 
+
 	return abs(fOutput) > MAX_SPEED ? MAX_SPEED * sgn(fOutput) :
          abs(fOutput) < MIN_SPEED ? MIN_SPEED * sgn(fOutput) : fOutput;
 }

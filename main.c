@@ -59,6 +59,7 @@ void pre_auton() {
   // smart motor application
   // TODO: cut down smartmotorlib bulk. disallow 292, etc.
   SmartMotorsInit();
+  bStopTasksBetweenModes = true;
 
   lcdInit();
 
@@ -70,19 +71,12 @@ void pre_auton() {
 
   clearLCD();
 
-  displayLCDCenteredString(0, "position bot");
-  displayLCDCenteredString(1, "still");
+  // displayLCDCenteredString(0, "position bot");
+  // displayLCDCenteredString(1, "still");
 
-  waitForPress();
-  waitForRelease();
 
   gyroCalibrate(drive.gyro);
 
-
- bStopTasksBetweenModes = true;
-
-
-  selectAuton();
 }
 
 task autonomous() {

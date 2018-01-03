@@ -86,11 +86,18 @@ void resetEncoders() {
 
 void skills() {
   resetEncoders();
+  wait1Msec(3000)
   core(300, true);
   manipulate(1, false);
-  swerveRightGyro(45);
-  moveCenter(1400, 127, true);
-
+  swerveRightGyro(50);
+  moveCenter(960, 127, true);
+  manipulate(-1, true);
+  moveCenter(960, -100, true);
+  turn(155);
+  moveCenter(360, 127, true);
+  manipulate(1, true);
+  moveCenter(300, -127, true);
+  writeDebugStream("end skills\n")
 }
 
 // void auton7ptRight() {

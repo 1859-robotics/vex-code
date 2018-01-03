@@ -297,7 +297,7 @@ void driveGyroHold (float setPoint) {
 
 
 void swerveRightGyro(float fTarget) {
-  if(abs(fTarget) < 50)
+  if(abs(fTarget) < 40)
 		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
   else
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
@@ -343,6 +343,7 @@ void swerveLeftGyro(float fTarget) {
 	long liTimer = nPgmTime;
 	float fGyroAngle = 0;
   float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
+
 	while(!bAtGyro) {
 		//Calculate the delta time from the last iteration of the loop
 		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
@@ -359,7 +360,7 @@ void swerveLeftGyro(float fTarget) {
 		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
 		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
 			liAtTargetTime = nPgmTime;
-		if(nPgmTime - liAtTargetTime > 350){
+		if(nPgmTime - liAtTargetTime > 350) {
 			bAtGyro = true;
 			driveL(0);
 		}
@@ -408,18 +409,5 @@ void turn(float fTarget) {
 
 
 
-// void turn (float setPoint, float range) {
-// 	long atTime = nPgmTime;
-//
-// 	driveGyroHold (setPoint);
-//
-// 	while (true) {
-// 		if (fabs (setPoint - drive.gyroAngle) > range)
-// 			atTime = nPgmTime;
-// 		else if (nPgmTime - atTime > 200)
-// 			break;
-// 	}
-// 	stopTask (taskDriveGyroHold);
-// }
 
 #endif

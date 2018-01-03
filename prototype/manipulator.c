@@ -1,7 +1,7 @@
 #ifndef _PROTOTYPE_MANIPULATOR_
 #define _PROTOTYPE_MANIPULATOR_
 
-#define MANIPULATOR_DIST 1000
+#define MANIPULATOR_DIST 900
 
 
 
@@ -60,7 +60,9 @@ void manipulate(int dir, bool waitForEnd) {
 
   startTask(manipulate_);
 
-  while(waitForEnd && !manipulator.canMove){};
+  while(waitForEnd && !manipulator.canMove){
+    writeDebugStream("waiting\n")
+  };
 }
 
 
