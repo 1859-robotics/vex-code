@@ -84,7 +84,7 @@ void resetEncoders() {
 // }
 //
 
-void auton22ptRight() {
+void skills() {
   resetEncoders();
   core(300, true);
   manipulate(1, false);
@@ -93,97 +93,95 @@ void auton22ptRight() {
 
 }
 
-void auton7ptRight() {
-
-  resetEncoders();
-
-<<<<<<< HEAD
-}
-
-void auton22ptLeft() {
-
-  resetEncoders();
-
-=======
-  core(200, true);
-  manipulate(1, false);
-  // moveLeftGyro(50, 40, true);
-
-  moveCenter(50, 80, true)
-  turn(45, -40, true);
-  moveCenter(1400, 127, true);
-
-
-  manipulate(-1, true); // pick up mobile base
-  core(-100, true);
-  claw(-80, true); // put cone on base
-
-  // core(100, true);
-  // flip(300, 1, true);
-  // core(-100, true);
-  // claw(80, true);
-  // core(100, true);
-  // flip(300, -1, true);
-  // core(-100, true);
-  // claw(-80, false); // put cone on base
-
-  moveCenter(900, -80, true);
-
-  turn(250, 80, true);
-
-  core(200, true);
-
-  manipulate(1, true);
-
-  moveCenter(250, -80, false);
-
-  manipulate(-1, false);
->>>>>>> df9f98f4aba2f86939d2b472a41ce868f6c99326
-
-}
-
-void auton7ptLeft() {
-
-    resetEncoders();
-
-    core(200, true);
-    manipulate(1, false);
-    // moveLeftGyro(50, 40, true);
-
-<<<<<<< HEAD
-=======
-    moveCenter(50, 80, true)
-    turn(45, 40, true);
-    moveCenter(1400, 127, true);
-
-
-    manipulate(-1, true); // pick up mobile base
-    core(-100, true);
-    claw(-80, true); // put cone on base
-
-    // core(100, true);
-    // flip(300, 1, true);
-    // core(-100, true);
-    // claw(80, true);
-    // core(100, true);
-    // flip(300, -1, true);
-    // core(-100, true);
-    // claw(-80, false); // put cone on base
-
-    moveCenter(900, -80, true);
-
-    turn(180, -80, true);
-
-    core(200, true);
-
-    manipulate(1, true);
-
-    moveCenter(250, -80, false);
-
-    manipulate(-1, false);
->>>>>>> df9f98f4aba2f86939d2b472a41ce868f6c99326
-}
-
+// void auton7ptRight() {
+//
+//   resetEncoders();
+//
+// }
+//
+// void auton22ptLeft() {
+//
+//   resetEncoders();
+//
+//   core(200, true);
+//   manipulate(1, false);
+//   // moveLeftGyro(50, 40, true);
+//
+//   moveCenter(50, 80, true)
+//   turn(45, -40, true);
+//   moveCenter(1400, 127, true);
+//
+//
+//   manipulate(-1, true); // pick up mobile base
+//   core(-100, true);
+//   claw(-80, true); // put cone on base
+//
+//   // core(100, true);
+//   // flip(300, 1, true);
+//   // core(-100, true);
+//   // claw(80, true);
+//   // core(100, true);
+//   // flip(300, -1, true);
+//   // core(-100, true);
+//   // claw(-80, false); // put cone on base
+//
+//   moveCenter(900, -80, true);
+//
+//   turn(250, 80, true);
+//
+//   core(200, true);
+//
+//   manipulate(1, true);
+//
+//   moveCenter(250, -80, false);
+//
+//   manipulate(-1, false);
+// >>>>>>> df9f98f4aba2f86939d2b472a41ce868f6c99326
+//
+// }
+//
+// void auton7ptLeft() {
+//
+//     resetEncoders();
+//
+//     core(200, true);
+//     manipulate(1, false);
+//     // moveLeftGyro(50, 40, true);
+//
+// <<<<<<< HEAD
+// =======
+//     moveCenter(50, 80, true)
+//     turn(45, 40, true);
+//     moveCenter(1400, 127, true);
+//
+//
+//     manipulate(-1, true); // pick up mobile base
+//     core(-100, true);
+//     claw(-80, true); // put cone on base
+//
+//     // core(100, true);
+//     // flip(300, 1, true);
+//     // core(-100, true);
+//     // claw(80, true);
+//     // core(100, true);
+//     // flip(300, -1, true);
+//     // core(-100, true);
+//     // claw(-80, false); // put cone on base
+//
+//     moveCenter(900, -80, true);
+//
+//     turn(180, -80, true);
+//
+//     core(200, true);
+//
+//     manipulate(1, true);
+//
+//     moveCenter(250, -80, false);
+//
+//     manipulate(-1, false);
+// >>>>>>> df9f98f4aba2f86939d2b472a41ce868f6c99326
+// }
+//
 
 
 

@@ -12,7 +12,7 @@
 
 
 // the names of the auton programs
-const string LCD_STRINGS[AUTON_NUMBER] = { "RIGHT 7",  "LEFT 7"};
+const string LCD_STRINGS[AUTON_NUMBER] = { "SKILLS",  "LEFT 7"};
 
 
 
@@ -115,22 +115,18 @@ void runAuton() {
 
   // unfortunately robotC does not allow function pointers
   // so we are left with this mess
-
+  displayLCDCenteredString(0, panes[lcd.active].lines[0])
   if(panes[lcd.active].data == 0) {
-    displayLCDCenteredString(0, "right 22");
-    auton22ptRight();
+    skills();
+
+    // auton22ptRight();
   } else if(panes[lcd.active].data == 1) {
-    displayLCDCenteredString(0, "left 22");
     // auton22ptLeft();
   } else if(panes[lcd.active].data == 2) {
-    displayLCDCenteredString(0, "right 7");
     // auton7ptRight();
   } else if(panes[lcd.active].data == 3) {
-    displayLCDCenteredString(0, "left 7");
     // auton7ptLeft();
   } else if(panes[lcd.active].data == 4) {
-    displayLCDCenteredString(0, "skills");
-    // skills();
   } else {
     displayLCDCenteredString(0, "somehting's screwy");
 

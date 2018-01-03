@@ -61,7 +61,6 @@ void pre_auton() {
   SmartMotorsInit();
 
   lcdInit();
-  gyroZero();
 
   driveInit();
   liftInit();
