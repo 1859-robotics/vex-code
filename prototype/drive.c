@@ -98,8 +98,6 @@ task moveCenter_() {
 
 }
 
-
-
 task moveLeftEncoder_() {
   EncoderSetValue(LB_DRIVE, 0);
 
@@ -186,7 +184,6 @@ task moveRightGyro_() {
 
 }
 
-
 task turn_() {
   if(abs(drive.goToNum) < 40)
 		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
@@ -229,7 +226,6 @@ task turn_() {
 
 }
 
-
 void moveCenter(int amt, int spd, bool waitForEnd) {
   while(!drive.canMove){};
 
@@ -266,8 +262,6 @@ void swerveRightEncoder(int amt, int spd, bool waitForEnd) {
   while(waitForEnd && !drive.canMove){};
 }
 
-
-
 task taskDriveGyroHold () {
 	long lastTime = nPgmTime;
 
@@ -294,10 +288,8 @@ void driveGyroHold (float setPoint) {
 	startTask (taskDriveGyroHold);
 }
 
-
-
 void swerveRightGyro(float fTarget) {
-  if(abs(fTarget) < 40)
+  if(abs(fTarget) < 50)
 		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
   else
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
@@ -331,7 +323,6 @@ void swerveRightGyro(float fTarget) {
   }
 }
 
-
 void swerveLeftGyro(float fTarget) {
   if(abs(fTarget) < 40)
 		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
@@ -343,7 +334,6 @@ void swerveLeftGyro(float fTarget) {
 	long liTimer = nPgmTime;
 	float fGyroAngle = 0;
   float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
-
 	while(!bAtGyro) {
 		//Calculate the delta time from the last iteration of the loop
 		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
@@ -360,13 +350,12 @@ void swerveLeftGyro(float fTarget) {
 		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
 		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
 			liAtTargetTime = nPgmTime;
-		if(nPgmTime - liAtTargetTime > 350) {
+		if(nPgmTime - liAtTargetTime > 350){
 			bAtGyro = true;
 			driveL(0);
 		}
   }
 }
-
 
 void turn(float fTarget) {
 	if(abs(fTarget) < 40)
@@ -393,13 +382,11 @@ void turn(float fTarget) {
 		driveL(-driveOut);
 		driveR(driveOut);
 
-		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
 		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
 			liAtTargetTime = nPgmTime;
 		if(nPgmTime - liAtTargetTime > 350){
 			bAtGyro = true;
-			driveL(0);
-			driveR(0);
+			driveF(0);
 		}
 	}
 

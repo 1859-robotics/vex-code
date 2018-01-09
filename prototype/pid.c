@@ -53,7 +53,7 @@ float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
 
   pid.m_fLastValue = fProcessVariable;
 	float fError = fSetPoint - fProcessVariable;
-
+  writeDebugStream("error: %f\n", fError)
 	if(fabs(fError) > pid.m_fEpsilonInner && fabs(fError) < pid.m_fEpsilonOuter) {
     pid.m_fSigma += fError * fDeltaTime;
   }

@@ -66,7 +66,7 @@ float gyroGetRate(Gyro gyro) {
 
 
 	if(fabs(fGyroDiff) > GYRO_STD_DEVS * gyro.m_config.m_fStdDev) {
-    writeDebugStream("%f%s%f%s%f%s%f\n", fGyroRead, "|", fGyroDiff, "|", fGyroVoltage, "|", fGyroVoltage / gyro.m_config.m_fVoltsPerDPS);
+    writeDebugStream("%f%s%f%s%f%s%f\n", fGyroRead, " | ", fGyroDiff, " | ", fGyroVoltage, " | ", fGyroVoltage / gyro.m_config.m_fVoltsPerDPS);
 		return fGyroVoltage / gyro.m_config.m_fVoltsPerDPS;
   }
 	return 0;

@@ -38,10 +38,9 @@
 
 #include "./prototype/util.c"
 #include "./prototype/joystick_defines.c"
+#include "./prototype/pid.c"
 
 // external file includes
-#include "./prototype/joystick_defines.c"
-#include "./prototype/pid.c"
 #include "./prototype/gyro.c"
 #include "./prototype/drive.c"
 #include "./prototype/lift.c"

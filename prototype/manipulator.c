@@ -35,6 +35,7 @@ void OPManipulate() {
 }
 
 task manipulate_() {
+  EncoderSetValue(MANIPULATOR, 0);
 
   SetMotor(MANIPULATOR, 127 * manipulator.dir);
 
@@ -60,9 +61,9 @@ void manipulate(int dir, bool waitForEnd) {
 
   startTask(manipulate_);
 
-  while(waitForEnd && !manipulator.canMove){
+  while(waitForEnd && !manipulator.canMove) {
     writeDebugStream("waiting\n")
-  };
+  }
 }
 
 
