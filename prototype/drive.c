@@ -38,27 +38,27 @@ void driveInit() {
 // requires: null
 // modifies: null
 // affects:  short hand function for controlling the left side of the drive
-void driveL(int spd) {
-  SetMotor(LF_DRIVE, spd, true);
-  SetMotor(LB_DRIVE, spd, true);
+void driveL(int spd, bool i = false) {
+  SetMotor(LF_DRIVE, spd, i);
+  SetMotor(LB_DRIVE, spd, i);
 }
 
 
 // requires: null
 // modifies: null
 // affects:  short hand function for controlling the right side of the drive
-void driveR(int spd) {
-  SetMotor(RF_DRIVE, spd, true);
-  SetMotor(RB_DRIVE, spd, true);
+void driveR(int spd, bool i = false) {
+  SetMotor(RF_DRIVE, spd, i);
+  SetMotor(RB_DRIVE, spd, i);
 }
 
 
 // requires: null
 // modifies: null
 // affects:  short hand function for controlling the entire drive
-void DriveF(int spd) {
-  driveL(spd);
-  driveR(spd);
+void driveF(int spd) {
+  driveL(spd, true);
+  driveR(spd, true);
 }
 
 // requires: null
@@ -76,13 +76,12 @@ task moveCenter_() {
   EncoderSetValue(LB_DRIVE, 0);
   EncoderSetValue(RB_DRIVE, 0);
 
-  DriveF(drive.spd);
+  driveF(drive.spd);
 
   // while the encoder values are not the requseted value
-  while(fabs(drive.goToNum) > fabs(EncoderGetValue(LB_DRIVE)) ||
-        fabs(drive.goToNum) > fabs(EncoderGetValue(RB_DRIVE))) {}
+  while(fabs(drive.goToNum) > (fabs(EncoderGetValue(LB_DRIVE)) + fabs(EncoderGetValue(LB_DRIVE))) / 2) {}
 
-  DriveF(0); // equivilant to stoping all drive motors
+  driveF(0); // equivilant to stoping all drive motors
 
   // reset encoders
   EncoderSetValue(LB_DRIVE, 0);
@@ -324,7 +323,7 @@ void swerveRightGyro(float fTarget) {
 }
 
 void swerveLeftGyro(float fTarget) {
-  if(abs(fTarget) < 40)
+  if(abs(fTarget) < 50)
 		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
   else
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
@@ -334,6 +333,7 @@ void swerveLeftGyro(float fTarget) {
 	long liTimer = nPgmTime;
 	float fGyroAngle = 0;
   float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
+
 	while(!bAtGyro) {
 		//Calculate the delta time from the last iteration of the loop
 		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
@@ -350,7 +350,7 @@ void swerveLeftGyro(float fTarget) {
 		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
 		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
 			liAtTargetTime = nPgmTime;
-		if(nPgmTime - liAtTargetTime > 350){
+		if(nPgmTime - liAtTargetTime > 350) {
 			bAtGyro = true;
 			driveL(0);
 		}
@@ -382,9 +382,10 @@ void turn(float fTarget) {
 		driveL(-driveOut);
 		driveR(driveOut);
 
-		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
-			liAtTargetTime = nPgmTime;
-		if(nPgmTime - liAtTargetTime > 350){
+		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE) {
+      liAtTargetTime = nPgmTime;
+    }
+		if(nPgmTime - liAtTargetTime > 350) {
 			bAtGyro = true;
 			driveF(0);
 		}

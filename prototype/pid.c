@@ -2,7 +2,7 @@
 #define _PROTOTYPE_PID_
 
 #define MAX_SPEED 127
-#define MIN_SPEED 40
+#define MIN_SPEED 35
 
 
 
@@ -53,7 +53,6 @@ float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
 
   pid.m_fLastValue = fProcessVariable;
 	float fError = fSetPoint - fProcessVariable;
-  writeDebugStream("error: %f\n", fError)
 	if(fabs(fError) > pid.m_fEpsilonInner && fabs(fError) < pid.m_fEpsilonOuter) {
     pid.m_fSigma += fError * fDeltaTime;
   }

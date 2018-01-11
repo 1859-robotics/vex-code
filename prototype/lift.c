@@ -98,7 +98,7 @@ task claw_() {
 
   EncoderSetValue(LIFT_CLAW, 0);
 
-  stopTask(flip_);
+  stopTask(claw_);
 }
 
 void claw(int amt, bool waitForEnd) {
