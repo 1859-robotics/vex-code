@@ -194,11 +194,11 @@ task turn_() {
 
 	while(!atGyro){
 		//Calculate the delta time from the last iteration of the loop
-		float fDeltaTime = (float)(nPgmTime - timer)/1000.0;
+		// float fDeltaTime = (float)(nPgmTime - timer)/1000.0;
 		//Reset loop timer
 		timer = nPgmTime;
 
-		gyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
+		// gyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
 
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, drive.goToNum, gyroAngle);
@@ -333,21 +333,29 @@ void swerveLeftGyro(float fTarget) {
 	long liTimer = nPgmTime;
 	float fGyroAngle = 0;
   float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
-
+  writeDebugStream("%f\n", SensorValue(drive.gyro.m_iPortNum))
 	while(!bAtGyro) {
 		//Calculate the delta time from the last iteration of the loop
-		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
+		// float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
 		//Reset loop timer
 		liTimer = nPgmTime;
 
 		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
     fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
+    writeDebugStream("fPrevGyro: %f\n", fPrevGyro / 10);
+    writeDebugStream("pre fix fGyroAngle: %f\n", fGyroAngle);
+    if(fabs(fGyroAngle) > 360) {
+      fGyroAngle = fabs(fGyroAngle) - 360 * sgn(fGyroAngle)
+    }
+    writeDebugStream("fGyroAngle: %f\n", fGyroAngle);
 
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
+    writeDebugStream("driveOut: %f\n", driveOut);
+
 		driveL(driveOut);
 
-		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
+		//Stop the turn function when the angle has been within the PID_TOLERANCE for 350ms
 		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
 			liAtTargetTime = nPgmTime;
 		if(nPgmTime - liAtTargetTime > 350) {
@@ -370,7 +378,7 @@ void turn(float fTarget) {
   float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
 	while(!bAtGyro) {
 		//Calculate the delta time from the last iteration of the loop
-		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
+		// float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
 		//Reset loop timer
 		liTimer = nPgmTime;
 

@@ -55,6 +55,7 @@ void gyroInit(Gyro gyro, int iPortNum) {
 	gyroCalibrate(gyro);
 }
 
+
 float gyroGetRate(Gyro gyro) {
 	float fGyroRead = SensorValue(gyro.m_iPortNum);
 
