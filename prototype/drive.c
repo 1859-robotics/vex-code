@@ -333,6 +333,8 @@ void swerveLeftGyro(float fTarget) {
 	long liTimer = nPgmTime;
 	float fGyroAngle = 0;
   float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
+
+
   writeDebugStream("%f\n", SensorValue(drive.gyro.m_iPortNum))
 	while(!bAtGyro) {
 		//Calculate the delta time from the last iteration of the loop
@@ -342,18 +344,11 @@ void swerveLeftGyro(float fTarget) {
 
 		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
     fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
-    writeDebugStream("fPrevGyro: %f\n", fPrevGyro / 10);
-    writeDebugStream("pre fix fGyroAngle: %f\n", fGyroAngle);
-    if(fabs(fGyroAngle) > 360) {
-      fGyroAngle = fabs(fGyroAngle) - 360 * sgn(fGyroAngle)
-    }
-    writeDebugStream("fGyroAngle: %f\n", fGyroAngle);
 
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
-    writeDebugStream("driveOut: %f\n", driveOut);
 
-		driveL(driveOut);
+		driveL(-driveOut);
 
 		//Stop the turn function when the angle has been within the PID_TOLERANCE for 350ms
 		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)

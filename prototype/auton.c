@@ -17,46 +17,68 @@ void resetEncoders() {
 }
 
 
-void autonRight12() {
-
-  swerveLeftGyro(-40);
-  writeDebugStream("end first\n");
-  swerveLeftGyro(40);
-  writeDebugStream("end 2nd\n");
-
-  // resetEncoders();
-  // core(300, true);
-  // manipulate(1, false);
-  // swerveRightGyro(50);
-  // moveCenter(1000, 127, true);
-  // manipulate(-1, true); // pick up MB
-  // core(-300, true);
-  // claw(-10, true); // put cone on base
-  // core(300, true);
-  // moveCenter(100, -60, true);
-  // moveCenter(900, -127, true);
-  // // swerveLeftGyro(-40);
-  // turn(45);
-  // moveCenter(250, -127, true);
-  // turn(90);
-  // moveCenter(100, 127, true);
-  // // turn(20);
-  // manipulate(1, true);
-  // moveCenter(350, -127, true); // back out of putting MB in 10pt zone
-  // // turn(180);
-  // // moveCenter(360, 127, true);
-  // // writeDebugStream("end \n")
+void autonLeft12() {
+  resetEncoders();
+  core(300, true);
+  swerveRightGyro(50);
+  moveCenter(50, -60, true);
+  manipulate(1, true);
+  moveCenter(1500, 127, true);
+  manipulate(-1, true); // pick up MB
+  core(-300, true);
+  claw(-10, true); // put cone on base
+  core(300, true);
+  moveCenter(100, -60, true);
+  moveCenter(1100, -127, true);
+  // swerveLeftGyro(-40);
+  turn(45);
+  moveCenter(250, -127, true);
+  turn(90);
+  moveCenter(100, 127, true);
+  // turn(20);
+  manipulate(1, true);
+  moveCenter(350, -127, true); // back out of putting MB in 10pt zone
+  // turn(180);
+  // moveCenter(360, 127, true);
+  // writeDebugStream("end \n")
 
 }
 
 
 
-void autonLeft12() {
+void autonRight12() {
   resetEncoders();
   core(300, true);
-  manipulate(1, false);
-  swerveLeftGyro(50);
-  moveCenter(1000, 127, true);
+  swerveLeftGyro(-50);
+  moveCenter(50, -60, true);
+  manipulate(1, true);
+  moveCenter(1500, 127, true);
+  manipulate(-1, true); // pick up MB
+  core(-300, true);
+  claw(-10, true); // put cone on base
+  core(300, true);
+  moveCenter(100, -60, true);
+  moveCenter(1100, -127, true);
+  // swerveLeftGyro(-40);
+  turn(-45);
+  moveCenter(250, -127, true);
+  turn(-90);
+  moveCenter(100, 127, true);
+  // turn(20);
+  manipulate(1, true);
+  moveCenter(350, -127, true); // back out of putting MB in 10pt zone
+
+
+  writeDebugStream("end \n")
+}
+
+void skills() {
+  resetEncoders();
+  core(300, true);
+  swerveRightGyro(50);
+  moveCenter(50, -60, true);
+  manipulate(1, true);
+  moveCenter(1200, 127, true);
   manipulate(-1, true); // pick up MB
   core(-300, true);
   claw(-10, true); // put cone on base
@@ -70,10 +92,17 @@ void autonLeft12() {
   moveCenter(100, 127, true);
   // turn(20);
   manipulate(1, true);
-  moveCenter(350, -127, true); // back out of putting MB in 10pt zone
-  // turn(180);
-  // moveCenter(360, 127, true);
-  // writeDebugStream("end \n")
+  moveCenter(200, -127, true); // back out of putting MB in 10pt zone
+  manipulate(-1, true);
+  turn(120);
+  manipulate(1, false);
+  turn(80);
+  moveCenter(360, 127, true);
+  manipulate(-1, true);
+  moveCenter(360, -127, true);
+  turn(90);
+  moveCenter(200, 127, true);
+  turn(90);
 
 }
 
