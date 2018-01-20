@@ -1,7 +1,7 @@
 #ifndef _PROTOTYPE_DRIVE_
 #define _PROTOTYPE_DRIVE_
 
-#define PID_TOLERANCE 3
+#define PID_TOLERANCE 5
 
 
 typedef struct {
@@ -379,6 +379,8 @@ void turn(float fTarget) {
 
 		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
     fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
+    writeDebugStream("fGyroAngle: %f\n", fGyroAngle);
+    writeDebugStream("fTarget: %f\n", fTarget);
 
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
