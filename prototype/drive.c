@@ -2,7 +2,8 @@
 #define _PROTOTYPE_DRIVE_
 
 #define PID_TOLERANCE 5
-
+#define MAX_SPEED 127
+#define MIN_SPEED 35
 
 typedef struct {
   bool canMove;
@@ -185,7 +186,7 @@ task moveRightGyro_() {
 
 task turn_() {
   if(abs(drive.goToNum) < 40)
-		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
 
   bool atGyro = false;
 	long targetTime = nPgmTime;
@@ -216,7 +217,7 @@ task turn_() {
 	}
 
 	//Reinitialize the PID constants to their original values in case they were changed
-	pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
+	pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -289,9 +290,9 @@ void driveGyroHold (float setPoint) {
 
 void swerveRightGyro(float fTarget) {
   if(abs(fTarget) < 50)
-		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
   else
-    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
+    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 
 	bool bAtGyro = false;
 	long liAtTargetTime = nPgmTime;
@@ -324,9 +325,9 @@ void swerveRightGyro(float fTarget) {
 
 void swerveLeftGyro(float fTarget) {
   if(abs(fTarget) < 50)
-		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
   else
-    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
+    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 
 	bool bAtGyro = false;
 	long liAtTargetTime = nPgmTime;
@@ -362,9 +363,9 @@ void swerveLeftGyro(float fTarget) {
 
 void turn(float fTarget) {
 	if(abs(fTarget) < 40)
-		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0);
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
   else
-    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
+    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 
 	bool bAtGyro = false;
 	long liAtTargetTime = nPgmTime;
@@ -397,7 +398,7 @@ void turn(float fTarget) {
 	}
 
 	//Reinitialize the PID constants to their original values in case they were changed
-	pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0);
+	pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 }
 
 

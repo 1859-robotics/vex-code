@@ -1,8 +1,7 @@
 #ifndef _PROTOTYPE_PID_
 #define _PROTOTYPE_PID_
 
-#define MAX_SPEED 127
-#define MIN_SPEED 35
+
 
 
 
@@ -22,11 +21,15 @@ typedef struct{
 	unsigned long m_uliLastTime;
   float m_fLastSetPoint;
 
+  int m_fMaxSpeed;
+  int m_fMinSpeed;
+
 } PID;
 
 
 void pidInit (PID pid, float fKP, float fKI, float fKD,
-              float fEpsilonInner, float fEpsilonOuter) {
+              float fEpsilonInner, float fEpsilonOuter,
+              int fMinSpeed, int fMaxSpeed) {
 	pid.m_fKP = fKP;
 	pid.m_fKI = fKI;
 	pid.m_fKD = fKD;
@@ -35,6 +38,8 @@ void pidInit (PID pid, float fKP, float fKI, float fKD,
 	pid.m_fSigma = 0;
 	pid.m_fLastValue = 0;
 	pid.m_uliLastTime = nPgmTime;
+  pid.m_fMaxSpeed = fMaxSpeed
+  pid.m_fMinSpeed = fMinSpeed
 }
 
 float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
@@ -65,8 +70,8 @@ float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
                   fDeltaPV * pid.m_fKD;
 
 
-	return abs(fOutput) > MAX_SPEED ? MAX_SPEED * sgn(fOutput) :
-         abs(fOutput) < MIN_SPEED ? MIN_SPEED * sgn(fOutput) : fOutput;
+	return abs(fOutput) > pid.m_fMaxSpeed ? pid.m_fMaxSpeed * sgn(fOutput) :
+         abs(fOutput) < pid.m_fMinSpeed ? pid.m_fMinSpeed * sgn(fOutput) : fOutput;
 }
 
 
