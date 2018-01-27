@@ -1,7 +1,5 @@
-#pragma config(UART_Usage, UART1, uartVEXLCD, baudRate19200, IOPins, None, None)
-#pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
 #pragma config(I2C_Usage, I2C1, i2cSensors)
-#pragma config(Sensor, in1,    GYRO_PORT,      sensorGyro)
+#pragma config(Sensor, in1,    GYRO_PORT,      sensorNone)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_3,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
@@ -92,7 +90,7 @@ task usercontrol() {
   startTask(taskOPClift);
 
   /* a while loop so the program does not end prematurely
-   * the wait in order for the program to run all of its background tasks 
+   * the wait in order for the program to run all of its background tasks
    */
   while (true) {
     wait1Msec(20);

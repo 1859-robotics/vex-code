@@ -42,13 +42,18 @@ void OPLift() {
            CORE_LIFT_UP ? 127 : CORE_LIFT_DOWN ? -127 : 0);
 
 
-  SetMotor(FLIP_LIFT,
-           FLIP_LIFT_UP ? 127 : FLIP_LIFT_DOWN ? -127 : 0);
+
+  if(FLIP_LIFT_DOWN) {
+    SetMotor(FLIP_LIFT, -127);
+    SetMotor(LIFT_CLAW, -127);
+
+  } else {
+    SetMotor(FLIP_LIFT, FLIP_LIFT_UP ? 127 : 0);
 
 
-  SetMotor(LIFT_CLAW,
-           LIFT_CLAW_UP ? 60 : LIFT_CLAW_DOWN ? -60 : 0);
-
+    SetMotor(LIFT_CLAW,
+             LIFT_CLAW_UP ? 127 : LIFT_CLAW_DOWN ? -127 : 0);
+  }
 }
 
 task flip_() {
