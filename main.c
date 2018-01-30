@@ -32,7 +32,7 @@
 
 // libs this is code i did not write
 #include "Vex_Competition_Includes.c"
-#include "./lib/SmartMotorLib.c"
+// #include "./lib/SmartMotorLib.c"
 
 
 // external file includes
@@ -52,7 +52,7 @@
 void pre_auton() {
   // smart motor application
   // TODO: cut down smartmotorlib bulk. disallow 292, etc.
-  SmartMotorsInit();
+
   bStopTasksBetweenModes = true;
 
 
@@ -75,7 +75,6 @@ void pre_auton() {
 }
 
 task autonomous() {
-	SmartMotorRun();
   runAuton();
 
 }
@@ -84,7 +83,6 @@ task autonomous() {
 
 
 task usercontrol() {
-	SmartMotorRun();
   startTask(taskOPCdrive);
   startTask(taskOPCmanipulate);
   startTask(taskOPClift);

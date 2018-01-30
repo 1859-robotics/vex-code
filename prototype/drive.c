@@ -22,10 +22,7 @@ Drive drive;
 // affects:  smart motor readout
 void driveInit() {
 
-  SmartMotorLinkMotors(LF_DRIVE, LB_DRIVE);
-  SmartMotorLinkMotors(RF_DRIVE, RB_DRIVE);
   gyroInit(drive.gyro, GYRO_PORT);
-  SmartMotorsAddPowerExtender(LF_DRIVE, RF_DRIVE, LB_DRIVE, RB_DRIVE)
 
   drive.canMove = true;
   drive.goToNum = 0;

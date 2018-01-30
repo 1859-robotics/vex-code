@@ -26,8 +26,6 @@ void liftInit() {
 
   lift.canMove = true;
 
-  SmartMotorLinkMotors(B_CORE_LIFT, T_CORE_LIFT);
-
 }
 
 // requires: null
