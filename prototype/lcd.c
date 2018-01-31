@@ -120,11 +120,11 @@ void runAuton() {
   // so we are left with this mess
   displayLCDCenteredString(0, panes[lcd.active].lines[0])
   if(panes[lcd.active].data == 0) {
-    skills();
+    autonRight12();
   } else if(panes[lcd.active].data == 1) {
     autonLeft12();
   } else if(panes[lcd.active].data == 2) {
-    autonRight12();
+    skills();
   } else if(panes[lcd.active].data == 3) {
     // auton7ptLeft();
   } else if(panes[lcd.active].data == 4) {

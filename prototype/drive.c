@@ -22,7 +22,6 @@ Drive drive;
 // affects:  smart motor readout
 void driveInit() {
 
-  gyroInit(drive.gyro, GYRO_PORT);
 
   drive.canMove = true;
   drive.goToNum = 0;
@@ -190,7 +189,7 @@ task turn_() {
 	long timer = nPgmTime;
 	float gyroAngle = 0;
 
-	while(!atGyro){
+	while(!atGyro) {
 		//Calculate the delta time from the last iteration of the loop
 		// float fDeltaTime = (float)(nPgmTime - timer)/1000.0;
 		//Reset loop timer
@@ -377,8 +376,8 @@ void turn(float fTarget) {
 
 		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
     fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
-    writeDebugStream("fGyroAngle: %f\n", fGyroAngle);
-    writeDebugStream("fTarget: %f\n", fTarget);
+    // writeDebugStream("fGyroAngle: %f\n", fGyroAngle);
+    // writeDebugStream("fTarget: %f\n", fTarget);
 
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);

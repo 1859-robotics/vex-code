@@ -20,7 +20,7 @@ void EncoderSetValue(tMotor index, float value) {
   nMotorEncoderOffsets[index] = nMotorEncoder[index] - value;
 }
 
-void SetMotor(tMotor m, int spd, bool E = false) {
+void SetMotor(unsigned int m, int spd, bool E = false) {
   motor[m] = spd;
 }
 
