@@ -48,17 +48,14 @@ void autonLeft12() {
 
 void autonRight12() {
   resetEncoders();
-  writeDebugStream("hi")
-  turn(45);
-  // core(300, true);
-  // swerveLeftGyro(-50);
-  // moveCenter(50, -60, true);
-  // manipulate(1, true);
-  // moveCenter(1500, 127, true);
+  writeDebugStream("hi");
+
+  swerveLeftGyro(-50);
+  moveCenter(55, -60, true);
+  manipulate(1, false);
+  moveCenter(500, 127, true);
   // manipulate(-1, true); // pick up MB
-  // core(-300, true);
   // claw(-10, true); // put cone on base
-  // core(300, true);
   // moveCenter(100, -60, true);
   // moveCenter(1100, -127, true);
   // // swerveLeftGyro(-40);
@@ -69,9 +66,9 @@ void autonRight12() {
   // // turn(20);
   // manipulate(1, true);
   // moveCenter(350, -127, true); // back out of putting MB in 10pt zone
-  //
-  //
-  // writeDebugStream("end \n")
+
+
+  writeDebugStream("end \n")
 }
 
 void skills() {

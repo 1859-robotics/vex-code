@@ -73,5 +73,8 @@ float gyroGetRate(Gyro gyro) {
 	return 0;
 }
 
+// float getGyro(tSensor gyro) {
+// 	return
+// }
 
 #endif
