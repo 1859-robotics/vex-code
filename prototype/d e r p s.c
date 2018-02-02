@@ -2,9 +2,9 @@
 #define _PROTOTYPE_DRIVE_
 
 #define PID_TOLERANCE 5
+#define ENCODER_PID_TOLERANCE 10
 #define MAX_SPEED 127
-#define MIN_SPEED 40
-#define MIN_MOTOR_SPD 20
+#define MIN_SPEED 30
 
 typedef struct {
   bool canMove;
@@ -63,8 +63,8 @@ void driveF(int spd) {
 // modifies: null
 // affects:  lets operator control the drive train
 void OPDrive() {
-  driveL(abs(TANK_CONTORL_LEFT)  > MIN_MOTOR_SPD ? TANK_CONTORL_LEFT  : 0);
-  driveR(abs(TANK_CONTORL_RIGHT) > MIN_MOTOR_SPD ? TANK_CONTORL_RIGHT : 0);
+  driveL(TANK_CONTORL_LEFT);
+  driveR(TANK_CONTORL_RIGHT);
 }
 
 // requires: task
@@ -78,7 +78,7 @@ task moveCenter_() {
 
   // while the encoder values are not the requseted value
   while(fabs(drive.goToNum) >
-         (fabs(EncoderGetValue(LB_DRIVE)) + fabs(EncoderGetValue(RB_DRIVE))) / 2) {}
+       (fabs(EncoderGetValue(LB_DRIVE)) + fabs(EncoderGetValue(RB_DRIVE))) / 2) {}
 
   driveF(0); // equivilant to stoping all drive motors
 
@@ -182,58 +182,48 @@ task moveRightGyro_() {
 
 }
 
-task turn_() {
-  if(abs(drive.goToNum) < 40)
-		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
-
-  bool atGyro = false;
-	long targetTime = nPgmTime;
-	long timer = nPgmTime;
-	float gyroAngle = 0;
-
-	while(!atGyro) {
-		//Calculate the delta time from the last iteration of the loop
-		// float fDeltaTime = (float)(nPgmTime - timer)/1000.0;
-		//Reset loop timer
-		timer = nPgmTime;
-
-		// gyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
-
-		//Calculate the output of the PID controller and output to drive motors
-		float driveOut = pidCalculate(drive.gyroPID, drive.goToNum, gyroAngle);
-		driveL(-driveOut);
-		driveR(driveOut);
-
-		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
-		if(abs(drive.goToNum - gyroAngle) > 3)
-			targetTime = nPgmTime;
-		if(nPgmTime - targetTime > 350){
-			atGyro = true;
-			driveL(0);
-			driveR(0);
-		}
-	}
-
-	//Reinitialize the PID constants to their original values in case they were changed
-	pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
-
-  drive.canMove = true;
-  drive.goToNum = 0;
-
-  stopTask(turn_);
-
-}
-
-void moveCenter(int amt, int spd, bool waitForEnd) {
+void moveCenter(float fTarget) {
   while(!drive.canMove){};
 
   drive.canMove = false;
-  drive.goToNum = amt;
-  drive.spd = spd;
+  fTarget *= -1
+  if(abs(fTarget) < 40)
+    pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
+  else
+    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 
-  startTask(moveCenter_);
+  bool bAtTarget = false;
+  long liAtTargetTime = nPgmTime;
+  long liTimer = nPgmTime;
+  float fEncoderVal = 0;
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
+  while(!bAtTarget) {
+    //Calculate the delta time from the last iteration of the loop
+    // float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
+    //Reset loop timer
+    liTimer = nPgmTime;
 
-  while(waitForEnd && !drive.canMove){};
+    // fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
+    fEncoderVal = ((EncoderGetValue(LB_DRIVE) + EncoderGetValue(RB_DRIVE)) / 2);
+    writeDebugStream("fEncoderVal: %f\n", fEncoderVal);
+    writeDebugStream("abs(fTarget - fEncoderVal): %f\n", abs(fTarget - fEncoderVal));
+
+    //Calculate the output of the PID controller and output to drive motors
+    float driveOut = pidCalculate(drive.gyroPID, fTarget, fEncoderVal);
+    driveF(-driveOut);
+
+    if(abs(fTarget - fEncoderVal) > ENCODER_PID_TOLERANCE) {
+      liAtTargetTime = nPgmTime;
+    }
+    if(nPgmTime - liAtTargetTime > 350) {
+      bAtTarget = true;
+      driveF(0);
+    }
+  }
+
+  //Reinitialize the PID constants to their original values in case they were changed
+  pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 }
 
 void swerveLeftEncoder(int amt, int spd, bool waitForEnd) {
@@ -310,14 +300,13 @@ void swerveRightGyro(float fTarget) {
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
 		driveR(driveOut);
-    driveL(-driveOut / 10);
 
 		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
 		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
 			liAtTargetTime = nPgmTime;
 		if(nPgmTime - liAtTargetTime > 350) {
 			bAtGyro = true;
-			driveF(0);
+			driveR(0);
 		}
   }
 }
@@ -404,3 +393,5 @@ void turn(float fTarget) {
 
 
 #endif
+
+// I thought we were using version control or something

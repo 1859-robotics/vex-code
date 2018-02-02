@@ -59,7 +59,11 @@ task flip_() {
 
   SetMotor(FLIP_LIFT, 127 * lift.flipSpd);
 
-  while(fabs(lift.flipAmt) > fabs(EncoderGetValue(FLIP_LIFT))) {}
+  while(fabs(lift.flipAmt) > fabs(EncoderGetValue(FLIP_LIFT))) {
+    writeDebugStream("fabs(lift.flipAmt): %f\n", fabs(lift.flipAmt));
+    writeDebugStream("fabs(EncoderGetValue(FLIP_LIFT)): %f\n", fabs(EncoderGetValue(FLIP_LIFT)))
+
+  }
 
   SetMotor(FLIP_LIFT, 0);
 
@@ -88,9 +92,9 @@ void flip(int flipAmt, int flipSpd, bool waitForEnd) {
 
 
 task claw_() {
-  SetMotor(LIFT_CLAW, 60 * (sgn(lift.clawAmt)));
+  SetMotor(LIFT_CLAW, 127 * (sgn(lift.clawAmt)));
 
-  while(fabs(lift.clawAmt) > fabs(EncoderGetValue(LIFT_CLAW))) {}
+  wait1Msec(abs(lift.clawAmt))
 
   SetMotor(LIFT_CLAW, 0);
 

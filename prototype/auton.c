@@ -49,16 +49,27 @@ void autonLeft12() {
 void autonRight12() {
   resetEncoders();
   writeDebugStream("hi");
+  flip(650, -1, true);
+  flip(650, 1, true);
 
-  swerveLeftGyro(-50);
-  moveCenter(55, -60, true);
-  manipulate(1, false);
-  moveCenter(500, 127, true);
+  // core(200, false);
+  // manipulate(1, true);
+  // swerveLeftGyro(-48);
+  // moveCenter(350, 127, true);
+  // moveCenter(250, 40, true);
   // manipulate(-1, true); // pick up MB
-  // claw(-10, true); // put cone on base
-  // moveCenter(100, -60, true);
-  // moveCenter(1100, -127, true);
-  // // swerveLeftGyro(-40);
+  // moveCenter(30, 40, true);
+  // drive.canMove = false
+  // core(200, true);
+  // claw(1000, true); // put cone on base
+  // flip(200, -1, true);
+  // claw(-1500, true); // pick up next cone
+  // core(200, true);
+  // flip(200, 1, true);
+  // core(-200, true);
+  // claw(1000, true); // put next cone on base
+
+  // swerveLeftGyro(-40);
   // turn(-45);
   // moveCenter(250, -127, true);
   // turn(-90);

@@ -1,7 +1,7 @@
 #ifndef _PROTOTYPE_MANIPULATOR_
 #define _PROTOTYPE_MANIPULATOR_
 
-#define MANIPULATOR_DIST 900
+#define MANIPULATOR_DIST 1650
 
 
 
@@ -29,7 +29,7 @@ void maniplulatorInit() {
 void OPManipulate() {
 
     SetMotor(MANIPULATOR,
-              MANIPULATOR_UP ? 127 : MANIPULATOR_DOWN ? -127 : 0);
+             MANIPULATOR_UP ? 100 : MANIPULATOR_DOWN ? -100 : MANIPULATOR_DOWN_FAST ? 127 : 0);
 
 
 }
@@ -37,7 +37,7 @@ void OPManipulate() {
 task manipulate_() {
   EncoderSetValue(MANIPULATOR, 0);
 
-  SetMotor(MANIPULATOR, 127 * manipulator.dir);
+  SetMotor(MANIPULATOR, 100 * manipulator.dir);
 
   while(MANIPULATOR_DIST > fabs(EncoderGetValue(MANIPULATOR))) {}
 
