@@ -209,8 +209,7 @@ task turn_() {
 			targetTime = nPgmTime;
 		if(nPgmTime - targetTime > 350){
 			atGyro = true;
-			driveL(0);
-			driveR(0);
+			driveF(0);
 		}
 	}
 
@@ -296,7 +295,7 @@ void swerveRightGyro(float fTarget) {
 	long liAtTargetTime = nPgmTime;
 	long liTimer = nPgmTime;
 	float fGyroAngle = 0;
-  float fPrevGyro = -SensorValue(drive.gyro.m_iPortNum);
+  float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
 
 	while(!bAtGyro) {
 		//Calculate the delta time from the last iteration of the loop
@@ -305,7 +304,7 @@ void swerveRightGyro(float fTarget) {
 		liTimer = nPgmTime;
 
 		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
-    fGyroAngle = (-SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
+    fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
 
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
@@ -332,7 +331,7 @@ void swerveLeftGyro(float fTarget) {
 	long liAtTargetTime = nPgmTime;
 	long liTimer = nPgmTime;
 	float fGyroAngle = 0;
-  float fPrevGyro = -SensorValue(drive.gyro.m_iPortNum);
+  float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
 
 
 	while(!bAtGyro) {
@@ -342,7 +341,7 @@ void swerveLeftGyro(float fTarget) {
 		liTimer = nPgmTime;
 
 		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
-    fGyroAngle = (-SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
+    fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
 
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
@@ -370,7 +369,7 @@ void turn(float fTarget) {
 	long liAtTargetTime = nPgmTime;
 	long liTimer = nPgmTime;
 	float fGyroAngle = 0;
-  float fPrevGyro = -SensorValue(drive.gyro.m_iPortNum);
+  float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
 	while(!bAtGyro) {
 		//Calculate the delta time from the last iteration of the loop
 		// float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
@@ -378,9 +377,11 @@ void turn(float fTarget) {
 		liTimer = nPgmTime;
 
 		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
-    fGyroAngle = (-SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
+    fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
     writeDebugStream("fGyroAngle: %f\n", fGyroAngle);
     writeDebugStream("fTarget: %f\n", fTarget);
+    writeDebugStream("fPrevGyro: %f\n", fPrevGyro);
+    writeDebugStream("SensorValue(drive.gyro.m_iPortNum): %f\n", SensorValue(drive.gyro.m_iPortNum));
 
 		//Calculate the output of the PID controller and output to drive motors
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);

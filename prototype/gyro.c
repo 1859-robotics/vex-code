@@ -52,7 +52,13 @@ void gyroCalibrate(Gyro gyro) {
 
 void gyroInit(Gyro gyro, int iPortNum) {
 	gyro.m_iPortNum = iPortNum;
-	gyroCalibrate(gyro);
+	
+	SensorType[iPortNum] = sensorNone;
+	wait1Msec(1000);
+	SensorType[iPortNum] = sensorGyro;
+	wait1Msec(2000);
+
+	// gyroCalibrate(gyro);
 }
 
 

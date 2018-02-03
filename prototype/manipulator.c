@@ -37,7 +37,7 @@ void OPManipulate() {
 task manipulate_() {
   EncoderSetValue(MANIPULATOR, 0);
 
-  SetMotor(MANIPULATOR, 100 * manipulator.dir);
+  SetMotor(MANIPULATOR, 127 * manipulator.dir);
 
   while(MANIPULATOR_DIST > fabs(EncoderGetValue(MANIPULATOR))) {}
 

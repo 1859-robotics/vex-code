@@ -72,7 +72,7 @@ void pre_auton() {
   displayLCDCenteredString(1, "still");
 
   // calibrates the gyro
-  gyroCalibrate(drive.gyro);
+  // gyroCalibrate(drive.gyro);
 
 }
 

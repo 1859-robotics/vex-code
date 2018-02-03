@@ -8,13 +8,12 @@
 #define RIGHT_BUTTON 4
 
 // the number of auton programs the lcd should run through
-#define AUTON_NUMBER 7
+#define AUTON_NUMBER 5
 
 
 // the names of the auton programs
-const string LCD_STRINGS[AUTON_NUMBER] = { "RIGHT 12",  "LEFT 12",
-                                           "SKILLS",   "LEFT 7",
-                                           "RIGHT 22",  "LEFT 22",
+const string LCD_STRINGS[AUTON_NUMBER] = { "RIGHT 9",  "LEFT 9",
+                                           "LEFT 22",  "LEFT 22",
                                            "SKILLS" };
 
 
@@ -81,9 +80,6 @@ void lcdInit() {
 
 }
 
-
-
-
 void selectAuton() {
   while(nLCDButtons != CENTER_BUTTON) {
     // continue until the user selects the auton
@@ -120,13 +116,14 @@ void runAuton() {
   // so we are left with this mess
   displayLCDCenteredString(0, panes[lcd.active].lines[0])
   if(panes[lcd.active].data == 0) {
-    autonRight12();
+    autonLeft9()
+    // autonRight9();
   } else if(panes[lcd.active].data == 1) {
-    autonLeft12();
+    autonLeft9();
   } else if(panes[lcd.active].data == 2) {
-    skills();
+    autonRight22();
   } else if(panes[lcd.active].data == 3) {
-    // auton7ptLeft();
+    autonLeft22();
   } else if(panes[lcd.active].data == 4) {
 
   } else {

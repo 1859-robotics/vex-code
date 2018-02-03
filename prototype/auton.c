@@ -16,110 +16,104 @@ void resetEncoders() {
 
 }
 
-
-void autonLeft12() {
+void autonRight22() {
   resetEncoders();
-  core(300, true);
-  swerveRightGyro(50);
-  moveCenter(50, -60, true);
-  manipulate(1, true);
-  moveCenter(1500, 127, true);
+  core(100, false);
+  manipulate(1, false);
+  swerveLeftGyro(-48);
+  moveCenter(850, 127, true);
+  moveCenter(270, 40, true);
   manipulate(-1, true); // pick up MB
-  core(-300, true);
-  claw(-10, true); // put cone on base
-  core(300, true);
-  moveCenter(100, -60, true);
-  moveCenter(1100, -127, true);
-  // swerveLeftGyro(-40);
-  turn(45);
-  moveCenter(250, -127, true);
-  turn(90);
-  moveCenter(100, 127, true);
-  // turn(20);
-  manipulate(1, true);
-  moveCenter(350, -127, true); // back out of putting MB in 10pt zone
-  // turn(180);
-  // moveCenter(360, 127, true);
-  // writeDebugStream("end \n")
+  moveCenter(30, 40, true);
+  drive.canMove = false;
+  core(-100, true);
+  claw(500, true); // put cone on base
+  flip(650, -1, true);
+  claw(-750, true); // pick up next cone
+  core(100, true);
+  flip(650, 1, true);
+  drive.canMove = true;
+  moveCenter(720, -127, false);
+  claw(-300, true); // pick up next cone
+  while(!drive.canMove) {}
+  core(-100, true);
+  claw(500, true); // put next cone on base
+  core(200, false);
+  swerveRightGyro(-48);
+  moveCenter(300, -127, true);
+  manipulator.canMove = false
+  turn(-90);
+  manipulator.canMove = true
+  manipulate(1, false);
+  moveCenter(600, 100, true);
+  moveCenter(500, -127, true);
+  manipulate(-1, true);
 
+  writeDebugStream("end \n")
 }
 
 
 
-void autonRight12() {
+void autonRight9() {
   resetEncoders();
-  writeDebugStream("hi");
+  core(100, false);
+  manipulate(1, false);
+  swerveLeftGyro(-48);
+  moveCenter(850, 127, true);
+  moveCenter(270, 40, true);
+  manipulate(-1, true); // pick up MB
+  moveCenter(30, 40, true);
+  drive.canMove = false;
+  core(-100, true);
+  claw(500, true); // put cone on base
   flip(650, -1, true);
+  claw(-750, true); // pick up next cone
+  core(100, true);
   flip(650, 1, true);
-
-  // core(200, false);
-  // manipulate(1, true);
-  // swerveLeftGyro(-48);
-  // moveCenter(350, 127, true);
-  // moveCenter(250, 40, true);
-  // manipulate(-1, true); // pick up MB
-  // moveCenter(30, 40, true);
-  // drive.canMove = false
-  // core(200, true);
-  // claw(1000, true); // put cone on base
-  // flip(200, -1, true);
-  // claw(-1500, true); // pick up next cone
-  // core(200, true);
-  // flip(200, 1, true);
-  // core(-200, true);
-  // claw(1000, true); // put next cone on base
-
-  // swerveLeftGyro(-40);
-  // turn(-45);
-  // moveCenter(250, -127, true);
-  // turn(-90);
-  // moveCenter(100, 127, true);
-  // // turn(20);
-  // manipulate(1, true);
-  // moveCenter(350, -127, true); // back out of putting MB in 10pt zone
+  drive.canMove = true;
+  moveCenter(720, -127, false);
+  claw(-300, true); // pick up next cone
+  while(!drive.canMove) {}
+  core(-100, true);
+  claw(500, true); // put next cone on base
+  core(200, false);
+  turn(160)
+  manipulate(1, true); // pick up MB
+  moveCenter(220, -127, true);
+  manipulate(-1, true);
 
 
   writeDebugStream("end \n")
 }
 
-void skills() {
+void autonLeft9() {
   resetEncoders();
-  core(300, true);
-  swerveRightGyro(50);
-  moveCenter(50, -60, true);
-  manipulate(1, true);
-  moveCenter(1300, 127, true);
+  core(100, false);
+  manipulate(1, false);
+  swerveRightGyro(-48);
+  moveCenter(850, 127, true);
+  moveCenter(270, 40, true);
   manipulate(-1, true); // pick up MB
-  core(-200, true);
-  claw(-10, true); // put cone on base
-  core(300, true);
-  moveCenter(100, -60, true);
-  moveCenter(1000, -127, true);
-  // swerveLeftGyro(-40);
-  turn(45);
-  moveCenter(250, -127, true);
-  turn(90);
-  moveCenter(120, 127, true);
-  // turn(20);
-  manipulate(1, true);
-  moveCenter(170, -127, true); // back out of putting MB in 10pt zone
-  turn(-180);
-  moveCenter(400, 127, true);
-  manipulate(-1, true); // pick up 2nd moba
-  moveCenter(500, -100, true);
-  turn(90);
-  moveCenter(380, -100, true);
-  turn(105);
-  moveCenter(650, 127, true);
-  manipulate(1, true); // put MB in 20pt zone
-  moveCenter(500, -127, true);
-  turn(90);
-  moveCenter(320, 127, true);
-  turn(90);
-  moveCenter(320, 127, true);
+  moveCenter(30, 40, true);
+  drive.canMove = false;
+  core(-100, true);
+  claw(500, true); // put cone on base
+  flip(650, -1, true);
+  claw(-750, true); // pick up next cone
+  core(100, true);
+  flip(650, 1, true);
+  drive.canMove = true;
+  moveCenter(720, -127, false);
+  claw(-300, true); // pick up next cone
+  while(!drive.canMove) {}
+  core(-100, true);
+  claw(500, true); // put next cone on base
+  core(200, false);
+  turn(-160)
+  manipulate(1, true); // pick up MB
+  moveCenter(220, -127, true);
   manipulate(-1, true);
 
 }
-
 
 #endif
