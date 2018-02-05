@@ -4,7 +4,7 @@
 #define PID_TOLERANCE 5
 #define MAX_SPEED 127
 #define MIN_SPEED 40
-#define MIN_MOTOR_SPD 20
+#define MIN_OP_SPD 20
 
 typedef struct {
   bool canMove;
@@ -63,8 +63,8 @@ void driveF(int spd) {
 // modifies: null
 // affects:  lets operator control the drive train
 void OPDrive() {
-  driveL(abs(TANK_CONTORL_LEFT)  > MIN_MOTOR_SPD ? TANK_CONTORL_LEFT  : 0);
-  driveR(abs(TANK_CONTORL_RIGHT) > MIN_MOTOR_SPD ? TANK_CONTORL_RIGHT : 0);
+  driveL(abs(TANK_CONTORL_LEFT)  > MIN_OP_SPD ? TANK_CONTORL_LEFT  : 0);
+  driveR(abs(TANK_CONTORL_RIGHT) > MIN_OP_SPD ? TANK_CONTORL_RIGHT : 0);
 }
 
 // requires: task

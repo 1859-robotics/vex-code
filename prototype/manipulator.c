@@ -1,7 +1,8 @@
 #ifndef _PROTOTYPE_MANIPULATOR_
 #define _PROTOTYPE_MANIPULATOR_
 
-#define MANIPULATOR_DIST 1650
+#define MANIPULATOR_DIST 1600
+#define MANIPULATOR_END_DIST 1300
 
 
 
@@ -39,12 +40,13 @@ task manipulate_() {
 
   SetMotor(MANIPULATOR, 127 * manipulator.dir);
 
+  while(MANIPULATOR_END_DIST > fabs(EncoderGetValue(MANIPULATOR))) {}
+  manipulator.canMove = true;
   while(MANIPULATOR_DIST > fabs(EncoderGetValue(MANIPULATOR))) {}
 
   SetMotor(MANIPULATOR, 0);
 
 
-  manipulator.canMove = true;
   manipulator.dir = 0;
 
 

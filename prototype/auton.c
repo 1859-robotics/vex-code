@@ -149,4 +149,48 @@ void autonLeft22() {
 
   writeDebugStream("end \n")
 }
+
+void skills() {
+  resetEncoders();
+  core(100, false);
+  manipulate(1, false);
+  swerveLeftGyro(-50);
+  moveCenter(850, 127, true);
+  moveCenter(270, 40, true);
+  manipulate(-1, true); // pick up MB
+  core(-100, false);
+  claw(500, true); // put cone on base
+  core(100, false);
+  moveCenter(1200, -127, true);
+  swerveRightGyro(-50);
+  moveCenter(100, -127, true);
+  turn(-90);
+  moveCenter(50, 127, false)
+  manipulate(1, true); // put MB in 10pt zone
+  moveCenter(100, -127, true);
+  turn(180);
+  moveCenter(400, 127, true);
+  manipulate(-1, true); // pick up 2nd MB
+  moveCenter(650, -127, true);
+  turn(-90);
+  moveCenter(350, -127, true);
+  turn(-90);
+  moveCenter(500, 127, false);
+  manipulate(1, true); // put MB in 20pt zone
+  moveCenter(350, -127, true);
+  turn(-90);
+  moveCenter(300, 127, true);
+  SensorValue[GYRO_PORT] = 0;
+  turn(-90);
+  moveCenter(500, 127, true);
+  manipulate(-1, true); // pick up 3rd MB
+  moveCenter(350, -127, true);
+  turn(180);
+  moveCenter(100, 127, false);
+  manipulate(1, true);
+  moveCenter(200, -127, false);
+
+}
+
+
 #endif
