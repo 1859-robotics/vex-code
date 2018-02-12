@@ -89,7 +89,7 @@ void flip(int flipAmt, int flipSpd, bool waitForEnd) {
 task claw_() {
   SetMotor(LIFT_CLAW, 127 * (sgn(lift.clawAmt)));
 
-  wait1Msec(abs(lift.clawAmt))
+  wait1Msec(abs(lift.clawAmt));
 
   SetMotor(LIFT_CLAW, 0);
 

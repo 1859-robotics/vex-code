@@ -38,8 +38,8 @@ void pidInit (PID pid, float fKP, float fKI, float fKD,
 	pid.m_fSigma = 0;
 	pid.m_fLastValue = 0;
 	pid.m_uliLastTime = nPgmTime;
-  pid.m_fMaxSpeed = fMaxSpeed
-  pid.m_fMinSpeed = fMinSpeed
+  pid.m_fMaxSpeed = fMaxSpeed;
+  pid.m_fMinSpeed = fMinSpeed;
 }
 
 float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {

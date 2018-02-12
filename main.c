@@ -52,12 +52,9 @@
 
 
 void pre_auton() {
-  // smart motor application
-  // TODO: cut down smartmotorlib bulk. disallow 292, etc.
-
   bStopTasksBetweenModes = true;
 
-  clearDebugStream()
+  clearDebugStream();
 
   // initialization of all the components of the bot
   lcdInit();

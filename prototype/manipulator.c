@@ -2,7 +2,7 @@
 #define _PROTOTYPE_MANIPULATOR_
 
 #define MANIPULATOR_DIST 1600
-#define MANIPULATOR_END_DIST 1300
+#define MANIPULATOR_END_DIST 1600
 
 
 
@@ -10,6 +10,7 @@ typedef struct {
 
   bool canMove;
   int dir;
+  int amt;
 
 } Manipulator;
 
@@ -30,7 +31,7 @@ void maniplulatorInit() {
 void OPManipulate() {
 
     SetMotor(MANIPULATOR,
-             MANIPULATOR_UP ? 100 : MANIPULATOR_DOWN ? -100 : MANIPULATOR_DOWN_FAST ? 127 : 0);
+             MANIPULATOR_UP ? 100 : MANIPULATOR_DOWN ? -100 : MANIPULATOR_DOWN_FAST ? 127 : MANIPULATOR_UP_FAST ? -127 : 0);
 
 
 }
@@ -40,9 +41,8 @@ task manipulate_() {
 
   SetMotor(MANIPULATOR, 127 * manipulator.dir);
 
-  while(MANIPULATOR_END_DIST > fabs(EncoderGetValue(MANIPULATOR))) {}
+  while(manipulator.amt > fabs(EncoderGetValue(MANIPULATOR))) {}
   manipulator.canMove = true;
-  while(MANIPULATOR_DIST > fabs(EncoderGetValue(MANIPULATOR))) {}
 
   SetMotor(MANIPULATOR, 0);
 
@@ -60,11 +60,26 @@ void manipulate(int dir, bool waitForEnd) {
 
   manipulator.canMove = false;
   manipulator.dir = dir;
+  manipulator.amt = MANIPULATOR_DIST;
 
   startTask(manipulate_);
 
   while(waitForEnd && !manipulator.canMove) {
-    writeDebugStream("waiting\n")
+    writeDebugStream("waiting\n");
+  }
+}
+
+void manipulate(int dir, bool waitForEnd, int amt) {
+  while(!manipulator.canMove){};
+
+  manipulator.canMove = false;
+  manipulator.dir = dir;
+  manipulator.amt = amt;
+
+  startTask(manipulate_);
+
+  while(waitForEnd && !manipulator.canMove) {
+    writeDebugStream("waiting\n");
   }
 }
 
