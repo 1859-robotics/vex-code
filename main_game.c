@@ -39,7 +39,7 @@
 
 // external file includes
 #include "./prototype/util.c"
-#include "./prototype/joystick_defines.c"
+#include "./prototype/joystick_defines_game.c"
 #include "./prototype/pid.c"
 #include "./prototype/gyro.c"
 #include "./prototype/drive.c"

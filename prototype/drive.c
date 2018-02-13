@@ -7,7 +7,7 @@
 #define MIN_SPEED 30
 #define MIN_SPEED_TURN 35
 #define MIN_OP_SPD 20
-#define SLOW_DOWN_SPD 35
+#define SLOW_DOWN_SPD 30
 #define SLOW_DOWN_TIME_S 200
 #define SLOW_DOWN_TIME_N 300
 

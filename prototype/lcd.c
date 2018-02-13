@@ -117,8 +117,8 @@ void runAuton() {
   displayLCDCenteredString(0, panes[lcd.active].lines[0]);
   if(panes[lcd.active].data == 0) {
     // auton6Stat();
-    skills();
-    // autonRight9();
+    // skills();
+    autonRight9();
   } else if(panes[lcd.active].data == 1) {
     autonLeft9();
   } else if(panes[lcd.active].data == 2) {
@@ -129,9 +129,7 @@ void runAuton() {
 
   } else {
     displayLCDCenteredString(0, "somehting's screwy");
-
   }
-
 }
 
 

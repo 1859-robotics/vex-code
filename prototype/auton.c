@@ -72,7 +72,7 @@ void autonRight9() {
   moveCenter(720, -127, false);
   claw(-300, true); // pick up next cone
   while(!drive.canMove) {}
-  core(-100, true);
+  core(-100, false);
   claw(500, true); // put next cone on base
   core(200, false);
   turn(160);
@@ -169,7 +169,7 @@ void skills() {
   manipulator.canMove = true;
   manipulate(1, false); // put 1st MB in 2pt zone
   moveCenter(500, 127, true);
-  moveCenter(-400);
+  moveCenter(-500);
   turn(-90);
   moveCenter(450);
   turn(-95);
@@ -183,21 +183,22 @@ void skills() {
   turn(5);
   moveCenter(-1050);
   SensorValue[GYRO_PORT] = 0;
-  turn(95);
+  turn(90);
   moveCenter(1000);
   manipulate(-1, true); // pick up 3rd MB
   turn(-95);
   moveCenter(700);
   manipulate(1, false); // put 3rd MB in 10pt zone
-  moveCenter(400);
+  moveCenter(500);
   moveCenter(-300);
-  turn(190);
+  turn(180);
   moveCenter(1300);
   manipulate(-1, false); // pick up 4th MB
-  moveCenter(1300);
+  moveCenter(1400);
   turn(3);
   manipulate(1, true); // put 4th MB in 10pt zone
-  moveCenter(-300);
+  moveCenter(-1000);
+  turn(90);
 
 }
 
