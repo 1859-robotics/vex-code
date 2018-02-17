@@ -20,9 +20,7 @@ void autonRight22() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  swerveLeftGyro(-48);
-  moveCenter(850, 127, true);
-  moveCenter(270, 40, true);
+  moveCenter(1500);
   manipulate(-1, true); // pick up MB
   moveCenter(30, 40, true);
   drive.canMove = false;
@@ -40,13 +38,13 @@ void autonRight22() {
   claw(500, true); // put next cone on base
   core(200, false);
   swerveRightGyro(-48);
-  moveCenter(300, -127, true);
+  moveCenter(350, -127, true);
   manipulator.canMove = false;
   turn(-90);
   manipulator.canMove = true;
   manipulate(1, false);
-  moveCenter(600, 100, true);
-  moveCenter(500, -127, true);
+  moveCenter(600, 80, true);
+  moveCenter(500, -100, true);
   manipulate(-1, true);
 
   writeDebugStream("end \n");
@@ -56,27 +54,34 @@ void autonRight9() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  swerveLeftGyro(-48);
-  moveCenter(850, 127, true);
-  moveCenter(270, 40, true);
-  manipulate(-1, true); // pick up MB
-  moveCenter(30, 40, true);
+  wait1Msec(500)
+  moveCenter(1400);
+  manipulate(-1, false); // pick up MB
+  moveCenter(160);
   drive.canMove = false;
-  core(-100, true);
-  claw(500, true); // put cone on base
+  while(!manipulator.canMove) {}
+  core(-120, true);
+  claw(600, true); // put cone on MB
   flip(650, -1, true);
-  claw(-750, true); // pick up next cone
+  claw(-600, true); // pick up next cone
   core(100, true);
   flip(650, 1, true);
+  claw(600, false); // put cone on MB
+  moveCenter(350);
+  flip(650, -1, true);
+  core(-100, true);
+  claw(-600, true); // pick up next cone
+  core(200, true);
+  flip(650, 1, true);
   drive.canMove = true;
-  moveCenter(720, -127, false);
-  claw(-300, true); // pick up next cone
+  moveCenter(-1500);
+  // claw(-300, false); // pick up next cone
   while(!drive.canMove) {}
   core(-100, false);
   claw(500, true); // put next cone on base
   core(200, false);
-  turn(160);
-  manipulate(1, true); // pick up MB
+  manipulate(1, false); // pick up MB
+  turn(-110);
   moveCenter(220, -127, true);
   manipulate(-1, true);
 
@@ -87,30 +92,38 @@ void autonRight9() {
 void autonLeft9() {
   resetEncoders();
   core(100, false);
-  manipulate(1, true);
-  swerveRightGyro(48);
-  moveCenter(850, 127, true);
-  moveCenter(300, 40, true);
-  manipulate(-1, true); // pick up MB
-  moveCenter(30, 40, true);
+  manipulate(1, false);
+  wait1Msec(500)
+  moveCenter(1400);
+  manipulate(-1, false); // pick up MB
+  moveCenter(160);
   drive.canMove = false;
-  core(-100, true);
-  claw(500, true); // put cone on base
+  while(!manipulator.canMove) {}
+  core(-120, true);
+  claw(600, true); // put cone on MB
   flip(650, -1, true);
-  claw(-750, true); // pick up next cone
+  claw(-600, true); // pick up next cone
   core(100, true);
   flip(650, 1, true);
-  drive.canMove = true;
-  moveCenter(720, -127, false);
-  claw(-300, true); // pick up next cone
-  while(!drive.canMove) {}
+  claw(600, false); // put cone on MB
+  moveCenter(370);
+  flip(650, -1, true);
   core(-100, true);
+  claw(-600, true); // pick up next cone
+  core(200, true);
+  flip(650, 1, true);
+  drive.canMove = true;
+  moveCenter(-1500);
+  // claw(-300, false); // pick up next cone
+  while(!drive.canMove) {}
+  core(-100, false);
   claw(500, true); // put next cone on base
   core(200, false);
-  turn(-160);
-  manipulate(1, true); // pick up MB
+  manipulate(1, false); // pick up MB
+  turn(110);
   moveCenter(220, -127, true);
   manipulate(-1, true);
+
 
 }
 
@@ -118,11 +131,10 @@ void autonLeft22() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  swerveRightGyro(48);
-  moveCenter(850, 127, true);
-  moveCenter(270, 40, true);
+  wait1Msec(200)
+  moveCenter(1500);
   manipulate(-1, true); // pick up MB
-  moveCenter(30, 40, true);
+  moveCenter(90, 40, true);
   drive.canMove = false;
   core(-100, true);
   claw(500, true); // put cone on base
@@ -137,14 +149,14 @@ void autonLeft22() {
   core(-100, true);
   claw(500, true); // put next cone on base
   core(200, false);
-  swerveLeftGyro(-48);
-  moveCenter(300, -127, true);
+  swerveLeftGyro(48);
+  moveCenter(350, -127, true);
   manipulator.canMove = false;
   turn(90);
   manipulator.canMove = true;
   manipulate(1, false);
-  moveCenter(600, 100, true);
-  moveCenter(500, -127, true);
+  moveCenter(600, 80, true);
+  moveCenter(500, -100, true);
   manipulate(-1, true);
 
   writeDebugStream("end \n");
@@ -152,14 +164,13 @@ void autonLeft22() {
 
 void skills() {
   resetEncoders();
-  resetEncoders();
   core(100, false);
   manipulate(1, false);
   wait1Msec(500);
   moveCenter(1500);
   manipulate(-1, true); // pick up MB
-  core(-100, false);
   moveCenter(-1500);
+  core(-100, false);
   claw(500, false); // put cone on base
   turn(50);
   core(100, false);
@@ -167,17 +178,18 @@ void skills() {
   manipulator.canMove = false;
   turn(95);
   manipulator.canMove = true;
-  manipulate(1, false); // put 1st MB in 2pt zone
+  manipulate(1, false); // put 1st MB in 20pt zone
   moveCenter(500, 127, true);
   moveCenter(-500);
   turn(-90);
   moveCenter(450);
-  turn(-95);
-  moveCenter(650, 127, true);
-  manipulate(-1, true); // pick up 2nd MB
-  moveCenter(-900);
+  turn(-90);
+  moveCenter(700, 127, true);
+  manipulate(-1, false); // pick up 2nd MB
+  while(900 > fabs(EncoderGetValue(MANIPULATOR))) {}
   SensorValue[GYRO_PORT] = 0;
-  turn(190);
+  turn(185);
+  moveCenter(900);
   manipulate(1, false); // put 2nd MB in 10pt zone
   moveCenter(300);
   turn(5);
@@ -194,12 +206,21 @@ void skills() {
   turn(180);
   moveCenter(1300);
   manipulate(-1, false); // pick up 4th MB
-  moveCenter(1400);
-  turn(3);
-  manipulate(1, true); // put 4th MB in 10pt zone
+  moveCenter(1500);
+  manipulate(1, false); // put 4th MB in 10pt zone
+  while(700 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(-1000);
   turn(90);
-
+  moveCenter(1000);
+  manipulate(-1, false); // put 4th MB in 10pt zone
+  while(900 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  SensorValue[GYRO_PORT] = 0;
+  turn(110);
+  moveCenter(400);
+  turn(90);
+  manipulate(1, false); // put 1st MB in 20pt zone
+  moveCenter(500, 127, true);
+  moveCenter(-500);
 }
 
 void auton6Stat() {
@@ -207,29 +228,26 @@ void auton6Stat() {
   pidInit(slow, 2, 0, 0.15, 2, 20.0, MIN_SPEED, 80);
   resetEncoders();
   core(400, false);
-  moveCenter(60, 60, true);
-  swerveRightGyro(43);
-  moveCenter(40, 60, false);
+  moveCenter(400);
   flip(550, -1, true);
   core(-100, true);
   claw(500, true); // put preload on stationary goal
   core(150, true);
   flip(550, 1, true);
-  turn(-86, slow); // turn to face 2nd cone
-  moveCenter(60, 40, true);
+  turn(-90, slow); // turn to face 2nd cone
   flip(550, -1, true);
   core(-500, true);
   claw(-750, true); // pick up 2nd cone
   flip(550, 1, true);
-  moveCenter(60, -40, true);
-  claw(-750, false);
-  core(500, true);
-  turn(90, slow);
-  moveCenter(80, 60, true);
-  flip(550, -1, true);
-  claw(500, true); // put 2nd cone on stationary goal
-  core(100, false);
-  flip(550, 1, true);
+  // moveCenter(60, -40, true);
+  // claw(-750, false);
+  // core(500, true);
+  // turn(90, slow);
+  // moveCenter(80, 60, true);
+  // flip(550, -1, true);
+  // claw(500, true); // put 2nd cone on stationary goal
+  // core(100, false);
+  // flip(550, 1, true);
 
 
 

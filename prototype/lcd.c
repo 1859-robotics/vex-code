@@ -13,8 +13,8 @@
 
 // the names of the auton programs
 const string LCD_STRINGS[AUTON_NUMBER] = { "RIGHT 9",  "LEFT 9",
-                                           "RIGHT 22",  "LEFT 22",
-                                           "SKILLS" };
+                                           "RIGHT 24",  "LEFT 24",
+                                           "STATIONARY"};
 
 
 
@@ -116,9 +116,7 @@ void runAuton() {
   // so we are left with this mess
   displayLCDCenteredString(0, panes[lcd.active].lines[0]);
   if(panes[lcd.active].data == 0) {
-    // auton6Stat();
-    // skills();
-    autonRight9();
+    autonLeft9();
   } else if(panes[lcd.active].data == 1) {
     autonLeft9();
   } else if(panes[lcd.active].data == 2) {
@@ -126,7 +124,7 @@ void runAuton() {
   } else if(panes[lcd.active].data == 3) {
     autonLeft22();
   } else if(panes[lcd.active].data == 4) {
-
+    auton6Stat();
   } else {
     displayLCDCenteredString(0, "somehting's screwy");
   }

@@ -86,7 +86,8 @@ task usercontrol() {
   startTask(taskOPCmanipulate);
   startTask(taskOPClift);
 
-  /* a while loop so the program does not end prematurely
+  /*
+   * a while loop so the program does not end prematurely
    * the wait in order for the program to run all of its background tasks
    */
   while (true) {

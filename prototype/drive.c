@@ -1,7 +1,7 @@
 #ifndef _PROTOTYPE_DRIVE_
 #define _PROTOTYPE_DRIVE_
 
-#define PID_TOLERANCE 6
+#define PID_TOLERANCE 3
 #define ENCODER_PID_TOLERANCE 150
 #define MAX_SPEED 127
 #define MIN_SPEED 30

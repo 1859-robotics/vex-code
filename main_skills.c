@@ -68,7 +68,7 @@ void pre_auton() {
 }
 
 task autonomous() {
-
+  skills();
 }
 
 
