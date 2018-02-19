@@ -5,7 +5,7 @@
 #define ENCODER_PID_TOLERANCE 150
 #define MAX_SPEED 127
 #define MIN_SPEED 30
-#define MIN_SPEED_TURN 35
+#define MIN_SPEED_TURN 37
 #define MIN_OP_SPD 20
 #define SLOW_DOWN_SPD 30
 #define SLOW_DOWN_TIME_S 200

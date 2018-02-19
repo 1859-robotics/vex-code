@@ -5,7 +5,7 @@
 #define GYRO_STD_DEVS 2
 
 //points or time in mSec that the gyro calibrates for
-#define GYRO_CALIBRATION_POINTS 2000
+#define GYRO_CALIBRATION_POINTS 1
 
 struct SGyroConfig{
 	float m_fStdDev;
@@ -52,7 +52,7 @@ void gyroCalibrate(Gyro gyro) {
 
 void gyroInit(Gyro gyro, int iPortNum) {
 	gyro.m_iPortNum = iPortNum;
-	
+
 	SensorType[iPortNum] = sensorNone;
 	wait1Msec(1000);
 	SensorType[iPortNum] = sensorGyro;
