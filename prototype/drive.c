@@ -158,7 +158,7 @@ void moveCenter(int amt, int spd, bool waitForEnd) {
 }
 
 void moveCenter(float fTarget) {
-  fTarget *= -1
+  fTarget *= -1;
   if(abs(fTarget) < 40)
     pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
   else
@@ -167,9 +167,9 @@ void moveCenter(float fTarget) {
   long liAtTargetTime = nPgmTime;
   long liTimer = nPgmTime;
   float fEncoderVal = 0;
-  float fStartMin = SLOW_DOWN_TIME_N
+  float fStartMin = SLOW_DOWN_TIME_N;
   if(fTarget < 400) {
-    fStartMin = SLOW_DOWN_TIME_S
+    fStartMin = SLOW_DOWN_TIME_S;
   }
   EncoderSetValue(LB_DRIVE, 0);
   EncoderSetValue(RB_DRIVE, 0);
@@ -186,12 +186,12 @@ void moveCenter(float fTarget) {
     //Calculate the output of the PID controller and output to drive motors
     float driveOut = pidCalculate(drive.gyroPID, fTarget, fEncoderVal);
     if(abs(nPgmTime - liTimer) < SLOW_DOWN_TIME_N) {
-      driveOut = 40 * sgn(fTarget)
+      driveOut = 40 * sgn(fTarget);
     }
     writeDebugStream("driveOut %f\n", driveOut);
 
     if(abs(fTarget - fEncoderVal) < fStartMin) {
-      driveOut = SLOW_DOWN_SPD * sgn(driveOut)
+      driveOut = SLOW_DOWN_SPD * sgn(driveOut);
     }
     driveF(-driveOut);
 
@@ -242,7 +242,7 @@ void swerveRightGyro(float fTarget, PID pid) {
 		float driveOut = pidCalculate(drive.gyroPID, fTarget, fGyroAngle);
 		driveR(driveOut);
     driveL(-driveOut / 10);
-    writeDebugStream("hi")
+    writeDebugStream("hi");
 		//Stop the turn function when the angle has been within 3 degrees of the desired angle for 350ms
 		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE)
 			liAtTargetTime = nPgmTime;
@@ -304,9 +304,9 @@ void swerveRightGyro(float fTarget) {
   float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
 
 	while(!bAtGyro) {
-		//Calculate the delta time from the last iteration of the loop
-		float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
-		//Reset loop timer
+		// Calculate the delta time from the last iteration of the loop
+		// float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
+		// Reset loop timer
 		liTimer = nPgmTime;
 
 		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;

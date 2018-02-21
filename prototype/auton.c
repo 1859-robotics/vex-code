@@ -54,7 +54,7 @@ void autonRight9() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  wait1Msec(500)
+  wait1Msec(500);
   moveCenter(1400);
   manipulate(-1, false); // pick up MB
   moveCenter(160);
@@ -93,7 +93,7 @@ void autonLeft9() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  wait1Msec(500)
+  wait1Msec(500);
   moveCenter(1400);
   manipulate(-1, false); // pick up MB
   moveCenter(160);
@@ -131,7 +131,7 @@ void autonLeft22() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  wait1Msec(200)
+  wait1Msec(200);
   moveCenter(1500);
   manipulate(-1, true); // pick up MB
   moveCenter(90, 40, true);
