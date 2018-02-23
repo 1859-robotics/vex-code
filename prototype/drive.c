@@ -5,7 +5,7 @@
 #define ENCODER_PID_TOLERANCE 150
 #define MAX_SPEED 127
 #define MIN_SPEED 30
-#define MIN_SPEED_TURN 37
+#define MIN_SPEED_TURN 45
 #define MIN_OP_SPD 20
 #define SLOW_DOWN_SPD 30
 #define SLOW_DOWN_TIME_S 200
@@ -159,9 +159,9 @@ void moveCenter(int amt, int spd, bool waitForEnd) {
 
 void moveCenter(float fTarget) {
   fTarget *= -1
-  if(abs(fTarget) < 40)
-    pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
-  else
+  // if(abs(fTarget) < 40)
+  //   pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
+  // else
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
   bool bAtTarget = false;
   long liAtTargetTime = nPgmTime;
@@ -254,9 +254,9 @@ void swerveRightGyro(float fTarget, PID pid) {
 }
 
 void swerveLeftGyro(float fTarget) {
-  if(abs(fTarget) < 50)
-		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
-  else
+  // if(abs(fTarget) < 50)
+	// 	pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
+  // else
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 
 	bool bAtGyro = false;
@@ -292,9 +292,9 @@ void swerveLeftGyro(float fTarget) {
 }
 
 void swerveRightGyro(float fTarget) {
-  if(abs(fTarget) < 50)
-		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
-  else
+  // if(abs(fTarget) < 50)
+	// 	pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
+  // else
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
 
 	bool bAtGyro = false;
@@ -364,9 +364,9 @@ void swerveLeftGyro(float fTarget, PID pid) {
 }
 
 void turn(float fTarget) {
-	if(abs(fTarget) < 40)
-		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED_TURN, MAX_SPEED);
-  else
+	// if(abs(fTarget) < 40)
+	// 	pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED_TURN, MAX_SPEED);
+  // else
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED_TURN, MAX_SPEED);
 
 	bool bAtGyro = false;
