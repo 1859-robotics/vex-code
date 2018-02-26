@@ -202,10 +202,10 @@ void skills() {
   moveCenter(-200);
   SensorValue[GYRO_PORT] = 0;
   turn(90);
-  moveCenter(325);
+  moveCenter(300);
   manipulate(1, false, 800);
   SensorValue[GYRO_PORT] = 0;
-  turn(47);
+  turn(45);
   moveCenter(1100);
   manipulate(-1, true); // pick up 4th MB
   moveCenter(-1500);
@@ -216,13 +216,13 @@ void skills() {
   manipulator.canMove = true;
   manipulate(1, false); // put 4th MB in 20pt zone
   moveCenter(500, 127, true);
-  moveCenter(-500);
+  moveCenter(-600);
   turn(-170);
   moveCenter(600, 127, true);
   manipulate(-1, false); // pick up 5th MB
   while(1200 > fabs(EncoderGetValue(MANIPULATOR))) {}
   SensorValue[GYRO_PORT] = 0;
-  turn(-170);
+  turn(-180);
   moveCenter(500);
   manipulate(1, false); // put 5th MB in 10pt zone
   moveCenter(500, 127, true);

@@ -2,10 +2,6 @@
 #define _PROTOTYPE_PID_
 
 
-
-
-
-
 typedef struct{
 
   float m_fKP;

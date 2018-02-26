@@ -5,7 +5,6 @@
 #define MANIPULATOR_END_DIST 1600
 
 
-
 typedef struct {
 
   bool canMove;
@@ -32,7 +31,6 @@ void OPManipulate() {
 
     SetMotor(MANIPULATOR,
              MANIPULATOR_UP ? 100 : MANIPULATOR_DOWN ? -100 : MANIPULATOR_DOWN_FAST ? 127 : MANIPULATOR_UP_FAST ? -127 : 0);
-
 
 }
 
