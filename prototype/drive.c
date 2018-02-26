@@ -5,7 +5,7 @@
 #define ENCODER_PID_TOLERANCE 150
 #define MAX_SPEED 127
 #define MIN_SPEED 30
-#define MIN_SPEED_TURN 45
+#define MIN_SPEED_TURN 40
 #define MIN_OP_SPD 20
 #define SLOW_DOWN_SPD 30
 #define SLOW_DOWN_TIME_S 200
@@ -159,9 +159,9 @@ void moveCenter(int amt, int spd, bool waitForEnd) {
 
 void moveCenter(float fTarget) {
   fTarget *= -1
-  // if(abs(fTarget) < 40)
-  //   pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
-  // else
+  if(abs(fTarget) < 200)
+    pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
+  else
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
   bool bAtTarget = false;
   long liAtTargetTime = nPgmTime;
@@ -174,25 +174,15 @@ void moveCenter(float fTarget) {
   EncoderSetValue(LB_DRIVE, 0);
   EncoderSetValue(RB_DRIVE, 0);
   while(!bAtTarget) {
-    //Calculate the delta time from the last iteration of the loop
-    // float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
-    //Reset loop timer
 
-    // fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
     fEncoderVal = (EncoderGetValue(LB_DRIVE) + EncoderGetValue(RB_DRIVE)) / 2;
-    writeDebugStream("fEncoderVal: %f\n", fEncoderVal);
-    writeDebugStream("abs(fTarget - fEncoderVal): %f\n", abs(fTarget - fEncoderVal));
 
     //Calculate the output of the PID controller and output to drive motors
     float driveOut = pidCalculate(drive.gyroPID, fTarget, fEncoderVal);
-    if(abs(nPgmTime - liTimer) < SLOW_DOWN_TIME_N) {
-      driveOut = 40 * sgn(fTarget);
-    }
-    writeDebugStream("driveOut %f\n", driveOut);
-
     if(abs(fTarget - fEncoderVal) < fStartMin) {
       driveOut = SLOW_DOWN_SPD * sgn(driveOut);
     }
+
     driveF(-driveOut);
 
     if(abs(fTarget - fEncoderVal) > ENCODER_PID_TOLERANCE) {
@@ -364,10 +354,10 @@ void swerveLeftGyro(float fTarget, PID pid) {
 }
 
 void turn(float fTarget) {
-	// if(abs(fTarget) < 40)
-	// 	pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED_TURN, MAX_SPEED);
-  // else
-    pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED_TURN, MAX_SPEED);
+	if(abs(fTarget) < 40)
+		pidInit(drive.gyroPID, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED_TURN, MAX_SPEED);
+  else
+    pidInit(drive.gyroPID, 2.0, 0.0, 0.15, 2.0, 20.0, MIN_SPEED_TURN, MAX_SPEED);
 
 	bool bAtGyro = false;
 	long liAtTargetTime = nPgmTime;

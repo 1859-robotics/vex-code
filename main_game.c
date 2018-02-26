@@ -52,7 +52,7 @@
 
 void pre_auton() {
   bStopTasksBetweenModes = true;
-
+  
   clearDebugStream();
 
   // initialization of all the components of the bot
