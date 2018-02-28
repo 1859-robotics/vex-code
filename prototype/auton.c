@@ -173,24 +173,26 @@ void skills() {
   moveCenter(-1400);
   core(-100, false);
   claw(500, false); // put cone on base
-  turn(50);
+  SensorValue[GYRO_PORT] = 0;
+  turn(-135);
   core(100, false);
-  moveCenter(-400);
+  moveCenter(500);
   manipulator.canMove = false;
-  turn(100);
+  turn(-80);
   manipulator.canMove = true;
   manipulate(1, false); // put 1st MB in 20pt zone
   moveCenter(500, 127, true);
-  moveCenter(-600);
+  moveCenter(-550);
+  SensorValue[GYRO_PORT] = 0;
   turn(-170);
-  moveCenter(600);
+  moveCenter(700);
   manipulate(-1, false); // pick up 2nd MB
   while(1200 > fabs(EncoderGetValue(MANIPULATOR))) {}
   turn(170);
   manipulate(1, false); // put 2nd MB in 10pt zone
   moveCenter(850);
   manipulate(-1, false, 600);
-  moveCenter(-950);
+  moveCenter(-850);
   SensorValue[GYRO_PORT] = 0;
   turn(185);
   manipulate(1, false, 600);
@@ -208,7 +210,7 @@ void skills() {
   turn(45);
   moveCenter(1100);
   manipulate(-1, true); // pick up 4th MB
-  moveCenter(-1500);
+  moveCenter(-1400);
   turn(-45);
   moveCenter(-750);
   manipulator.canMove = false;
@@ -217,26 +219,26 @@ void skills() {
   manipulate(1, false); // put 4th MB in 20pt zone
   moveCenter(500, 127, true);
   moveCenter(-600);
-  turn(-170);
+  turn(-175);
   moveCenter(600, 127, true);
   manipulate(-1, false); // pick up 5th MB
   while(1200 > fabs(EncoderGetValue(MANIPULATOR))) {}
   SensorValue[GYRO_PORT] = 0;
-  turn(-180);
-  moveCenter(500);
-  manipulate(1, false); // put 5th MB in 10pt zone
-  moveCenter(500, 127, true);
-  manipulate(-1, false);
-  moveCenter(-450);
-  SensorValue[GYRO_PORT] = 0;
-  turn(183);
-  manipulate(1, false);
-  moveCenter(-200);
-  moveCenter(1300);
-  manipulate(-1, false, 600);
-  moveCenter(1600);
-  manipulate(1, false, 600);
-  moveCenter(-300);
+  turn(-190);
+  // moveCenter(500);
+  // manipulate(1, false); // put 5th MB in 10pt zone
+  // moveCenter(500, 127, true);
+  // manipulate(-1, false);
+  // moveCenter(-450);
+  // SensorValue[GYRO_PORT] = 0;
+  // turn(183);
+  // manipulate(1, false);
+  // moveCenter(-200);
+  // moveCenter(1300);
+  // manipulate(-1, false, 600);
+  // moveCenter(1600);
+  // manipulate(1, false, 600);
+  // moveCenter(-300);
 }
 
 void auton6Stat() {
