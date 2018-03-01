@@ -14,23 +14,26 @@ resetEncoders();
 ## Lift
 ### core
 ```cpp
-core(int amt, bool wait);
+core(int amt, int dir, bool wait);
 // (void) moves the core lift
-// amt (int): amount to move; positive to move up, negative to move down
+// amt (int): amount to move
+// dir (int): positive to move up, negative to move down
 // wait (bool): determines if the action will finish before continuing the program
 ```
 ### claw
 ```cpp
-claw(int amt, bool wait);
+claw(int amt, int dir, bool wait);
 // (void) moves the claw
-// amt (int): number of sec to move; positive to outtake, negative to intake
+// amt (int): number of sec to move;
+// dir (int): positive to outtake, negative to intake
 // wait (bool): determines if the action will finish before continuing the program
 ```
 ### flip
 ```cpp
-flip(int amt, bool wait);
+flip(int amt, int dir, bool wait);
 // (void) moves the flip; negative to outtake, positive to intake
-// amt (int): positive to move up, negative to move down
+// amt (int): amount to move
+// dir (int): positive to move up, negative to move down
 // wait (bool): determines if the action will finish before continuing the program
 ```
 ---
