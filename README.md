@@ -26,10 +26,10 @@ claw(int amt, bool wait);
 // amt (int): number of sec to move; positive to outtake, negative to intake
 // wait (bool): determines if the action will finish before continuing the program
 ```
-### claw
+### flip
 ```cpp
-claw(int amt, bool wait);
-// (void) moves the claw
+flip(int amt, bool wait);
+// (void) moves the flip; negative to outtake, positive to intake
 // amt (int): positive to move up, negative to move down
 // wait (bool): determines if the action will finish before continuing the program
 ```
