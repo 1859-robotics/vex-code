@@ -212,14 +212,14 @@ void skills() {
   manipulate(-1, true); // pick up 4th MB
   moveCenter(-1400);
   turn(-45);
-  moveCenter(-750);
+  moveCenter(-800);
   manipulator.canMove = false;
-  turn(-90);
+  turn(-80);
   manipulator.canMove = true;
   manipulate(1, false); // put 4th MB in 20pt zone
   moveCenter(500, 127, true);
   moveCenter(-600);
-  turn(-175);
+  turn(-170);
   moveCenter(600, 127, true);
   manipulate(-1, false); // pick up 5th MB
   while(1200 > fabs(EncoderGetValue(MANIPULATOR))) {}
