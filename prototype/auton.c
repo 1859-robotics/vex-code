@@ -1,6 +1,8 @@
 #ifndef _PROTOTYPE_AUTON_
 #define _PROTOTYPE_AUTON_
 
+#define FLIP_AMT 400
+
 // requires: null
 // modifies: null
 // affects:  all encoders are set to 0 for accurate readout
@@ -26,10 +28,10 @@ void autonRight22() {
   drive.canMove = false;
   core(-100, true);
   claw(500, true); // put cone on base
-  flip(650, -1, true);
+  flip(FLIP_AMT, -1, true);
   claw(-750, true); // pick up next cone
   core(100, true);
-  flip(650, 1, true);
+  flip(FLIP_AMT, 1, true);
   drive.canMove = true;
   moveCenter(720, -127, false);
   claw(-300, true); // pick up next cone
@@ -62,17 +64,17 @@ void autonRight9() {
   while(!manipulator.canMove) {}
   core(-120, true);
   claw(600, true); // put cone on MB
-  flip(650, -1, true);
+  flip(FLIP_AMT, -1, true);
   claw(-600, true); // pick up next cone
   core(100, true);
-  flip(650, 1, true);
+  flip(FLIP_AMT, 1, true);
   claw(600, false); // put cone on MB
   moveCenter(350);
-  flip(650, -1, true);
+  flip(FLIP_AMT, -1, true);
   core(-100, true);
   claw(-600, true); // pick up next cone
   core(200, true);
-  flip(650, 1, true);
+  flip(FLIP_AMT, 1, true);
   drive.canMove = true;
   moveCenter(-1500);
   // claw(-300, false); // pick up next cone
@@ -96,23 +98,24 @@ void autonLeft9() {
   wait1Msec(500);
   moveCenter(1400);
   manipulate(-1, false); // pick up MB
-  moveCenter(160);
+  moveCenter(200);
   drive.canMove = false;
   while(!manipulator.canMove) {}
   core(-120, true);
   claw(600, true); // put cone on MB
-  flip(650, -1, true);
-  claw(-600, true); // pick up next cone
+  flip(FLIP_AMT, -1, true);
+  claw(-700, true); // pick up next cone
   core(100, true);
-  flip(650, 1, true);
+  flip(FLIP_AMT, 1, true);
   claw(600, false); // put cone on MB
   moveCenter(370);
-  flip(650, -1, true);
+  flip(FLIP_AMT, -1, true);
   core(-100, true);
   claw(-600, true); // pick up next cone
   core(200, true);
-  flip(650, 1, true);
+  flip(FLIP_AMT, 1, true);
   drive.canMove = true;
+  claw(-600, false);
   moveCenter(-1500);
   // claw(-300, false); // pick up next cone
   while(!drive.canMove) {}
@@ -122,7 +125,6 @@ void autonLeft9() {
   manipulate(1, false); // pick up MB
   turn(110);
   moveCenter(220, -127, true);
-  manipulate(-1, true);
 
 
 }
@@ -138,10 +140,10 @@ void autonLeft22() {
   drive.canMove = false;
   core(-100, true);
   claw(500, true); // put cone on base
-  flip(650, -1, true);
+  flip(FLIP_AMT, -1, true);
   claw(-750, true); // pick up next cone
   core(100, true);
-  flip(650, 1, true);
+  flip(FLIP_AMT, 1, true);
   drive.canMove = true;
   moveCenter(720, -127, false);
   claw(-300, true); // pick up next cone
@@ -204,7 +206,7 @@ void skills() {
   moveCenter(-200);
   SensorValue[GYRO_PORT] = 0;
   turn(90);
-  moveCenter(300);
+  moveCenter(275);
   manipulate(1, false, 800);
   SensorValue[GYRO_PORT] = 0;
   turn(45);
@@ -225,14 +227,12 @@ void skills() {
   while(1200 > fabs(EncoderGetValue(MANIPULATOR))) {}
   SensorValue[GYRO_PORT] = 0;
   turn(-190);
-  // moveCenter(500);
-  // manipulate(1, false); // put 5th MB in 10pt zone
-  // moveCenter(500, 127, true);
-  // manipulate(-1, false);
+  manipulate(1, false, 400); // put 5th MB in 10pt zone
+  // moveCenter(1000, 127, true);
   // moveCenter(-450);
   // SensorValue[GYRO_PORT] = 0;
-  // turn(183);
-  // manipulate(1, false);
+  // turn(-190);
+  // manipulate(1, false, 100);
   // moveCenter(-200);
   // moveCenter(1300);
   // manipulate(-1, false, 600);
@@ -278,12 +278,12 @@ void auton6Stat() {
   // core(100, false);
   // moveCenter(200, -60, true)
   // core(-200, false);
-  // flip(650, -1, false);
+  // flip(FLIP_AMT, -1, false);
   // turn(-90);
   // moveCenter(60, 60, true)
   // core(-200, false);
   // claw(-500, true);
-  // flip(650, 1, false);
+  // flip(FLIP_AMT, 1, false);
 
 }
 

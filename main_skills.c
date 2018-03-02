@@ -2,6 +2,7 @@
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
 #pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    GYRO_PORT,      sensorGyro)
+#pragma config(Sensor, in2,    BATERY_2_PORT,  sensorAnalog)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_3,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
@@ -63,7 +64,12 @@ void pre_auton() {
   // allows the user to select autonomous
 
   clearLCD();
+  string level;
+  sprintf(level, "Primary %f%c", nImmediateBatteryLevel / 1000.0,'V');
+  displayLCDCenteredString(0, level);
 
+	sprintf(level, "pwr ex %f%c", ((float)SensorValue[ BATERY_2_PORT ] * 5.48),'V');
+  displayLCDCenteredString(1, level);
 }
 
 task autonomous() {

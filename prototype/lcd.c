@@ -118,7 +118,7 @@ void runAuton() {
   if(panes[lcd.active].data == 0) {
     autonLeft9();
   } else if(panes[lcd.active].data == 1) {
-    autonLeft9();
+    autonRight9();
   } else if(panes[lcd.active].data == 2) {
     autonRight22();
   } else if(panes[lcd.active].data == 3) {
