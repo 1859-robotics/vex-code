@@ -10,8 +10,8 @@
 #define CORE_LIFT_UP             vexRT[Btn6UXmtr2]
 #define CORE_LIFT_DOWN           vexRT[Btn6DXmtr2]
 
-#define LIFT_CLAW_UP             vexRT[Btn8D]
-#define LIFT_CLAW_DOWN           vexRT[Btn8R]
+#define LIFT_CLAW_UP             vexRT[Btn8DXmtr2]
+#define LIFT_CLAW_DOWN           vexRT[Btn8RXmtr2]
 
 #define MANIPULATOR_UP           vexRT[Btn7D]
 #define MANIPULATOR_DOWN         vexRT[Btn7L]
