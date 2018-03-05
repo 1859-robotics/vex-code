@@ -33,10 +33,8 @@
 #pragma platform(VEX2)
 #pragma competitionControl(Competition)
 
-// libs this is code i did not write
+// liberary code i did not write
 #include "Vex_Competition_Includes.c"
-// #include "./lib/SmartMotorLib.c"
-
 
 // external file includes
 #include "./prototype/util.c"

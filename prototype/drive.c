@@ -165,7 +165,6 @@ void moveCenter(float fTarget) {
     pidInit(drive.gyroPID, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
   bool bAtTarget = false;
   long liAtTargetTime = nPgmTime;
-  long liTimer = nPgmTime;
   float fEncoderVal = 0;
   float fStartMin = SLOW_DOWN_TIME_N;
   if(fTarget < 400) {
