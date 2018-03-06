@@ -22,31 +22,32 @@ void autonRight22() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(1500);
   manipulate(-1, true); // pick up MB
-  moveCenter(30, 40, true);
+  moveCenter(200);
   drive.canMove = false;
   core(-100, true);
   claw(500, true); // put cone on base
   flip(FLIP_AMT, -1, true);
-  claw(-750, true); // pick up next cone
+  claw(-1000, true); // pick up next cone
   core(100, true);
   flip(FLIP_AMT, 1, true);
   drive.canMove = true;
-  moveCenter(720, -127, false);
-  claw(-300, true); // pick up next cone
+  claw(-300, false); // pick up next cone
+  moveCenter(-1500);
   while(!drive.canMove) {}
   core(-100, true);
   claw(500, true); // put next cone on base
   core(200, false);
-  swerveRightGyro(-48);
-  moveCenter(350, -127, true);
+  turn(-45);
+  moveCenter(600);
   manipulator.canMove = false;
   turn(-90);
   manipulator.canMove = true;
   manipulate(1, false);
-  moveCenter(600, 80, true);
-  moveCenter(500, -100, true);
+  moveCenter(600, 127, true);
+  moveCenter(-500);
   manipulate(-1, true);
 
   writeDebugStream("end \n");
@@ -56,10 +57,10 @@ void autonRight9() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  wait1Msec(500);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(1400);
   manipulate(-1, false); // pick up MB
-  moveCenter(160);
+  moveCenter(200);
   drive.canMove = false;
   while(!manipulator.canMove) {}
   core(-120, true);
@@ -95,7 +96,7 @@ void autonLeft9() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  wait1Msec(500);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(1400);
   manipulate(-1, false); // pick up MB
   moveCenter(200);
@@ -133,10 +134,10 @@ void autonLeft22() {
   resetEncoders();
   core(100, false);
   manipulate(1, false);
-  wait1Msec(200);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(1500);
   manipulate(-1, true); // pick up MB
-  moveCenter(90, 40, true);
+  moveCenter(200);
   drive.canMove = false;
   core(-100, true);
   claw(500, true); // put cone on base
