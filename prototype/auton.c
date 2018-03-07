@@ -24,31 +24,31 @@ void autonRight22() {
   manipulate(1, false);
   while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(1500);
-  manipulate(-1, true); // pick up MB
+  manipulate(-1, false); // pick up MB
   moveCenter(200);
+  while(!manipulator.canMove) {}
   drive.canMove = false;
   core(-100, true);
   claw(500, true); // put cone on base
   flip(FLIP_AMT, -1, true);
-  claw(-1000, true); // pick up next cone
+  claw(-750, true); // pick up next cone
   core(100, true);
   flip(FLIP_AMT, 1, true);
   drive.canMove = true;
   claw(-300, false); // pick up next cone
   moveCenter(-1500);
   while(!drive.canMove) {}
-  core(-100, true);
-  claw(500, true); // put next cone on base
+  core(-100, false);
+  claw(500, false); // put next cone on base
+  turn(135);
   core(200, false);
-  turn(-45);
   moveCenter(600);
   manipulator.canMove = false;
-  turn(-90);
+  turn(90);
   manipulator.canMove = true;
   manipulate(1, false);
   moveCenter(600, 127, true);
   moveCenter(-500);
-  manipulate(-1, true);
 
   writeDebugStream("end \n");
 }
@@ -60,7 +60,7 @@ void autonRight9() {
   while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(1400);
   manipulate(-1, false); // pick up MB
-  moveCenter(200);
+  moveCenter(250);
   drive.canMove = false;
   while(!manipulator.canMove) {}
   core(-120, true);
@@ -70,7 +70,7 @@ void autonRight9() {
   core(100, true);
   flip(FLIP_AMT, 1, true);
   claw(600, false); // put cone on MB
-  moveCenter(350);
+  moveCenter(225);
   flip(FLIP_AMT, -1, true);
   core(-100, true);
   claw(-600, true); // pick up next cone
@@ -86,7 +86,6 @@ void autonRight9() {
   manipulate(1, false); // pick up MB
   turn(-110);
   moveCenter(220, -127, true);
-  manipulate(-1, true);
 
 
   writeDebugStream("end \n");
@@ -230,12 +229,12 @@ void skills() {
   manipulate(-1, false); // pick up 5th MB
   while(1200 > fabs(EncoderGetValue(MANIPULATOR))) {}
   SensorValue[GYRO_PORT] = 0;
-  turn(-180);
+  turn(-185);
   manipulate(1, false, 400); // put 5th MB in 10pt zone
   moveCenter(1200, 127, true);
   moveCenter(-450);
   SensorValue[GYRO_PORT] = 0;
-  turn(-185);
+  turn(-180);
   manipulate(1, false, 1200);
   moveCenter(-200);
   moveCenter(1500);
