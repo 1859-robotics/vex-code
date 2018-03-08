@@ -18,6 +18,12 @@ void resetEncoders() {
 
 }
 
+/*************************************************************
+ *                                                           *
+ *      each of the following functions is an autonomas      *
+ *                                                           *
+ *************************************************************/
+
 void autonRight22() {
   resetEncoders();
   core(100, false);
@@ -317,6 +323,8 @@ void skills() {
 }
 
 void auton6Stat() {
+  PID slow;
+  pidInit(slow, 2, 0, 0.15, 2, 20.0, MIN_SPEED, 80);
   resetEncoders();
   core(400, false);
   moveCenter(400);
@@ -325,7 +333,7 @@ void auton6Stat() {
   claw(500, true); // put preload on stationary goal
   core(150, true);
   flip(550, 1, true);
-  turn(-90); // turn to face 2nd cone
+  turn(-90, slow); // turn to face 2nd cone
   flip(550, -1, true);
   core(-500, true);
   claw(-750, true); // pick up 2nd cone
