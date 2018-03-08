@@ -79,7 +79,9 @@ void lcdInit() {
   clearLCD();
 
 }
-
+// requires: null
+// modifies: null
+// affects:  allows the user to select auton from the LCD
 void selectAuton() {
   while(nLCDButtons != CENTER_BUTTON) {
     // continue until the user selects the auton
@@ -102,7 +104,9 @@ void selectAuton() {
   }
 }
 
-
+// requires: null
+// modifies: null
+// affects:  runs the selected auton
 void runAuton() {
   for(int i = 0; i < AUTON_NUMBER; i++) {
     if(i == panes[lcd.active].data) {
