@@ -17,7 +17,7 @@ Manipulator manipulator;
 
 // requires: null
 // modifies: gives manipulator appropriate default values
-// affects:  the pointed variable
+// affects:  manipulator
 void maniplulatorInit() {
   manipulator.dir = 0;
   manipulator.canMove = true;

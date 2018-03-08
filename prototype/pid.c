@@ -22,7 +22,9 @@ typedef struct{
 
 } PID;
 
-
+// requires: pid, all the pid variables
+// modifies: the pointed variable
+// affects:  the pointed variable
 void pidInit (PID pid, float fKP, float fKI, float fKD,
               float fEpsilonInner, float fEpsilonOuter,
               int fMinSpeed, int fMaxSpeed) {
@@ -38,6 +40,9 @@ void pidInit (PID pid, float fKP, float fKI, float fKD,
   pid.m_fMinSpeed = fMinSpeed;
 }
 
+// requires: pid, target point and current point
+// modifies: the pointed variable
+// affects:  returns the calculated speed
 float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
 	float fDeltaTime = (float)(nPgmTime - pid.m_uliLastTime) / 1000.0;
 	pid.m_uliLastTime = nPgmTime;
@@ -65,7 +70,8 @@ float pidCalculate (PID pid, float fSetPoint, float fProcessVariable) {
                   pid.m_fSigma * pid.m_fKI -
                   fDeltaPV * pid.m_fKD;
 
-
+  // if the output is larger or smaller than the
+  // maximum or minimum speed set the output to that speed
 	return abs(fOutput) > pid.m_fMaxSpeed ? pid.m_fMaxSpeed * sgn(fOutput) :
          abs(fOutput) < pid.m_fMinSpeed ? pid.m_fMinSpeed * sgn(fOutput) : fOutput;
 }

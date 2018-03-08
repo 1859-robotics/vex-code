@@ -199,7 +199,4 @@ void turn(float fTarget) {
 }
 
 
-
-
-
 #endif
