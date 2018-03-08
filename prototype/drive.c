@@ -30,12 +30,8 @@ void driveInit() {
   drive.canMove = true;
   drive.goToNum = 0;
   drive.spd = 0;
-  drive.gyro.m_iPortNum = GYRO_PORT;
 
-	SensorType[GYRO_PORT] = sensorNone;
-	wait1Msec(1000);
-	SensorType[GYRO_PORT] = sensorGyro;
-	wait1Msec(2000);
+  gyroInit(drive.gyro, GYRO_PORT)
 }
 
 

@@ -33,7 +33,7 @@
 #pragma platform(VEX2)
 #pragma competitionControl(Competition)
 
-// liberary code i did not write
+// library code i did not write
 #include "Vex_Competition_Includes.c"
 
 // external file includes

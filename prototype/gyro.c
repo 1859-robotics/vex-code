@@ -22,34 +22,9 @@ typedef struct {
 } Gyro;
 
 
-void gyroCalibrate(Gyro gyro) {
-	float fRawAverage = 0.0;
-	float fStdDev = 0.0;
-
-
-	for(int i = 0; i < GYRO_CALIBRATION_POINTS; ++i) {
-		float fRaw = SensorValue (gyro.m_iPortNum);
-		fRawAverage += fRaw;
-		gyro.rgfRaw[i] = fRaw;
-		delay(1);
-	}
-
-  fRawAverage /= GYRO_CALIBRATION_POINTS;
-	gyro.m_config.m_fAvg = fRawAverage;
-
-
-  for (int i = 0; i < GYRO_CALIBRATION_POINTS; ++i) {
-    fStdDev += fabs(fRawAverage - gyro.rgfRaw[i]);
-  }
-
-  fStdDev /= (float) GYRO_CALIBRATION_POINTS;
-
-  gyro.m_config.m_fStdDev = fStdDev;
-
-
-  gyro.m_config.m_fVoltsPerDPS = (0.0011 / 1.71625741) * (fRawAverage * 5 / 4095);
-}
-
+// requires: a motor index, the value to "set" the encoder to
+// modifies: the encoder's pffset
+// affects:  "sets" the encoder
 void gyroInit(Gyro gyro, int iPortNum) {
 	gyro.m_iPortNum = iPortNum;
 
@@ -62,25 +37,6 @@ void gyroInit(Gyro gyro, int iPortNum) {
 }
 
 
-float gyroGetRate(Gyro gyro) {
-	float fGyroRead = SensorValue(gyro.m_iPortNum);
 
-	//Difference from zero-rate value or the average calibration read
-	float fGyroDiff = fGyroRead - gyro.m_config.m_fAvg;
-
-	//Difference fro zero-rate value, in volts
-	float fGyroVoltage = fGyroDiff * 5 / 4095;
-
-
-	if(fabs(fGyroDiff) > GYRO_STD_DEVS * gyro.m_config.m_fStdDev) {
-    writeDebugStream("%f%s%f%s%f%s%f\n", fGyroRead, " | ", fGyroDiff, " | ", fGyroVoltage, " | ", fGyroVoltage / gyro.m_config.m_fVoltsPerDPS);
-		return fGyroVoltage / gyro.m_config.m_fVoltsPerDPS;
-  }
-	return 0;
-}
-
-// float getGyro(tSensor gyro) {
-// 	return
-// }
 
 #endif

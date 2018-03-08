@@ -28,6 +28,15 @@ void EncoderSetValue(tMotor index, float value) {
   nMotorEncoderOffsets[index] = nMotorEncoder[index] - value;
 }
 
+/*******************************************************************************
+ * in the begining of this season we were                                      *
+ * using jPearman's smart motor library                                        *
+ * however we tested and while it did increase the time until it stalls        *
+ * the library was too processor heavy and made                                *
+ * both our auton and driver control too innaccurate                           *
+ * this is a proxy without the functionallity to effeciently migrate           *
+ * out of using the library                                                    *
+ *******************************************************************************/
 void SetMotor(unsigned int m, int spd, bool E = false) {
   motor[m] = spd;
 }
