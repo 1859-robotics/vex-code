@@ -4,6 +4,9 @@
 #define TANK_CONTORL_LEFT        vexRT[Ch3]
 #define TANK_CONTORL_RIGHT       vexRT[Ch2]
 
+// each one of these defines is a boolian statement
+// that determines if the controls in other files should run
+
 #define FLIP_LIFT_UP             vexRT[Btn5UXmtr2]
 #define FLIP_LIFT_DOWN           vexRT[Btn5DXmtr2]
 
