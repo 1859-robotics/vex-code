@@ -8,13 +8,15 @@
 #define RIGHT_BUTTON 4
 
 // the number of auton programs the lcd should run through
-#define AUTON_NUMBER 5
+#define AUTON_NUMBER 10
 
 
 // the names of the auton programs
-const string LCD_STRINGS[AUTON_NUMBER] = { "RIGHT 9",  "LEFT 9",
-                                           "RIGHT 24",  "LEFT 24",
-                                           "STATIONARY"};
+const string LCD_STRINGS[AUTON_NUMBER] = { "2 in 20 | R", "2 in 20 L",
+                                           "2 in 5 | R",  "2 in 5 | L",
+                                           "3 in 5 | R",  "3 in 5 L",
+                                           "2 on stat | R", "2 on stat | L",
+                                           "16 on stat | R", "16 on stat | L"};
 
 
 
@@ -120,20 +122,34 @@ void runAuton() {
   // so we are left with this mess
   displayLCDCenteredString(0, panes[lcd.active].lines[0]);
   if(panes[lcd.active].data == 0) {
-    sabatoge()
-    // autonRight9();
-  } else if(panes[lcd.active].data == 1) {
-    autonLeft9();
-  } else if(panes[lcd.active].data == 2) {
     autonRight22();
-  } else if(panes[lcd.active].data == 3) {
+  } else if(panes[lcd.active].data == 1) {
     autonLeft22();
+  } else if(panes[lcd.active].data == 2) {
+    autonRight9()
+  } else if(panes[lcd.active].data == 3) {
+    autonLeft9()
   } else if(panes[lcd.active].data == 4) {
-    auton6Stat();
+    autonRight11();
+  } else if(panes[lcd.active].data == 5) {
+    autonLeft11();
+  } else if(panes[lcd.active].data == 6) {
+    auton6StatRight();
+  } else if(panes[lcd.active].data == 7) {
+    auton6StatLeft();
+  } else if(panes[lcd.active].data == 8) {
+    autonSabatogeRight();
+  } else if(panes[lcd.active].data == 9) {
+    autonSabatogeLeft();
   } else {
     displayLCDCenteredString(0, "somehting's screwy");
   }
 }
+const string LCD_STRINGS[AUTON_NUMBER] = { "2 in 20 | R", "2 in 20 L",
+                                           "2 in 5 | R",  "2 in 5 | L",
+                                           "3 in 5 | R",  "3 in 5 | L",
+                                           "2 on stat | R", "2 on stat | L",
+                                           "16 on stat | R", "16 on stat | L"};
 
 
 #endif

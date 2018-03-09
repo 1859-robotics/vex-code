@@ -53,7 +53,7 @@ void autonRight22() {
   turn(90);
   manipulator.canMove = true;
   manipulate(1, false);
-  moveCenter(600, 127, true);
+  moveCenter(600, 100, true);
   moveCenter(-500);
 
   writeDebugStream("end \n");
@@ -232,7 +232,7 @@ void autonLeft22() {
   turn(-90);
   manipulator.canMove = true;
   manipulate(1, false);
-  moveCenter(600, 127, true);
+  moveCenter(600, 100, true);
   moveCenter(-500);
 
   writeDebugStream("end \n");
@@ -322,62 +322,84 @@ void skills() {
   driveF(127)
 }
 
-void auton6Stat() {
+void auton6StatRight() {
   resetEncoders();
   core(400, false);
-  moveCenter(400);
-  flip(550, -1, true);
-  core(-100, true);
+  moveCenter(450);
+  flip(450, -1, true);
   claw(500, true); // put preload on stationary goal
   core(150, true);
-  flip(550, 1, true);
-  turn(-90); // turn to face 2nd cone
-  flip(550, -1, true);
-  core(-500, true);
+  flip(450, 1, true);
+  turn(-95); // turn to face 2nd cone
+  flip(450, -1, true);
+  core(-400, true);
   claw(-750, true); // pick up 2nd cone
-  flip(550, 1, true);
-  // moveCenter(60, -40, true);
-  // claw(-750, false);
-  // core(500, true);
-  // turn(90, slow);
-  // moveCenter(80, 60, true);
-  // flip(550, -1, true);
-  // claw(500, true); // put 2nd cone on stationary goal
-  // core(100, false);
-  // flip(550, 1, true);
+  flip(450, 1, true);
+  turn(95);
+  core(450, false);
+  flip(450, -1, true);
+  claw(500, true); // put 2nd cone on stationary goal
+  core(150, false);
+  flip(250, 1, false);
+  turn(-45);
+  flip(150, -1, false);
+  moveCenter(300);
+  core(-450, true);
+  claw(-250, false); // put preload on stationary goal
+  moveCenter(-450);
 
 
-
-  // core(400, false);
-  // moveCenter(60, 60, true)
-  // swerveRightGyro(48);
-  // moveCenter(300, 127, true)
-  // core(-100, true);
-  // claw(500, true);
-  // core(100, false);
-  // moveCenter(200, -60, true)
-  // core(-200, false);
-  // flip(FLIP_AMT, -1, false);
-  // turn(-90);
-  // moveCenter(60, 60, true)
-  // core(-200, false);
-  // claw(-500, true);
-  // flip(FLIP_AMT, 1, false);
 
 }
 
-void sabatoge() {
+void auton6StatLeft() {
   resetEncoders();
-  // manipulate(1, false);
-  // while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
-  // moveCenter(400)
-  // turn(-45)
-  // moveCenter(1000)
-  moveCenter(800)
-  flip(350, -1, true);
-  claw(-500, true)
-  moveCenter(-600)
+  core(400, false);
+  moveCenter(450);
+  flip(450, -1, true);
+  claw(500, true); // put preload on stationary goal
+  core(150, true);
+  flip(450, 1, true);
+  turn(95); // turn to face 2nd cone
+  flip(450, -1, true);
+  core(-400, true);
+  claw(-750, true); // pick up 2nd cone
+  flip(450, 1, true);
+  core(450, false);
+  turn(-90);
+  flip(450, -1, true);
+  claw(500, true); // put 2nd cone on stationary goal
+  core(150, false);
+  flip(250, 1, false);
+  turn(50);
+  flip(150, -1, false);
+  moveCenter(350);
+  core(-450, true);
+  claw(-250, false);
+  moveCenter(-550);
 
+}
+
+void autonSabatogeLeft() {
+  resetEncoders();
+  manipulate(1, false);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(400)
+  turn(-45)
+  driveF(127)
+  wait1Msec(2500)
+  driveF(0)
+}
+
+void autonSabatogeRight() {
+  resetEncoders();
+  manipulate(1, false);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(400)
+  turn(45)
+  driveF(127)
+  wait1Msec(2500)
+  driveF(0)
 }
 
 #endif
