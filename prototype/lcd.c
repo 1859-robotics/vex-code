@@ -85,6 +85,7 @@ void lcdInit() {
 // modifies: null
 // affects:  allows the user to select auton from the LCD
 void selectAuton() {
+  wait1Msec(200)
   while(nLCDButtons != CENTER_BUTTON) {
     // continue until the user selects the auton
 

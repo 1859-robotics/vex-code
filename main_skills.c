@@ -57,19 +57,15 @@ void pre_auton() {
   clearDebugStream();
 
   // initialization of all the components of the bot
+  lcdInit();
   driveInit();
   liftInit();
   maniplulatorInit();
 
   // allows the user to select autonomous
 
-  clearLCD();
-  string level;
-  sprintf(level, "Primary %f%c", nImmediateBatteryLevel / 1000.0,'V');
-  displayLCDCenteredString(0, level);
 
-	sprintf(level, "pwr ex %f%c", ((float)SensorValue[ BATERY_2_PORT ] * 5.48),'V');
-  displayLCDCenteredString(1, level);
+  clearLCD();
 }
 
 task autonomous() {

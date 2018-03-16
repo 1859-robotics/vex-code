@@ -60,18 +60,24 @@ void pre_auton() {
   driveInit();
   liftInit();
   maniplulatorInit();
+  displayLCDCenteredString(0, "PRESS CENTER BUTTON");
 
   // allows the user to select autonomous
-  selectAuton();
-
-  clearLCD();
-
-  string level;
-  sprintf(level, "Primary %f%c", nImmediateBatteryLevel / 1000.0,'V');
-  displayLCDCenteredString(0, level);
-
-  sprintf(level, "pwr ex %f%c", ((float)SensorValue[ BATERY_2_PORT ] * 5.48),'V');
-  displayLCDCenteredString(1, level);
+  long liAtTargetTime = nPgmTime;
+  bool bExitEarly = false
+  while(!bExitEarly) {
+    if(nLCDButtons == CENTER_BUTTON) {
+      selectAuton();
+      clearLCD();
+      return;
+    }
+    if(nPgmTime - liAtTargetTime > 4000) {
+      bExitEarly = true;
+    }
+    string str = "";
+    StringFormat(str, "%f", (nPgmTime - liAtTargetTime))
+    displayLCDCenteredString(1, str);
+  }
 
 }
 
