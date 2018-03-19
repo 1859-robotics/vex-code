@@ -9,7 +9,7 @@ typedef struct {
   int coreAmt;
   int clawAmt;
 
-  int flipSpd;
+  int flipDir;
   int coreSpd;
   int clawSpd;
 
@@ -46,22 +46,44 @@ void OPLift() {
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 // requires: task
 // modifies: lift
 // affects:  move the flip bar
 task flip_() {
   EncoderSetValue(FLIP_LIFT, 0);
 
-  SetMotor(FLIP_LIFT, 127 * lift.flipSpd);
+  tSensors touchTarget;
 
-  while(fabs(lift.flipAmt) > fabs(EncoderGetValue(FLIP_LIFT))) {}
+  if(sgn(lift.flipDir) == -1) { // going down
+    touchTarget = FILP_DOWN_SWITCH
+  } else if(sgn(lift.flipDir) == 1) { // going up
+    touchTarget = FILP_UP_SWITCH
+  } else {
+    stopTask(flip_);
+  }
+
+  SetMotor(FLIP_LIFT, 127 * lift.flipDir);
+
+  while(SensorValue(touchTarget) != 1) {}
 
   SetMotor(FLIP_LIFT, 0);
 
   EncoderSetValue(FLIP_LIFT, 0);
 
   lift.canMove = true;
-  lift.flipSpd = 0;
+  lift.flipDir = 0;
 
 
 
@@ -69,21 +91,37 @@ task flip_() {
 }
 
 // requires: amount to move (encoder tics),
-//           speed to move the flip lift at
+//           direction to move the flip lift (-1: down, 1 up)
 //           if the program should contiue before the action finishes
 // modifies: lift
 // affects:  spawn a task to move the flip lift
-void flip(int flipAmt, int flipSpd, bool waitForEnd) {
+void flip(int flipDir, bool waitForEnd) {
 
 
   lift.canMove = false;
-  lift.flipSpd = flipSpd;
-  lift.flipAmt = flipAmt;
+  lift.flipDir = flipDir;
+  // lift.flipAmt = flipAmt;
 
   startTask(flip_);
 
   while(waitForEnd && !lift.canMove){}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // requires: task
 // modifies: lift
@@ -105,6 +143,7 @@ task claw_() {
 
   stopTask(claw_);
 }
+
 // requires: amount to move (wait time),
 //           if the program should contiue before the action finishes
 // modifies: lift
@@ -143,6 +182,7 @@ task core_() {
 
   stopTask(core_);
 }
+
 // requires: amount to move (encoder tics),
 //           if the program should contiue before the action finishes
 // modifies: lift
