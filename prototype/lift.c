@@ -54,18 +54,18 @@ task flip_() {
   EncoderSetValue(FLIP_LIFT, 0);
 
   tSensors touchTarget;
-  int spd = 127 * lift.flipDir
+  int spd = 127 * lift.flipDir;
   if(sgn(lift.flipDir) == -1) { // going down
-    touchTarget = FILP_DOWN_SWITCH
+    touchTarget = FILP_DOWN_SWITCH;
   } else if(sgn(lift.flipDir) == 1) { // going up
-    touchTarget = FILP_UP_SWITCH
+    touchTarget = FILP_UP_SWITCH;
   } else {
     if(SensorValue(FILP_DOWN_SWITCH) == 1) {
       touchTarget = FILP_UP_SWITCH;
-      spd = 127
+      spd = 127;
     } else if(SensorValue(FILP_UP_SWITCH) == 1) {
       touchTarget = FILP_DOWN_SWITCH;
-      spd = -127
+      spd = -127;
     } else {
       lift.canMove = true;
       lift.flipDir = 0;

@@ -68,11 +68,11 @@ void autonSabatoge(int side) {
   resetEncoders();
   manipulate(1, false);
   while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
-  moveCenter(400)
-  turn(45 * side)
-  driveF(127)
-  wait1Msec(2500)
-  driveF(0)
+  moveCenter(400);
+  turn(45 * side);
+  driveF(127);
+  wait1Msec(2500);
+  driveF(0);
 }
 
 

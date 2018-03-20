@@ -92,9 +92,8 @@ int LCDSelectInt(tStringArray selection, int length) {
       active = active == length - 1 ? 0 : active + 1;
       // wraps to prevent bad index of array
     }
-    writeDebugStream("%d\n", active)
   }
-  return active
+  return active;
 }
 
 
@@ -106,13 +105,13 @@ int LCDSelectInt(tStringArray selection, int length) {
 // affects:  allows the user to select auton from the LCD
 void selectAuton() {
   long liAtTargetTime = nPgmTime;
-  bool bExitEarly = false
+  bool bExitEarly = false;
   while(!bExitEarly) {
     if(nLCDButtons == CENTER_BUTTON) {
-      wait1Msec(400)
-      sideValue = LCDSelectInt(dirSelection, 2)
-      wait1Msec(400)
-      autonValue = LCDSelectInt(autonSelection, AUTON_NUMBER)
+      wait1Msec(400);
+      sideValue = LCDSelectInt(dirSelection, 2);
+      wait1Msec(400);
+      autonValue = LCDSelectInt(autonSelection, AUTON_NUMBER);
       clearLCD();
       return;
     }
@@ -120,7 +119,7 @@ void selectAuton() {
       bExitEarly = true;
     }
     string str = "";
-    stringFormat(str, "%f", (nPgmTime - liAtTargetTime))
+    stringFormat(str, "%f", (nPgmTime - liAtTargetTime));
     displayLCDCenteredString(1, str);
   }
 
@@ -132,7 +131,7 @@ void selectAuton() {
 void runAuton() {
   displayLCDCenteredString(1, autonSelection.arr[autonSelection]);
 
-  sideValue = sideValue == 0 ? 1 : -1
+  sideValue = sideValue == 0 ? 1 : -1;
 
   // unfortunately robotC does not allow function pointers
   // so we are left with this mess
@@ -141,9 +140,9 @@ void runAuton() {
   } else if(autonValue == 1) {
     auton20Short(sideValue);
   } else if(autonValue == 2) {
-    auton10long(sideValue)
+    auton10long(sideValue);
   } else if(autonValue == 3) {
-    auton10Short(sideValue)
+    auton10Short(sideValue);
   } else if(autonValue == 4) {
     auton5long(sideValue);
   } else if(autonValue == 5) {

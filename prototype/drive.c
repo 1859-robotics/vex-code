@@ -31,7 +31,7 @@ void driveInit() {
   drive.target = 0;
   drive.spd = 0;
 
-  gyroInit(drive.gyro, GYRO_PORT)
+  gyroInit(drive.gyro, GYRO_PORT);
 }
 
 
@@ -113,7 +113,7 @@ task moveCenter_() {
 
   drive.canMove = true;
   drive.target =  0;
-  stopTask(moveCenter_)
+  stopTask(moveCenter_);
 }
 
 // requires: target (encdoder tics)
@@ -174,7 +174,7 @@ task turn_() {
 
   drive.canMove = true;
   drive.target =  0;
-  stopTask(turn_)
+  stopTask(turn_);
 }
 
 
@@ -190,9 +190,5 @@ void turn(float fTarget, bool bWait = true) {
   while(bWait && !drive.canMove){}
 
 }
-
-
-
-
 
 #endif
