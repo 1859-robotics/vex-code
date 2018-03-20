@@ -8,7 +8,7 @@
 #define RIGHT_BUTTON 4
 
 // the number of auton programs the lcd should run through
-#define AUTON_NUMBER 10
+#define AUTON_NUMBER 9
 
 
 // the names of the auton programs
@@ -120,7 +120,7 @@ void selectAuton() {
       bExitEarly = true;
     }
     string str = "";
-    StringFormat(str, "%f", (nPgmTime - liAtTargetTime))
+    stringFormat(str, "%f", (nPgmTime - liAtTargetTime))
     displayLCDCenteredString(1, str);
   }
 
@@ -158,14 +158,5 @@ void runAuton() {
     displayLCDCenteredString(0, "somehting's screwy");
   }
 }
-
-
-const string LCD_STRINGS[AUTON_NUMBER] = { "20 | L", "20 | S",
-                                           "10 | L", "10 | S",
-                                            "5 | L",  "5 | S",
-                                           "stationary | L", "stationary | S",
-                                           "equalizer"};
-
-
 
 #endif

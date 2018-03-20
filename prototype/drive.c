@@ -119,7 +119,7 @@ task moveCenter_() {
 // requires: target (encdoder tics)
 // modifies: drive.pid
 // affects:  turn the robot by the specified degrees
-void moveCenter(float fTarget, bool bWait) {
+void moveCenter(float fTarget, bool bWait = true) {
 
   while(!drive.canMove){};
 
@@ -178,7 +178,7 @@ task turn_() {
 }
 
 
-void turn(float fTarget, bool bWait) {
+void turn(float fTarget, bool bWait = true) {
 
   while(!drive.canMove){};
 
