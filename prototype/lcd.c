@@ -12,14 +12,18 @@
 
 
 // the names of the auton programs
-const string LCD_STRINGS[AUTON_NUMBER] = { "2 in 20 | R", "2 in 20 L",
-                                           "2 in 5 | R",  "2 in 5 | L",
-                                           "3 in 5 | R",  "3 in 5 L",
-                                           "2 on stat | R", "2 on stat | L",
-                                           "16 on stat | R", "16 on stat | L"};
+tStringArray dirSelection;
+const string DIR_VALUES[2] = { "right", "left" };
 
+tStringArray autonSelection;
+const string LCD_STRINGS[AUTON_NUMBER] = { "20 | L", "20 | S",
+                                           "10 | L", "10 | S",
+                                            "5 | L",  "5 | S",
+                                           "stationary | L", "stationary | S",
+                                           "equalizer"};
 
-
+int sideValue;
+int autonValue;
 
 // requires: null
 // modifies: null
@@ -52,106 +56,116 @@ void clearLCD() {
 }
 
 
-typedef struct {
-
-  int data;        // may be able to be removed consider refactoring
-  string lines[2]; // the data to be printed to the lcd
-
-} lcdPane;
-
-typedef struct {
-
-  int active; // the active pane (index of panes array)
-
-} LCD;
-
-LCD lcd;                     // the global lcd
-lcdPane panes[AUTON_NUMBER]; // the panes of the lcd
-
 void lcdInit() {
-  for(int i = 0; i < AUTON_NUMBER; i++) {
 
-    panes[i].data     = i; // consider refactoring
-    panes[i].lines[0] = LCD_STRINGS[i]; // sets the auton name
-    panes[i].lines[1] = "<     Enter    >"; // can be changed
-
+  // unfortunately robotC is fucky with its arrays so we
+  // can't farm this out to a function
+  // fortunately there are only 2 of these
+  for(int i = 0; i < sizeofArr(DIR_VALUES); i++) {
+    dirSelection.arr[i] = DIR_VALUES[i];
+  }
+  for(int i = 0; i < sizeofArr(LCD_STRINGS); i++) {
+    autonSelection.arr[i] = LCD_STRINGS[i];
   }
 
-  lcd.active = 0;
+
   clearLCD();
-
 }
-// requires: null
-// modifies: null
-// affects:  allows the user to select auton from the LCD
-void selectAuton() {
-  wait1Msec(200)
-  while(nLCDButtons != CENTER_BUTTON) {
-    // continue until the user selects the auton
 
-    displayLCDCenteredString(0, panes[lcd.active].lines[0]);
-    displayLCDCenteredString(1, panes[lcd.active].lines[1]);
+int LCDSelectInt(tStringArray selection, int length) {
+  int active = 0;
+
+  while(nLCDButtons != CENTER_BUTTON) {
+
+    displayLCDCenteredString(0, selection.arr[active]);
+    displayLCDCenteredString(1, "<     Enter    >");
 
     waitForPress();
 
     if(nLCDButtons == LEFT_BUTTON) {
       waitForRelease();
-      lcd.active = lcd.active == 0 ? AUTON_NUMBER - 1 : lcd.active - 1;
+      active = active == 0 ? length - 1 : active - 1;
       // wraps around if the active is 0
 
     } else if(nLCDButtons == RIGHT_BUTTON) {
       waitForRelease();
-      lcd.active = lcd.active == AUTON_NUMBER - 1 ? 0 : lcd.active + 1;
+      active = active == length - 1 ? 0 : active + 1;
       // wraps to prevent bad index of array
     }
+    writeDebugStream("%d\n", active)
   }
+  return active
+}
+
+
+
+
+
+// requires: null
+// modifies: null
+// affects:  allows the user to select auton from the LCD
+void selectAuton() {
+  long liAtTargetTime = nPgmTime;
+  bool bExitEarly = false
+  while(!bExitEarly) {
+    if(nLCDButtons == CENTER_BUTTON) {
+      wait1Msec(400)
+      sideValue = LCDSelectInt(dirSelection, 2)
+      wait1Msec(400)
+      autonValue = LCDSelectInt(autonSelection, AUTON_NUMBER)
+      clearLCD();
+      return;
+    }
+    if(nPgmTime - liAtTargetTime > 4000) {
+      bExitEarly = true;
+    }
+    string str = "";
+    StringFormat(str, "%f", (nPgmTime - liAtTargetTime))
+    displayLCDCenteredString(1, str);
+  }
+
 }
 
 // requires: null
 // modifies: null
 // affects:  runs the selected auton
 void runAuton() {
-  for(int i = 0; i < AUTON_NUMBER; i++) {
-    if(i == panes[lcd.active].data) {
+  displayLCDCenteredString(1, autonSelection.arr[autonSelection]);
 
-      displayLCDCenteredString(1, "is running");
-
-    }
-  }
+  sideValue = sideValue == 0 ? 1 : -1
 
   // unfortunately robotC does not allow function pointers
   // so we are left with this mess
-  displayLCDCenteredString(0, panes[lcd.active].lines[0]);
-  if(panes[lcd.active].data == 0) {
-    autonFuncTest();
-    // autonRight22();
-  } else if(panes[lcd.active].data == 1) {
-    // autonLeft22();
-  } else if(panes[lcd.active].data == 2) {
-    // autonRight9()
-  } else if(panes[lcd.active].data == 3) {
-    // autonLeft9()
-  } else if(panes[lcd.active].data == 4) {
-    // autonRight11();
-  } else if(panes[lcd.active].data == 5) {
-    // autonLeft11();
-  } else if(panes[lcd.active].data == 6) {
-    // auton6StatRight();
-  } else if(panes[lcd.active].data == 7) {
-    // auton6StatLeft();
-  } else if(panes[lcd.active].data == 8) {
-    // autonSabatogeRight();
-  } else if(panes[lcd.active].data == 9) {
-    // autonSabatogeLeft();
-  } else {
+  if(autonValue == 0) {
+    auton20Long(sideValue);
+  } else if(autonValue == 1) {
+    auton20Short(sideValue);
+  } else if(autonValue == 2) {
+    auton10long(sideValue)
+  } else if(autonValue == 3) {
+    auton10Short(sideValue)
+  } else if(autonValue == 4) {
+    auton5long(sideValue);
+  } else if(autonValue == 5) {
+    auton5Short(sideValue);
+  } else if(autonValue == 6) {
+    autonStatLong(sideValue);
+  } else if(autonValue == 7) {
+    autonStatShort(sideValue);
+  } else if(autonValue == 8) {
+    autonSabatoge(sideValue);
+  }else {
     displayLCDCenteredString(0, "somehting's screwy");
   }
 }
-const string LCD_STRINGS[AUTON_NUMBER] = { "2 in 20 | R", "2 in 20 L",
-                                           "2 in 5 | R",  "2 in 5 | L",
-                                           "3 in 5 | R",  "3 in 5 | L",
-                                           "2 on stat | R", "2 on stat | L",
-                                           "16 on stat | R", "16 on stat | L"};
+
+
+const string LCD_STRINGS[AUTON_NUMBER] = { "20 | L", "20 | S",
+                                           "10 | L", "10 | S",
+                                            "5 | L",  "5 | S",
+                                           "stationary | L", "stationary | S",
+                                           "equalizer"};
+
 
 
 #endif

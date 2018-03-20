@@ -6,6 +6,17 @@
 // if the input is negative it returns a -1
 #define sgn(in) (in == 0 ? 0 : (in > 0 ? 1 : -1))
 
+#define sizeofArr(a) (sizeof(a)/sizeof(a[0]))
+
+// Array of ints as a struct
+// Because robotC is bugged to hell and back the byte
+// memeber has to be there or it won't work.
+typedef struct {
+  string arr[255];
+  byte derps;
+} tStringArray;
+
+
 // motor offsets to simulate zeroing an encoder
 long nMotorEncoderOffsets[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 

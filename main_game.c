@@ -63,22 +63,8 @@ void pre_auton() {
   displayLCDCenteredString(0, "PRESS CENTER BUTTON");
 
   // allows the user to select autonomous
-  long liAtTargetTime = nPgmTime;
-  bool bExitEarly = false
-  while(!bExitEarly) {
-    if(nLCDButtons == CENTER_BUTTON) {
-      selectAuton();
-      clearLCD();
-      return;
-    }
-    if(nPgmTime - liAtTargetTime > 4000) {
-      bExitEarly = true;
-    }
-    string str = "";
-    StringFormat(str, "%f", (nPgmTime - liAtTargetTime))
-    displayLCDCenteredString(1, str);
-  }
-
+  selectAuton();
+  
 }
 
 task autonomous() {
