@@ -347,8 +347,11 @@ void resetEncoders() {
 // }
 
 void autonFuncTest() {
-  flip(-1, false);
-  moveCenter(-400);
+  flip(0, true);
+  flip(0, true);
+  flip(0, true);
+  flip(0, true);
+
 }
 
 
