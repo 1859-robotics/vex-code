@@ -2,7 +2,7 @@
 #define _PROTOTYPE_DRIVE_
 
 #define PID_TOLERANCE 3 /* the tolerance for turns */
-#define ENCODER_PID_TOLERANCE 150 /* the tolerance for movement */
+#define ENCODER_PID_TOLERANCE 20 /* the tolerance for movement */
 #define MAX_SPEED 127 /* the maximum speed of the bot */
 #define MIN_SPEED 30 /* the minimum speed of the bot */
 #define MIN_SPEED_TURN 40 /* the minimum speed of turns */
@@ -116,7 +116,6 @@ task moveCenter_() {
   stopTask(moveCenter_)
 }
 
-
 // requires: target (encdoder tics)
 // modifies: drive.pid
 // affects:  turn the robot by the specified degrees
@@ -135,46 +134,65 @@ void moveCenter(float fTarget, bool bWait) {
 
 }
 
-// requires: target (deg) and pid
-// modifies: drive.pid
-// affects:  turn the robot by the specified degrees
-void turn(float fTarget) {
-	if(abs(fTarget) < 40)
-		pidInit(drive.pid, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED_TURN, MAX_SPEED);
+
+task turn_() {
+  if(abs(drive.target) < 40)
+    pidInit(drive.pid, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED_TURN, MAX_SPEED);
   else
     pidInit(drive.pid, 2.0, 0.0, 0.15, 2.0, 20.0, MIN_SPEED_TURN, MAX_SPEED);
 
-	bool bAtGyro = false;
-	long liAtTargetTime = nPgmTime;
-	long liTimer = nPgmTime;
-	float fGyroAngle = 0;
+  bool bAtGyro = false;
+  long liAtTargetTime = nPgmTime;
+  long liTimer = nPgmTime;
+  float fGyroAngle = 0;
   float fPrevGyro = SensorValue(drive.gyro.m_iPortNum);
-	while(!bAtGyro) {
-		//Calculate the delta time from the last iteration of the loop
-		// float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
-		//Reset loop timer
-		liTimer = nPgmTime;
+  while(!bAtGyro) {
+    //Calculate the delta time from the last iteration of the loop
+    // float fDeltaTime = (float)(nPgmTime - liTimer)/1000.0;
+    //Reset loop timer
+    liTimer = nPgmTime;
 
-		// fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
+    // fGyroAngle += gyroGetRate(drive.gyro) * fDeltaTime;
     fGyroAngle = (SensorValue(drive.gyro.m_iPortNum) - fPrevGyro) / 10;
 
-		//Calculate the output of the PID controller and output to drive motors
-		float driveOut = pidCalculate(drive.pid, fTarget, fGyroAngle);
-		driveL(-driveOut);
-		driveR(driveOut);
+    //Calculate the output of the PID controller and output to drive motors
+    float driveOut = pidCalculate(drive.pid, drive.target, fGyroAngle);
+    driveL(-driveOut);
+    driveR(driveOut);
 
-		if(abs(fTarget - fGyroAngle) > PID_TOLERANCE) {
+    if(abs(drive.target - fGyroAngle) > PID_TOLERANCE) {
       liAtTargetTime = nPgmTime;
     }
-		if(nPgmTime - liAtTargetTime > 350) {
-			bAtGyro = true;
-			driveF(0);
-		}
-	}
+    if(nPgmTime - liAtTargetTime > 350) {
+      bAtGyro = true;
+      driveF(0);
+    }
+  }
 
-	//Reinitialize the PID constants to their original values in case they were changed
-	pidInit(drive.pid, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
+  //Reinitialize the PID constants to their original values in case they were changed
+  pidInit(drive.pid, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
+
+  drive.canMove = true;
+  drive.target =  0;
+  stopTask(turn_)
 }
+
+
+void turn(float fTarget, bool bWait) {
+
+  while(!drive.canMove){};
+
+  drive.canMove = false;
+  drive.target = fTarget;
+
+  startTask(turn_);
+
+  while(bWait && !drive.canMove){}
+
+}
+
+
+
 
 
 #endif

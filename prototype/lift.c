@@ -47,17 +47,6 @@ void OPLift() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 // requires: task
 // modifies: lift
 // affects:  move the flip bar
@@ -107,27 +96,11 @@ void flip(int flipDir, bool waitForEnd) {
 
   lift.canMove = false;
   lift.flipDir = flipDir;
-  // lift.flipAmt = flipAmt;
 
   startTask(flip_);
 
   while(waitForEnd && !lift.canMove){}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // requires: task
