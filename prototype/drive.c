@@ -14,7 +14,7 @@
 typedef struct {
   bool canMove;
 
-  int goToNum;
+  int target;
   int spd;
   int gyroAngle;
   Gyro gyro;
@@ -28,7 +28,7 @@ Drive drive;
 // affects:  smart motor readout
 void driveInit() {
   drive.canMove = true;
-  drive.goToNum = 0;
+  drive.target = 0;
   drive.spd = 0;
 
   gyroInit(drive.gyro, GYRO_PORT)
@@ -70,56 +70,11 @@ void OPDrive() {
 }
 
 // requires: task
-// modifies: 0's drive encoders
+// modifies: zero's all drive encoders
 // affects:  moves forward by amount specified in drive
 task moveCenter_() {
-  EncoderSetValue(LB_DRIVE, 0);
-  EncoderSetValue(RB_DRIVE, 0);
 
-  driveF(drive.spd);
-
-  // while the encoder values are not the requseted value
-  while(fabs(drive.goToNum) >
-         (fabs(EncoderGetValue(LB_DRIVE)) + fabs(EncoderGetValue(RB_DRIVE))) / 2) {}
-
-  driveF(0); // equivilant to stoping all drive motors
-
-  // reset encoders
-  EncoderSetValue(LB_DRIVE, 0);
-  EncoderSetValue(RB_DRIVE, 0);
-
-  // reset drive values
-  drive.canMove = true;
-  drive.goToNum = 0;
-  drive.spd = 0;
-
-
-  stopTask(moveCenter_);
-
-}
-
-// requires: amount to move, speed to move at,
-//           if the program should contiue before the action finishes
-// modifies: 0's drive encoders, drive.pid
-// affects:  moves forward by amount specified in drive
-void moveCenter(int amt, int spd, bool waitForEnd) {
-  while(!drive.canMove){};
-
-  drive.canMove = false;
-  drive.goToNum = amt;
-  drive.spd = spd;
-
-  startTask(moveCenter_);
-
-  while(waitForEnd && !drive.canMove){};
-}
-
-// requires: target (encdoder tics)
-// modifies: drive.pid
-// affects:  turn the robot by the specified degrees
-void moveCenter(float fTarget) {
-  fTarget *= -1
-  if(abs(fTarget) < 200)
+  if(abs(drive.target) < 200)
     pidInit(drive.pid, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
   else
     pidInit(drive.pid, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
@@ -127,7 +82,7 @@ void moveCenter(float fTarget) {
   long liAtTargetTime = nPgmTime;
   float fEncoderVal = 0;
   float fStartMin = SLOW_DOWN_ENCODER_N;
-  if(fTarget < 400) {
+  if(drive.target < 400) {
     fStartMin = SLOW_DOWN_ENCODER_S;
   }
   EncoderSetValue(LB_DRIVE, 0);
@@ -137,14 +92,14 @@ void moveCenter(float fTarget) {
     fEncoderVal = (EncoderGetValue(LB_DRIVE) + EncoderGetValue(RB_DRIVE)) / 2;
 
     //Calculate the output of the PID controller and output to drive motors
-    float driveOut = pidCalculate(drive.pid, fTarget, fEncoderVal);
-    if(abs(fTarget - fEncoderVal) < fStartMin) {
+    float driveOut = pidCalculate(drive.pid, drive.target, fEncoderVal);
+    if(abs(drive.target - fEncoderVal) < fStartMin) {
       driveOut = SLOW_DOWN_SPD * sgn(driveOut);
     }
 
     driveF(-driveOut);
 
-    if(abs(fTarget - fEncoderVal) > ENCODER_PID_TOLERANCE) {
+    if(abs(drive.target - fEncoderVal) > ENCODER_PID_TOLERANCE) {
       liAtTargetTime = nPgmTime;
     }
     if(nPgmTime - liAtTargetTime > 350) {
@@ -155,6 +110,29 @@ void moveCenter(float fTarget) {
 
   //Reinitialize the PID constants to their original values in case they were changed
   pidInit(drive.pid, 2, 0, 0.15, 2, 20.0, MIN_SPEED, MAX_SPEED);
+
+  drive.canMove = true;
+  drive.target =  0;
+  stopTask(moveCenter_)
+}
+
+
+// requires: target (encdoder tics)
+// modifies: drive.pid
+// affects:  turn the robot by the specified degrees
+void moveCenter(float fTarget, bool bWait) {
+
+  while(!drive.canMove){};
+
+  drive.canMove = false;
+  drive.target = -fTarget;
+
+  startTask(moveCenter_);
+
+  while(bWait && !drive.canMove){}
+
+
+
 }
 
 // requires: target (deg) and pid

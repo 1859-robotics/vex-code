@@ -126,23 +126,23 @@ void runAuton() {
     autonFuncTest();
     // autonRight22();
   } else if(panes[lcd.active].data == 1) {
-    autonLeft22();
+    // autonLeft22();
   } else if(panes[lcd.active].data == 2) {
-    autonRight9()
+    // autonRight9()
   } else if(panes[lcd.active].data == 3) {
-    autonLeft9()
+    // autonLeft9()
   } else if(panes[lcd.active].data == 4) {
-    autonRight11();
+    // autonRight11();
   } else if(panes[lcd.active].data == 5) {
-    autonLeft11();
+    // autonLeft11();
   } else if(panes[lcd.active].data == 6) {
-    auton6StatRight();
+    // auton6StatRight();
   } else if(panes[lcd.active].data == 7) {
-    auton6StatLeft();
+    // auton6StatLeft();
   } else if(panes[lcd.active].data == 8) {
-    autonSabatogeRight();
+    // autonSabatogeRight();
   } else if(panes[lcd.active].data == 9) {
-    autonSabatogeLeft();
+    // autonSabatogeLeft();
   } else {
     displayLCDCenteredString(0, "somehting's screwy");
   }
