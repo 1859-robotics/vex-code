@@ -3,7 +3,9 @@
 
 typedef struct {
 
-  bool canMove;
+  bool flipCanMove;
+  bool coreCanMove;
+  bool clawCanMove;
 
   int flipAmt;
   int coreAmt;
@@ -23,7 +25,9 @@ Lift lift;
 // affects:  the pointed variable
 void liftInit() {
 
-  lift.canMove = true;
+  lift.clawCanMove = true;
+  lift.coreCanMove = true;
+  lift.flipCanMove = true;
 
 }
 
@@ -67,7 +71,7 @@ task flip_() {
       touchTarget = FILP_DOWN_SWITCH;
       spd = -127;
     } else {
-      lift.canMove = true;
+      lift.flipCanMove = true;
       lift.flipDir = 0;
       stopTask(flip_);
     }
@@ -80,7 +84,7 @@ task flip_() {
   SetMotor(FLIP_LIFT, 0);
 
 
-  lift.canMove = true;
+  lift.flipCanMove = true;
   lift.flipDir = 0;
 
   stopTask(flip_);
@@ -92,14 +96,15 @@ task flip_() {
 // modifies: lift
 // affects:  spawn a task to move the flip lift
 void flip(int flipDir, bool waitForEnd) {
+  while(!lift.flipCanMove){}
 
 
-  lift.canMove = false;
+  lift.flipCanMove = false;
   lift.flipDir = flipDir;
 
   startTask(flip_);
 
-  while(waitForEnd && !lift.canMove){}
+  while(waitForEnd && !lift.flipCanMove){}
 }
 
 
@@ -115,7 +120,7 @@ task claw_() {
   SetMotor(LIFT_CLAW, 0);
 
 
-  lift.canMove = true;
+  lift.clawCanMove = true;
   lift.clawAmt = 0;
 
 
@@ -130,13 +135,14 @@ task claw_() {
 // affects:  spawn a task to move the combine
 // the name of "claw" is due to our original use of a claw instead of a combine
 void claw(int amt, bool waitForEnd) {
+  while(!lift.clawCanMove){}
 
-  lift.canMove = false;
+  lift.clawCanMove = false;
   lift.clawAmt = amt;
 
   startTask(claw_);
 
-  while(waitForEnd && !lift.canMove){}
+  while(waitForEnd && !lift.clawCanMove){}
 }
 
 // requires: task
@@ -154,7 +160,7 @@ task core_() {
   SetMotor(T_CORE_LIFT, 0);
 
 
-  lift.canMove = true;
+  lift.coreCanMove = true;
   lift.coreAmt = 0;
 
 
@@ -168,13 +174,14 @@ task core_() {
 // modifies: lift
 // affects:  spawn a task to move the core lift
 void core(int amt, bool waitForEnd) {
+  while(!lift.coreCanMove){}
 
-  lift.canMove = false;
+  lift.coreCanMove = false;
   lift.coreAmt = amt;
 
   startTask(core_);
 
-  while(waitForEnd && !lift.canMove){};
+  while(waitForEnd && !lift.coreCanMove){};
 }
 
 
