@@ -26,62 +26,24 @@ void resetEncoders() {
 
 void auton20Long(int side) { // 3 cones on a MB in the 20 pt zone
   resetEncoders();
+  core(100, false);
+  manipulate(1, false);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(1500);
+  manipulate(-1, true);
+  core(-100, false);
+  claw(400, true);
+  flip(-1, true);
+  claw(-400, true);
+  core(100, false);
+  flip(-1, false);
+  claw(400, true);
 
 }
 
 void auton20Short(int side) { // 3 cones on a MB in the 20 pt zone
   resetEncoders();
-  core(100, false);
-  manipulate(1, false);
-  while(400 > fabs(EncoderGetValue(MANIPULATOR))) {}
-  moveCenter(1500);
-  manipulate(-1, false);
-  while(300 > fabs(EncoderGetValue(MANIPULATOR))) {}
-  moveCenter(-800, false);
-  while(!manipulator.canMove) {}
-  turn(50, false);
-  core(-100, false);
-  claw(400, true);
 
-  core(100, false);
-  flip(-1, true);
-  core(-100, false);
-  claw(-300, true);
-  core(100, false);
-  flip(1, true);
-  core(-100, false);
-  claw(400, true);
-
-  core(100, false);
-  flip(-1, true);
-  core(-100, false);
-  claw(-300, true);
-  core(150, false);
-  flip(1, true);
-  core(-100, false);
-  claw(400, true);
-
-  core(200, false);
-  flip(-1, true);
-  core(-100, false);
-  claw(-300, true);
-  flip(1, true);
-  core(-100, false);
-  claw(400, true);
-
-  core(250, false);
-  flip(-1, true);
-  core(-100, false);
-  claw(-300, true);
-  core(100, false);
-  turn(90, false);
-  flip(1, true);
-  core(-100, false);
-  claw(400, true);
-
-  core(250, false);
-  manipulate(1, true);
-  driveF(-127);
 
 }
 
@@ -92,7 +54,58 @@ void auton5long(int side) { // 5 cones on a MB in the 5 pt zone
 
 void auton5Short(int side) { // 5 cones on a MB in the 5 pt zone
   resetEncoders();
+  core(100, false);
+  manipulate(1, false);
+  while(400 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(1300, 127, true);
+  manipulate(-1, false);
+  while(500 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(-800, 127, false);
+  while(!manipulator.canMove) {}
+  turn(45 * side, false);
+  core(-100, false);
+  claw(400, true);
 
+  core(200, true);
+  flip(-1, true);
+  core(-100, false);
+  claw(-400, true);
+  core(150, false);
+  flip(1, true);
+  core(-100, false);
+  claw(500, true);
+
+  core(200, true);
+  flip(-1, true);
+  core(-100, false);
+  claw(-400, true);
+  core(150, false);
+  flip(1, true);
+  core(-100, false);
+  claw(500, true);
+
+  core(250, true);
+  flip(-1, true);
+  core(-100, false);
+  claw(-400, true);
+  core(150, false);
+  flip(1, true);
+  core(-100, false);
+  claw(500, true);
+
+  core(250, false);
+  flip(-1, true);
+  core(-200, false);
+  claw(-400, true);
+  core(100, false);
+  turn(90 * side, false);
+  flip(1, true);
+  core(-100, false);
+  claw(500, true);
+
+  core(250, false);
+  manipulate(1, true);
+  driveF(-127);
 }
 
 void auton10long(int side) { // 4 cones on a MB in the 5 pt zone

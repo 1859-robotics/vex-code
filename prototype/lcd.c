@@ -136,8 +136,8 @@ void runAuton() {
   // unfortunately robotC does not allow function pointers
   // so we are left with this mess
   if(autonValue == 0) {
-    auton20Short(sideValue);
-    // auton20Long(sideValue);
+    // auton20Short(sideValue);
+    auton20Long(sideValue);
   } else if(autonValue == 1) {
     auton20Short(sideValue);
   } else if(autonValue == 2) {

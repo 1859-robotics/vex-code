@@ -130,9 +130,49 @@ void moveCenter(float fTarget, bool bWait = true) {
 
   while(bWait && !drive.canMove){}
 
+}
 
+// requires: task
+// modifies: 0's drive encoders
+// affects:  moves forward by amount specified in drive
+task moveCenterNoPID_() {
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
+
+  driveF(drive.spd * sgn(drive.target));
+
+  // while the encoder values are not the requseted value
+  while(fabs(drive.target) >
+         (fabs(EncoderGetValue(LB_DRIVE)) + fabs(EncoderGetValue(RB_DRIVE))) / 2) {}
+
+  driveF(0); // equivilant to stoping all drive motors
+
+  // reset encoders
+  EncoderSetValue(LB_DRIVE, 0);
+  EncoderSetValue(RB_DRIVE, 0);
+
+  // reset drive values
+  drive.canMove = true;
+  drive.target = 0;
+  drive.spd = 0;
+
+
+  stopTask(moveCenterNoPID_);
 
 }
+
+void moveCenter(int amt, int spd, bool waitForEnd) {
+  while(!drive.canMove){};
+
+  drive.canMove = false;
+  drive.target = amt;
+  drive.spd = fabs(spd);
+
+  startTask(moveCenterNoPID_);
+
+  while(waitForEnd && !drive.canMove){};
+}
+
 
 
 task turn_() {
