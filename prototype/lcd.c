@@ -16,9 +16,9 @@ tStringArray dirSelection;
 const string DIR_VALUES[2] = { "right", "left" };
 
 tStringArray autonSelection;
-const string LCD_STRINGS[AUTON_NUMBER] = { "20 | L", "20 | S",
-                                           "10 | L", "10 | S",
-                                            "5 | L",  "5 | S",
+const string LCD_STRINGS[AUTON_NUMBER] = { "3 in 20 | L", "3 in 20 | S", "2 in 20"
+                                           "4 in 10 | L", "4 in 10 | S",
+                                           "5 in 5 | L",  "5 in 5 | S",
                                            "stationary | L", "stationary | S",
                                            "equalizer"};
 
@@ -115,7 +115,7 @@ void selectAuton() {
       clearLCD();
       return;
     }
-    if(nPgmTime - liAtTargetTime > 1000) {
+    if(nPgmTime - liAtTargetTime > 10000) {
       bExitEarly = true;
     }
     string str = "";
@@ -132,29 +132,33 @@ void runAuton() {
   displayLCDCenteredString(1, autonSelection.arr[autonSelection]);
 
   // sideValue = sideValue == 0 ? 1 : -1;
-  sideValue = -1
+  sideValue = 1
   // unfortunately robotC does not allow function pointers
   // so we are left with this mess
   if(autonValue == 0) {
     // auton20Short(sideValue);
+    // auton5Short(sideValue)
+    // auton20(sideValue);
     auton20Long(sideValue);
   } else if(autonValue == 1) {
     auton20Short(sideValue);
   } else if(autonValue == 2) {
-    auton10long(sideValue);
+    auton20(sideValue);
   } else if(autonValue == 3) {
-    auton10Short(sideValue);
+    auton10long(sideValue);
   } else if(autonValue == 4) {
-    auton5long(sideValue);
+    auton10Short(sideValue);
   } else if(autonValue == 5) {
-    auton5Short(sideValue);
+    auton5long(sideValue);
   } else if(autonValue == 6) {
-    autonStatLong(sideValue);
+    auton5Short(sideValue);
   } else if(autonValue == 7) {
+    autonStatLong(sideValue);
+  } else if(autonValue == 8) {
     autonStatShort(sideValue);
   } else if(autonValue == 8) {
     autonSabatoge(sideValue);
-  }else {
+  } else {
     displayLCDCenteredString(0, "somehting's screwy");
   }
 }
