@@ -2,7 +2,7 @@
 #define _PROTOTYPE_DRIVE_
 
 #define PID_TOLERANCE 3 /* the tolerance for turns */
-#define ENCODER_PID_TOLERANCE 20 /* the tolerance for movement */
+#define ENCODER_PID_TOLERANCE 150 /* the tolerance for movement */
 #define MAX_SPEED 127 /* the maximum speed of the bot */
 #define MIN_SPEED 30 /* the minimum speed of the bot */
 #define MIN_SPEED_TURN 40 /* the minimum speed of turns */
