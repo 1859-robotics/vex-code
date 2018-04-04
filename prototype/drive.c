@@ -17,8 +17,10 @@ typedef struct {
   int target;
   int spd;
   int gyroAngle;
+  
   Gyro gyro;
   PID pid;
+
 } Drive;
 
 Drive drive;

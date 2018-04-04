@@ -149,12 +149,16 @@ void claw(int amt, bool waitForEnd) {
 // modifies: lift
 // affects:  move the core lift
 task core_() {
-  EncoderSetValue(B_CORE_LIFT, 0);
+  int dir = (SensorValue(CORE_POTENTIOMETER) > lift.coreAmt ? -1 : 1);
+  SetMotor(B_CORE_LIFT, 127 * dir);
+  SetMotor(T_CORE_LIFT, 127 * dir);
 
-  SetMotor(B_CORE_LIFT, 127 * (sgn(lift.coreAmt)));
-  SetMotor(T_CORE_LIFT, 127 * (sgn(lift.coreAmt)));
+  if(dir == -1) {
+    while(fabs(lift.coreAmt) < fabs(SensorValue(CORE_POTENTIOMETER))) {}
+  } else if(dir == 1) {
+    while(fabs(lift.coreAmt) > fabs(SensorValue(CORE_POTENTIOMETER))) {}
+  }
 
-  while(fabs(lift.coreAmt) > fabs(EncoderGetValue(B_CORE_LIFT))) {}
 
   SetMotor(B_CORE_LIFT, 0);
   SetMotor(T_CORE_LIFT, 0);
@@ -163,8 +167,6 @@ task core_() {
   lift.coreCanMove = true;
   lift.coreAmt = 0;
 
-
-  EncoderSetValue(B_CORE_LIFT, 0);
 
   stopTask(core_);
 }
