@@ -115,19 +115,20 @@ void auton20(int side) { // 2 cones on a MB in the 20 pt zone
   moveCenter(1500, true);
   manipulate(-1, true);
   moveCenter(175, false);
-  core(0, true);
+  core(FIELD_CORE, true);
   claw(400, true);
   core(100, false);
   flip(-1, true);
   core(FIELD_CORE, false);
-  claw(-700, true);
+  claw(-1000, true);
   core(100, true);
   claw(-700, false);
   flip(1, false);
   moveCenter(-1700, false);
-  while(!FILP_UP_SWITCH) {}
-  claw(700, true);
-  core(200, false);
+  while(!SensorValue(FILP_UP_SWITCH)) {}
+  core(20, false);
+  claw(1000, true);
+  core(120, false);
   turn(-135 * side);
   moveCenter(550, true);
   turn(-90 * side);
@@ -286,7 +287,11 @@ void autonSabatoge(int side) {
 
 
 void skills() {
-
+  resetEncoders();
+  core(100, false);
+  manipulate(1, false);
+  while(400 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(900, true);
 }
 
 #endif

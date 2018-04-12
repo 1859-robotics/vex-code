@@ -7,11 +7,11 @@
 // each one of these defines is a boolian statement
 // that determines if the controls in other files should run
 
-#define FLIP_LIFT_UP             vexRT[Btn5D] && !vexRT[Btn5U]
-#define FLIP_LIFT_DOWN           vexRT[Btn5U] && !vexRT[Btn5D]
+#define FLIP_LIFT_UP             vexRT[Btn5D]
+#define FLIP_LIFT_DOWN           vexRT[Btn5U]
 
-#define CORE_LIFT_UP             vexRT[Btn6U] && !vexRT[Btn6D]
-#define CORE_LIFT_DOWN           vexRT[Btn6D] && !vexRT[Btn6U]
+#define CORE_LIFT_UP             vexRT[Btn6U]
+#define CORE_LIFT_DOWN           vexRT[Btn6D]
 
 #define LIFT_CLAW_UP             vexRT[Btn8D]
 #define LIFT_CLAW_DOWN           vexRT[Btn8R]

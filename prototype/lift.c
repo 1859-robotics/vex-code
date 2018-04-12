@@ -158,7 +158,9 @@ task core_() {
   } else if(dir == 1) {
     while(fabs(lift.coreAmt) > fabs(SensorValue(CORE_POTENTIOMETER))) {}
   }
-
+  if(lift.coreAmt == 0) {
+    wait1Msec(200)
+  }
 
   SetMotor(B_CORE_LIFT, 0);
   SetMotor(T_CORE_LIFT, 0);

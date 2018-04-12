@@ -115,7 +115,7 @@ void selectAuton() {
       clearLCD();
       return;
     }
-    if(nPgmTime - liAtTargetTime > 10000) {
+    if(nPgmTime - liAtTargetTime > 5000) {
       bExitEarly = true;
     }
     string str = "";
