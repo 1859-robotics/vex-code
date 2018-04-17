@@ -287,11 +287,49 @@ void autonSabatoge(int side) {
 
 
 void skills() {
-  resetEncoders();
-  core(100, false);
-  manipulate(1, false);
-  while(400 > fabs(EncoderGetValue(MANIPULATOR))) {}
-  moveCenter(900, true);
+  const int timeBegin = nPgmTime;
+  turn(-180, true);
+  writeDebugStream("end time: %f%s", nPgmTime - timeBegin, "s\n");
+  // turn(180, true)
+  // turn(-180, true)
+  // turn(180, true)
+  // turn(-180, true)
+  // turn(180, true)
+
+  // resetEncoders();
+  //
+  // core(100, false);
+  // manipulate(1, false);
+  // wait1Msec(500);
+  // moveCenter(1500);
+  // manipulate(-1, true); // pick up MB
+  // moveCenter(-1400);
+  // SensorValue[GYRO_PORT] = 0;
+  // turn(-135);
+  // moveCenter(700);
+  // manipulator.canMove = false;
+  // turn(-90);
+  // manipulator.canMove = true;
+  // manipulate(1, false); // put 1st MB in 20pt zone
+  //
+  // moveCenter(500, 127, true);
+  // moveCenter(-600);
+  // SensorValue[GYRO_PORT] = 0;
+  // turn(-90);
+  // moveCenter(400);
+  // turn(-90);
+  // moveCenter(650);
+  // core(100, false);
+  // manipulate(-1, true); // pick up 2nd MB
+  // core(0, true);
+  // claw(-600, false);
+  // turn(180, true)
+  // moveCenter(900);
+  // manipulate(1, true); // put 2nd MB in 10pt zone
+  // moveCenter(-400);
+  // turn(-180, true)
+
+
 }
 
 #endif

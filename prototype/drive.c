@@ -5,7 +5,7 @@
 #define ENCODER_PID_TOLERANCE 150 /* the tolerance for movement */
 #define MAX_SPEED 127 /* the maximum speed of the bot */
 #define MIN_SPEED 30 /* the minimum speed of the bot */
-#define MIN_SPEED_TURN 40 /* the minimum speed of turns */
+#define MIN_SPEED_TURN 30 /* the minimum speed of turns */
 #define MIN_OP_SPD 20 /* the minimum input for the drive to fire */
 #define SLOW_DOWN_SPD 30 /* the slow down speed for movement */
 #define SLOW_DOWN_ENCODER_S 200 /* the encoder values for slowdown */
@@ -17,7 +17,7 @@ typedef struct {
   int target;
   int spd;
   int gyroAngle;
-  
+
   Gyro gyro;
   PID pid;
 
