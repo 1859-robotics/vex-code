@@ -143,6 +143,29 @@ void auton20(int side) { // 2 cones on a MB in the 20 pt zone
 
 void auton5long(int side) { // 5 cones on a MB in the 5 pt zone
   resetEncoders();
+  core(100, false);
+  manipulate(1, false);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(1500, true);
+  manipulate(-1, true);
+  moveCenter(175, false);
+  core(FIELD_CORE, true);
+  claw(400, true);
+  core(100, false);
+  flip(-1, true);
+  core(FIELD_CORE, false);
+  claw(-1000, true);
+  core(100, true);
+  claw(-700, false);
+  flip(1, false);
+  moveCenter(-1400, false);
+  while(!SensorValue(FILP_UP_SWITCH)) {}
+  core(20, false);
+  claw(1000, true);
+  core(120, false);
+  turn(-180 * side);
+  manipulate(1, true);
+  moveCenter(-600, true);
 
 }
 
@@ -199,6 +222,9 @@ void auton5Short(int side) { // 5 cones on a MB in the 5 pt zone
   while(1200 > fabs(EncoderGetValue(MANIPULATOR))) {}
   driveF(-127);
 }
+
+
+
 
 void auton10long(int side) { // 4 cones on a MB in the 10 pt zone
   resetEncoders();
@@ -287,49 +313,52 @@ void autonSabatoge(int side) {
 
 
 void skills() {
-  const int timeBegin = nPgmTime;
-  turn(-180, true);
-  writeDebugStream("end time: %f%s", nPgmTime - timeBegin, "s\n");
-  // turn(180, true)
-  // turn(-180, true)
-  // turn(180, true)
-  // turn(-180, true)
-  // turn(180, true)
+  resetEncoders();
 
-  // resetEncoders();
-  //
-  // core(100, false);
-  // manipulate(1, false);
-  // wait1Msec(500);
-  // moveCenter(1500);
-  // manipulate(-1, true); // pick up MB
-  // moveCenter(-1400);
+  core(50, false);
+  manipulate(1, false);
+  while(400 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(1500);
+  manipulate(-1, true); // pick up MB
+  moveCenter(-1400);
+  SensorValue[GYRO_PORT] = 0;
+  turn(-135);
+  moveCenter(650);
+  manipulator.canMove = false;
+  turn(-90);
+  manipulator.canMove = true;
+  manipulate(1, false); // put 1st MB in 20pt zone
+
+  moveCenter(500, 127, true);
+  moveCenter(-650);
+  SensorValue[GYRO_PORT] = 0;
+  turn(-90);
+  moveCenter(450);
+  turn(-90);
+  moveCenter(650);
+  core(100, false);
+  manipulate(-1, true); // pick up 2nd MB
+  core(0, true);
+  claw(600, false);
+  turn(180, true)
+  moveCenter(950);
+  manipulate(1, true); // put 2nd MB in 10pt zone
+  moveCenter(-400);
+  SensorValue[GYRO_PORT] = 0;
+  turn(-180, true)
+  moveCenter(1400);
+  manipulate(-1, true);
+  moveCenter(1000);
+  SensorValue[GYRO_PORT] = 0;
+  turn(-90);
+  moveCenter(600);
+  turn(90);
+  manipulate(1, false);
+  moveCenter(500, 127, true);
+  moveCenter(-650);
   // SensorValue[GYRO_PORT] = 0;
-  // turn(-135);
-  // moveCenter(700);
-  // manipulator.canMove = false;
   // turn(-90);
-  // manipulator.canMove = true;
-  // manipulate(1, false); // put 1st MB in 20pt zone
-  //
-  // moveCenter(500, 127, true);
-  // moveCenter(-600);
-  // SensorValue[GYRO_PORT] = 0;
-  // turn(-90);
-  // moveCenter(400);
-  // turn(-90);
-  // moveCenter(650);
-  // core(100, false);
-  // manipulate(-1, true); // pick up 2nd MB
-  // core(0, true);
-  // claw(-600, false);
-  // turn(180, true)
-  // moveCenter(900);
-  // manipulate(1, true); // put 2nd MB in 10pt zone
-  // moveCenter(-400);
-  // turn(-180, true)
-
-
+  // moveCenter(500, true);
 }
 
 #endif

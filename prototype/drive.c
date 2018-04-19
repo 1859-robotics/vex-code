@@ -67,14 +67,38 @@ void driveF(int spd) {
 // modifies: null
 // affects:  lets operator control the drive train
 void OPDrive() {
-  driveL(abs(TANK_CONTORL_LEFT)  > MIN_OP_SPD ? TANK_CONTORL_LEFT  : 0);
-  driveR(abs(TANK_CONTORL_RIGHT) > MIN_OP_SPD ? TANK_CONTORL_RIGHT : 0);
+  driveL(abs(TANK_CONTORL_LEFT)  > MIN_OP_SPD ? -TANK_CONTORL_LEFT  : 0);
+  driveR(abs(TANK_CONTORL_RIGHT) > MIN_OP_SPD ? -TANK_CONTORL_RIGHT : 0);
 }
 
 // requires: task
 // modifies: zero's all drive encoders
 // affects:  moves forward by amount specified in drive
 task moveCenter_() {
+
+  // EncoderSetValue(LB_DRIVE, 0);
+  // EncoderSetValue(RB_DRIVE, 0);
+  //
+  // driveF(drive.spd * sgn(drive.target));
+  //
+  // // while the encoder values are not the requseted value
+  // while(fabs(drive.target) >
+  //        (fabs(EncoderGetValue(LB_DRIVE)) + fabs(EncoderGetValue(RB_DRIVE))) / 2) {}
+  //
+  // driveF(-drive.spd * sgn(drive.target));
+  // wait1Msec(80)
+  //
+  // driveF(0); // equivilant to stoping all drive motors
+  //
+  //
+  // // reset encoders
+  // EncoderSetValue(LB_DRIVE, 0);
+  // EncoderSetValue(RB_DRIVE, 0);
+  //
+  // // reset drive values
+  // drive.canMove = true;
+  // drive.target = 0;
+  // drive.spd = 0;
 
   if(abs(drive.target) < 200)
     pidInit(drive.pid, 3.0, 0.0, 0.15, 3.0, 30.0, MIN_SPEED, MAX_SPEED);
@@ -99,7 +123,7 @@ task moveCenter_() {
       driveOut = SLOW_DOWN_SPD * sgn(driveOut);
     }
 
-    driveF(-driveOut);
+    driveF(driveOut);
 
     if(abs(drive.target - fEncoderVal) > ENCODER_PID_TOLERANCE) {
       liAtTargetTime = nPgmTime;
@@ -115,18 +139,21 @@ task moveCenter_() {
 
   drive.canMove = true;
   drive.target =  0;
+  drive.spd = 0;
+
   stopTask(moveCenter_);
 }
 
 // requires: target (encdoder tics)
 // modifies: drive.pid
 // affects:  turn the robot by the specified degrees
-void moveCenter(float fTarget, bool bWait = true) {
+void moveCenter(float fTarget, bool bWait = true, int spd = 127) {
 
   while(!drive.canMove){};
 
   drive.canMove = false;
   drive.target = -fTarget;
+  drive.spd = spd;
 
   startTask(moveCenter_);
 
@@ -167,7 +194,7 @@ void moveCenter(int amt, int spd, bool waitForEnd) {
   while(!drive.canMove){};
 
   drive.canMove = false;
-  drive.target = amt;
+  drive.target = -amt;
   drive.spd = fabs(spd);
 
   startTask(moveCenterNoPID_);
@@ -199,8 +226,8 @@ task turn_() {
 
     //Calculate the output of the PID controller and output to drive motors
     float driveOut = pidCalculate(drive.pid, drive.target, fGyroAngle);
-    driveL(-driveOut);
-    driveR(driveOut);
+    driveL(driveOut);
+    driveR(-driveOut);
 
     if(abs(drive.target - fGyroAngle) > PID_TOLERANCE) {
       liAtTargetTime = nPgmTime;

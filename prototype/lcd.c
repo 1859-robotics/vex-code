@@ -17,8 +17,8 @@ const string DIR_VALUES[2] = { "right", "left" };
 
 tStringArray autonSelection;
 const string LCD_STRINGS[AUTON_NUMBER] = { "3 in 20 | L", "3 in 20 | S", "2 in 20",
-                                           "4 in 10 | L", "4 in 10 | S",
-                                           "5 in 5 | L",  "5 in 5 | S",
+                                           "2 in 10", "4 in 10 | S",
+                                           "2 in 5", "5 in 5 | S",
                                            "stationary | L", "stationary | S",
                                            "equalizer"};
 
@@ -135,10 +135,7 @@ void runAuton() {
   // unfortunately robotC does not allow function pointers
   // so we are left with this mess
   if(autonValue == 0) {
-    // auton20Short(sideValue);
     auton20Long(sideValue);
-    // auton20(sideValue);
-    // auton5Short(sideValue)
   } else if(autonValue == 1) {
     auton20Short(sideValue);
   } else if(autonValue == 2) {
