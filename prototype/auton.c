@@ -109,7 +109,8 @@ void auton20Short(int side) { // 3 cones on a MB in the 20 pt zone
 
 void auton20(int side) { // 2 cones on a MB in the 20 pt zone
   resetEncoders();
-  core(100, false);
+
+  core(20, false);
   manipulate(1, false);
   while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(1500, true);
@@ -117,23 +118,23 @@ void auton20(int side) { // 2 cones on a MB in the 20 pt zone
   moveCenter(175, false);
   core(FIELD_CORE, true);
   claw(400, true);
-  core(100, false);
+  core(20, false);
   flip(-1, true);
   core(FIELD_CORE, false);
   claw(-1000, true);
-  core(100, true);
+  core(20, true);
   claw(-700, false);
   flip(1, false);
   moveCenter(-1700, false);
   while(!SensorValue(FILP_UP_SWITCH)) {}
   core(20, false);
   claw(1000, true);
-  core(120, false);
+  core(50, false);
   turn(-135 * side);
   moveCenter(550, true);
   turn(-90 * side);
   manipulate(1, false, 800);
-  moveCenter(650, 100, true);
+  moveCenter(650, 80, true);
   moveCenter(-600, true);
 
 

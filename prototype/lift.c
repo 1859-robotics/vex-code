@@ -150,16 +150,20 @@ void claw(int amt, bool waitForEnd) {
 // affects:  move the core lift
 task core_() {
   int dir = (SensorValue(CORE_POTENTIOMETER) > lift.coreAmt ? -1 : 1);
-  SetMotor(B_CORE_LIFT, 127 * dir);
-  SetMotor(T_CORE_LIFT, 127 * dir);
+  SetMotor(B_CORE_LIFT, lift.coreSpd * dir);
+  SetMotor(T_CORE_LIFT, lift.coreSpd * dir);
 
   if(dir == -1) {
-    while(fabs(lift.coreAmt) < fabs(SensorValue(CORE_POTENTIOMETER))) {}
+    while(fabs(lift.coreAmt) < fabs(SensorValue(CORE_POTENTIOMETER))) {
+      writeDebugStream("false")
+    }
   } else if(dir == 1) {
-    while(fabs(lift.coreAmt) > fabs(SensorValue(CORE_POTENTIOMETER))) {}
+    while(fabs(lift.coreAmt) > fabs(SensorValue(CORE_POTENTIOMETER))) {
+      writeDebugStream("false")
+    }
   }
   if(lift.coreAmt == 0) {
-    wait1Msec(200);
+    wait1Msec(150);
   }
 
   SetMotor(B_CORE_LIFT, 0);
@@ -177,11 +181,12 @@ task core_() {
 //           if the program should contiue before the action finishes
 // modifies: lift
 // affects:  spawn a task to move the core lift
-void core(int amt, bool waitForEnd) {
+void core(int amt, bool waitForEnd, int coreSpd = 127) {
   while(!lift.coreCanMove){}
 
   lift.coreCanMove = false;
   lift.coreAmt = amt;
+  lift.coreSpd = coreSpd;
 
   startTask(core_);
 
