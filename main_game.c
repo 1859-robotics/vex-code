@@ -30,7 +30,6 @@
 #pragma DebuggerWindows("taskStatus")
 
 
-
 #pragma platform(VEX2)
 #pragma competitionControl(Competition)
 
