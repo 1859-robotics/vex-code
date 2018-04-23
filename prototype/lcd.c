@@ -8,7 +8,7 @@
 #define RIGHT_BUTTON 4
 
 // the number of auton programs the lcd should run through
-#define AUTON_NUMBER 10
+#define AUTON_NUMBER 7
 
 
 // the names of the auton programs
@@ -16,10 +16,9 @@ tStringArray dirSelection;
 const string DIR_VALUES[2] = { "right", "left" };
 
 tStringArray autonSelection;
-const string LCD_STRINGS[AUTON_NUMBER] = { "3 in 20 | L", "3 in 20 | S", "2 in 20",
+const string LCD_STRINGS[AUTON_NUMBER] = { "3 in 20 | S", "2 in 20",
                                            "2 in 10", "4 in 10 | S",
                                            "2 in 5", "5 in 5 | S",
-                                           "stationary | L", "stationary | S",
                                            "equalizer"};
 
 int sideValue;
@@ -135,28 +134,23 @@ void runAuton() {
   // unfortunately robotC does not allow function pointers
   // so we are left with this mess
   if(autonValue == 0) {
-    auton20Long(sideValue);
-  } else if(autonValue == 1) {
     auton20Short(sideValue);
-  } else if(autonValue == 2) {
+  } else if(autonValue == 1) {
     auton20(sideValue);
+  } else if(autonValue == 2) {
+    auton10(sideValue);
   } else if(autonValue == 3) {
-    auton10long(sideValue);
-  } else if(autonValue == 4) {
     auton10Short(sideValue);
+  } else if(autonValue == 4) {
+    auton5(sideValue);
   } else if(autonValue == 5) {
-    auton5long(sideValue);
-  } else if(autonValue == 6) {
     auton5Short(sideValue);
-  } else if(autonValue == 7) {
-    autonStatLong(sideValue);
-  } else if(autonValue == 8) {
-    autonStatShort(sideValue);
-  } else if(autonValue == 8) {
+  } else if(autonValue == 6) {
     autonSabatoge(sideValue);
   } else {
     displayLCDCenteredString(0, "somehting's screwy");
   }
 }
+
 
 #endif

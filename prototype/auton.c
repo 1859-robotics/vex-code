@@ -58,6 +58,7 @@ void auton20Long(int side) { // 3 cones on a MB in the 20 pt zone
 }
 
 void auton20Short(int side) { // 3 cones on a MB in the 20 pt zone
+  writeDebugStream("auton20Short")
   resetEncoders();
   core(100, false);
   manipulate(1, false);
@@ -108,6 +109,7 @@ void auton20Short(int side) { // 3 cones on a MB in the 20 pt zone
 }
 
 void auton20(int side) { // 2 cones on a MB in the 20 pt zone
+  writeDebugStream("auton20")
   resetEncoders();
 
   core(20, false);
@@ -140,9 +142,9 @@ void auton20(int side) { // 2 cones on a MB in the 20 pt zone
 
 }
 
+void auton5(int side) { // 5 cones on a MB in the 5 pt zone
+  writeDebugStream("auton5")
 
-
-void auton5long(int side) { // 5 cones on a MB in the 5 pt zone
   resetEncoders();
   core(100, false);
   manipulate(1, false);
@@ -171,6 +173,7 @@ void auton5long(int side) { // 5 cones on a MB in the 5 pt zone
 }
 
 void auton5Short(int side) { // 5 cones on a MB in the 5 pt zone
+  writeDebugStream("auton5Short")
   resetEncoders();
   core(100, false);
   manipulate(1, false);
@@ -224,16 +227,9 @@ void auton5Short(int side) { // 5 cones on a MB in the 5 pt zone
   driveF(-127);
 }
 
-
-
-
-void auton10long(int side) { // 4 cones on a MB in the 10 pt zone
-  resetEncoders();
-
-
-}
-
 void auton10Short(int side) { // 4 cones on a MB in the 10 pt zone
+  writeDebugStream("auton10Short")
+
   resetEncoders();
   core(100, false);
   manipulate(1, false);
@@ -281,18 +277,43 @@ void auton10Short(int side) { // 4 cones on a MB in the 10 pt zone
   moveCenter(-700, 80, true);
 }
 
-void autonStatLong(int side) { // 2 cones on the stationary goal + tip a MB
+void auton10(int side) {
   resetEncoders();
+  writeDebugStream("auton10")
 
-}
-
-void autonStatShort(int side) { // 2 cones on the stationary goal + tip a MB
-  resetEncoders();
+  core(20, false);
+  manipulate(1, false);
+  while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
+  moveCenter(1500, true);
+  manipulate(-1, true);
+  moveCenter(175, false);
+  core(FIELD_CORE, true);
+  claw(400, true);
+  core(20, false);
+  flip(-1, true);
+  core(FIELD_CORE, false);
+  claw(-1000, true);
+  core(20, true);
+  claw(-700, false);
+  flip(1, false);
+  moveCenter(-1700, false);
+  while(!SensorValue(FILP_UP_SWITCH)) {}
+  core(20, false);
+  claw(1000, true);
+  core(50, false);
+  turn(-135 * side);
+  moveCenter(300, true);
+  turn(-90 * side);
+  manipulate(1, false, 800);
+  moveCenter(300, 80, true);
+  moveCenter(-600, true);
 
 }
 
 void autonSabatoge(int side) {
   resetEncoders();
+  writeDebugStream("autonSabatoge")
+
   manipulate(1, false);
   while(800 > fabs(EncoderGetValue(MANIPULATOR))) {}
   moveCenter(400);
