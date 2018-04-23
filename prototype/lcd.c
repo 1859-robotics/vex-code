@@ -19,7 +19,7 @@ tStringArray autonSelection;
 const string LCD_STRINGS[AUTON_NUMBER] = { "3 in 20 | S", "2 in 20",
                                            "2 in 10", "4 in 10 | S",
                                            "2 in 5", "5 in 5 | S",
-                                           "equalizer"};
+                                           "equalizer", "do nothing"};
 
 int sideValue;
 int autonValue;
@@ -147,6 +147,8 @@ void runAuton() {
     auton5Short(sideValue);
   } else if(autonValue == 6) {
     autonSabatoge(sideValue);
+  } else if(autonValue == 7) {
+    return;
   } else {
     displayLCDCenteredString(0, "somehting's screwy");
   }
